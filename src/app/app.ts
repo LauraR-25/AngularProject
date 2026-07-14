@@ -12,8 +12,8 @@ import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, MlpVisualizerComponent, DetroitVisualizerComponent, F1VisualizerComponent],
-  template: `
+  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, F1VisualizerComponent, MlpVisualizerComponent, DetroitVisualizerComponent],
+  template: `   
     <div class="app-shell">
       @if (!(authService.authStatus$ | async)) {
         <!-- ===== VISTA: AUTH ===== -->
@@ -85,7 +85,6 @@ import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer
                   <select [ngModel]="currentMode" (ngModelChange)="changeMode($event)" class="theme-select">
                     <option value="mlp">My Little Pony</option>
                     <option value="detroit">Detroit: Become Human</option>
-                    <option value="f1">Fórmula Uno</option>
                   </select>
                 </div>
                 <div class="sim-info-row">
@@ -103,9 +102,6 @@ import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer
                 }
                 @case ('detroit') {
                   <app-detroit-visualizer></app-detroit-visualizer>
-                }
-                @case ('f1') {
-                  <app-f1-visualizer></app-f1-visualizer>
                 }
               }
             </section>
@@ -367,7 +363,6 @@ import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer
     }
     .visualizer-stage app-mlp-visualizer,
     .visualizer-stage app-detroit-visualizer,
-    .visualizer-stage app-f1-visualizer,
     .visualizer-stage app-visualizers {
       display: block;
       width: 100%;
