@@ -5,11 +5,12 @@ import { TimeService } from './services/time.service';
 import { AuthService } from './services/auth.service';
 import { AuthComponent } from './components/auth/auth.component';
 import { VisualizersComponent } from './components/visualizers/visualizers.component';
+import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visualizer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent],
+  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, MlpVisualizerComponent],
   template: `
     <div class="app-shell">
       @if (!(authService.authStatus$ | async)) {
@@ -24,8 +25,8 @@ import { VisualizersComponent } from './components/visualizers/visualizers.compo
             <div class="dash-logo">
               <span class="logo-icon">☀️</span>
               <div class="logo-text">
-                <span class="logo-title">CELESTIAL</span>
-                <span class="logo-sub">Ciclo Sol &amp; Luna</span>
+                <span class="logo-title">EQUESTRIA</span>
+                <span class="logo-sub">Ciclo Sol &amp; Luna · MLP</span>
               </div>
             </div>
 
@@ -79,7 +80,7 @@ import { VisualizersComponent } from './components/visualizers/visualizers.compo
               <div class="sim-info">
                 <div class="sim-info-row">
                   <span class="sim-info-label">MODO</span>
-                  <span class="sim-info-value highlight-yellow">Ciclo Celeste</span>
+                  <span class="sim-info-value highlight-yellow">My Little Pony</span>
                 </div>
                 <div class="sim-info-row">
                   <span class="sim-info-label">TIEMPO REAL</span>
@@ -90,10 +91,8 @@ import { VisualizersComponent } from './components/visualizers/visualizers.compo
 
             <!-- Visualizador -->
             <section class="visualizer-stage">
-              <app-visualizers
-                [time]="(timeService.currentTime$ | async)!"
-                mode="sol-luna"
-              ></app-visualizers>
+              <!-- MlpVisualizerComponent se suscribe internamente a TimeService -->
+              <app-mlp-visualizer></app-mlp-visualizer>
             </section>
 
           </main>
@@ -336,7 +335,7 @@ import { VisualizersComponent } from './components/visualizers/visualizers.compo
       overflow: hidden;
       position: relative;
     }
-    .visualizer-stage app-visualizers {
+    .visualizer-stage app-mlp-visualizer {
       display: block;
       width: 100%;
       height: 100%;

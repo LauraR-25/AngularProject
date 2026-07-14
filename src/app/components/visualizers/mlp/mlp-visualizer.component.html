@@ -1,0 +1,26 @@
+<div class="mlp-scene" [ngClass]="phase" [style.background-image]="skyGradient">
+
+    <!-- Capa del castillo con altura corregida para que el background sea visible -->
+    <div class="castle-layer"></div>
+
+    <!-- Capa de princesas con URLs absolutas desde la raíz del proyecto -->
+    <div class="princess-layer">
+        @if (phase === 'dia' || phase === 'atardecer') {
+            <img src="/assets/images/mlp/celestia.png" alt="Princesa Celestia" class="princess-sprite" />
+        } @else {
+            <img src="/assets/images/mlp/luna.png" alt="Princesa Luna" class="princess-sprite" />
+        }
+    </div>
+
+    <!-- HUD Overlay -->
+    <div class="hud-overlay">
+        <div class="hud-badge" [ngClass]="'badge-' + phase">
+            {{ phaseLabel }}
+        </div>
+        <div class="hud-time">{{ currentTime | date:'HH:mm:ss' }}</div>
+        <div class="hud-princess">
+            {{ phase === 'noche' ? '🌙 Princesa Luna' : '☀️ Princesa Celestia' }}
+        </div>
+    </div>
+
+</div>

@@ -1,14 +1,15 @@
-import { Component, Input, OnChanges } from '@angular/core';
+import { Component, Input, OnChanges, inject } from '@angular/core';
 import { CommonModule } from '@angular/common';
+import { TimeSimulatorService, CelestialState } from '../../services/time-simulator.service';
 
 @Component({
   selector: 'app-visualizers',
   standalone: true,
   imports: [CommonModule],
   template: `
-    <div class="sky-wrapper" [style.background]="skyGradient">
+    <div class="sky-wrapper" [style.background]="state.skyGradient">
       <!-- Estrellas (solo de noche) -->
-      @if (!isDay) {
+      @if (!state.isDay) {
         <div class="stars">
           @for (s of stars; track $index) {
             <div class="star" [style]="s"></div>
@@ -16,8 +17,8 @@ import { CommonModule } from '@angular/common';
         </div>
       }
 
-      <!-- Nube decorativa (solo de día) -->
-      @if (isDay) {
+      <!-- Nubes decorativas (solo de día) -->
+      @if (state.isDay) {
         <div class="cloud cloud-1"></div>
         <div class="cloud cloud-2"></div>
       }
@@ -25,12 +26,12 @@ import { CommonModule } from '@angular/common';
       <!-- Cuerpo celeste (Sol o Luna) -->
       <div
         class="celestial-body"
-        [class.is-sun]="isDay"
-        [class.is-moon]="!isDay"
-        [style.left.%]="bodyX"
-        [style.bottom.%]="bodyY"
+        [class.is-sun]="state.isDay"
+        [class.is-moon]="!state.isDay"
+        [style.left.%]="state.bodyX"
+        [style.bottom.%]="state.bodyY"
       >
-        {{ isDay ? '☀️' : '🌕' }}
+        {{ state.isDay ? '☀️' : '🌕' }}
       </div>
 
       <!-- Línea del horizonte -->
@@ -39,10 +40,10 @@ import { CommonModule } from '@angular/common';
       <!-- Panel de información -->
       <div class="info-overlay">
         <span class="info-badge">
-          {{ isDay ? '☀ DÍA' : '🌑 NOCHE' }}
+          {{ state.isDay ? '☀ DÍA' : '🌑 NOCHE' }}
         </span>
         <span class="info-time">{{ time | date:'HH:mm:ss' }}</span>
-        <span class="info-progress">{{ dayProgress | number:'1.0-0' }}% del día</span>
+        <span class="info-progress">{{ state.dayProgress | number:'1.0-0' }}% del día</span>
       </div>
     </div>
   `,
@@ -93,7 +94,7 @@ import { CommonModule } from '@angular/common';
       animation: driftCloud 30s linear infinite;
     }
     .cloud-1::before { width: 70px; height: 70px; top: -30px; left: 15px; }
-    .cloud-1::after { width: 50px; height: 50px; top: -20px; left: 50px; }
+    .cloud-1::after  { width: 50px; height: 50px; top: -20px; left: 50px; }
     .cloud-2 {
       width: 80px; height: 28px;
       top: 30%; left: 60%;
@@ -103,7 +104,7 @@ import { CommonModule } from '@angular/common';
     .cloud-2::before { width: 50px; height: 50px; top: -22px; left: 10px; }
     @keyframes driftCloud {
       from { transform: translateX(-200px); }
-      to { transform: translateX(calc(100vw + 200px)); }
+      to   { transform: translateX(calc(100vw + 200px)); }
     }
 
     /* ===== CUERPO CELESTE ===== */
@@ -112,7 +113,6 @@ import { CommonModule } from '@angular/common';
       font-size: 3.5rem;
       transform: translateX(-50%);
       transition: left 1s linear, bottom 1s linear;
-      filter: drop-shadow(0 0 0px transparent);
       line-height: 1;
     }
     .celestial-body.is-sun {
@@ -124,7 +124,7 @@ import { CommonModule } from '@angular/common';
     }
     @keyframes sunGlow {
       0%, 100% { filter: drop-shadow(0 0 20px rgba(255, 200, 50, 0.8)); }
-      50% { filter: drop-shadow(0 0 40px rgba(255, 200, 50, 1)); }
+      50%       { filter: drop-shadow(0 0 40px rgba(255, 200, 50, 1));   }
     }
 
     /* ===== HORIZONTE ===== */
@@ -174,21 +174,18 @@ import { CommonModule } from '@angular/common';
   `]
 })
 export class VisualizersComponent implements OnChanges {
+  // ── Entradas del componente ──────────────────────────────────────
   @Input() time!: Date;
-  @Input() mode: string = 'sol-luna'; // Fijo en sol-luna
+  @Input() mode: string = 'sol-luna';
 
-  // Datos calculados
-  hours = 0;
-  minutes = 0;
-  seconds = 0;
-  dayProgress = 0;
-  isDay = true;
-  skyGradient = '';
-  bodyX = 50;  // posición horizontal del sol/luna (%)
-  bodyY = 50;  // posición vertical del sol/luna (%)
+  // ── Dependencias ────────────────────────────────────────────────
+  private simulator = inject(TimeSimulatorService);
 
-  // Estrellas decorativas
-  stars = Array.from({ length: 60 }, () => {
+  // ── Estado derivado (calculado por el servicio) ──────────────────
+  state: CelestialState = this.simulator.compute(new Date());
+
+  // ── Datos estáticos de decoración (generados una sola vez) ───────
+  readonly stars = Array.from({ length: 60 }, () => {
     const size = Math.random() * 2.5 + 0.5;
     return `
       left: ${Math.random() * 100}%;
@@ -200,60 +197,11 @@ export class VisualizersComponent implements OnChanges {
     `;
   });
 
-  ngOnChanges() {
+  // ── Ciclo de vida ────────────────────────────────────────────────
+  ngOnChanges(): void {
     if (!this.time) return;
-
-    this.hours = this.time.getHours();
-    this.minutes = this.time.getMinutes();
-    this.seconds = this.time.getSeconds();
-
-    const totalSecondsInDay = 86400;
-    const currentSeconds = (this.hours * 3600) + (this.minutes * 60) + this.seconds;
-    this.dayProgress = (currentSeconds / totalSecondsInDay) * 100;
-
-    // Determinar si es de día (6:00 – 18:00)
-    this.isDay = this.hours >= 6 && this.hours < 18;
-
-    // === Posición horizontal ===
-    // El sol/luna viaja de izq (0%) a der (100%) durante su ciclo de 12h
-    const cycleSeconds = currentSeconds % 43200; // ciclo de 12h
-    this.bodyX = (cycleSeconds / 43200) * 90 + 5; // entre 5% y 95%
-
-    // === Posición vertical (parábola) ===
-    // Sin(0..π) = 0→1→0, multiplicado por un techo máximo
-    const arcAngle = (cycleSeconds / 43200) * Math.PI;
-    this.bodyY = Math.sin(arcAngle) * 65 + 5; // entre 5% y 70%
-
-    // === Gradiente del cielo ===
-    this.skyGradient = this.buildSkyGradient(currentSeconds);
-  }
-
-  private buildSkyGradient(secs: number): string {
-    const totalSecs = 86400;
-    const pct = secs / totalSecs; // 0 a 1 durante el día completo
-
-    // Paletas por franja horaria
-    if (secs < 21600) {
-      // Madrugada (0-6h): negro profundo → azul medianoche
-      const t = secs / 21600;
-      return `linear-gradient(to bottom, #000010 0%, #050a1a ${30 + t * 20}%, #0b1a35 100%)`;
-    } else if (secs < 25200) {
-      // Amanecer (6-7h): naranja/rosado
-      return `linear-gradient(to bottom, #1a0a2e 0%, #8b2252 30%, #e8621a 65%, #f9a743 100%)`;
-    } else if (secs < 43200) {
-      // Mañana (7-12h): cielo azul claro
-      const t = (secs - 25200) / (43200 - 25200);
-      return `linear-gradient(to bottom, #1c6ab0 0%, #3a9bd5 ${40 + t * 20}%, #87ceeb 100%)`;
-    } else if (secs < 57600) {
-      // Tarde (12-16h): azul intenso
-      return `linear-gradient(to bottom, #0a4a8c 0%, #1a6bb8 40%, #5aace0 100%)`;
-    } else if (secs < 68400) {
-      // Atardecer (16-19h): dorado/naranja
-      return `linear-gradient(to bottom, #0d1b4b 0%, #7b2d5c 25%, #e85d1a 55%, #f4a800 100%)`;
-    } else {
-      // Noche (19-24h): negro estelar
-      const t = (secs - 68400) / (86400 - 68400);
-      return `linear-gradient(to bottom, #000005 0%, #03051a ${20 + t * 15}%, #060e24 100%)`;
-    }
+    // Toda la lógica de cálculo vive en el servicio.
+    // El componente solo delega y recibe el resultado.
+    this.state = this.simulator.compute(this.time);
   }
 }
