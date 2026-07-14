@@ -2,15 +2,15 @@
 
     <div class="grid-overlay"></div>
 
-    <div class="car-container">
-        <img src="assets/images/f1/f1_car.png" alt="F1 Car" class="f1-car-img" />
-    </div>
-
     <div class="pit-header">
         <div class="f1-logo">FORMULA 1® telemetry</div>
         <div class="drs-indicator" [class.active]="drsActive">
             DRS: {{ drsActive ? 'ENABLED' : 'DISABLED' }}
         </div>
+    </div>
+
+    <div class="car-container">
+        <img src="assets/images/f1/f1_car.png" alt="F1 Car" class="f1-car-img" />
     </div>
 
     <div class="telemetry-center">
