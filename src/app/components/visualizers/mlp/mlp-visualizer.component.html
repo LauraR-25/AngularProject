@@ -1,26 +1,38 @@
+<!-- 1. CONTENEDOR GENERAL Y FONDO SIMULADO -->
 <div class="mlp-scene" [ngClass]="phase" [style.background-image]="skyGradient">
+  
+  <!-- 2. MECÁNICA DEL ASTRO DINÁMICO (PARTE SUPERIOR IZQUIERDA) -->
+  <div class="astro-container">
+    <div class="astro astro-sun" [class.visible]="phase === 'dia' || phase === 'atardecer'">☀️</div>
+    <div class="astro astro-moon" [class.visible]="phase === 'noche'">🌙</div>
+  </div>
 
-    <!-- Capa del castillo con altura corregida para que el background sea visible -->
-    <div class="castle-layer"></div>
+  <!-- 3. POSICIONAMIENTO DEL CASTILLO (PARTE INFERIOR DERECHA, ALTURA COMPLETA) -->
+  <div class="castle-layer">
+    <img src="assets/images/mlp/canterlot.png" alt="Canterlot" class="castle-img" />
+  </div>
 
-    <!-- Capa de princesas con URLs absolutas desde la raíz del proyecto -->
-    <div class="princess-layer">
-        @if (phase === 'dia' || phase === 'atardecer') {
-            <img src="/assets/images/mlp/celestia.png" alt="Princesa Celestia" class="princess-sprite" />
-        } @else {
-            <img src="/assets/images/mlp/luna.png" alt="Princesa Luna" class="princess-sprite" />
-        }
+  <!-- 4. CONTROL Y SUPERPOSICIÓN DE LAS PRINCESAS (PARTE INFERIOR DERECHA) -->
+  <div class="princess-layer">
+    <img src="assets/images/mlp/celestia.png" 
+         alt="Princesa Celestia" 
+         class="princess-img celestia" 
+         [class.visible]="phase === 'dia' || phase === 'atardecer'" />
+         
+    <img src="assets/images/mlp/luna.png" 
+         alt="Princesa Luna" 
+         class="princess-img luna" 
+         [class.visible]="phase === 'noche'" />
+  </div>
+
+  <!-- HUD Overlay -->
+  <div class="hud-overlay">
+    <div class="hud-badge" [ngClass]="'badge-' + phase">
+        {{ phaseLabel }}
     </div>
-
-    <!-- HUD Overlay -->
-    <div class="hud-overlay">
-        <div class="hud-badge" [ngClass]="'badge-' + phase">
-            {{ phaseLabel }}
-        </div>
-        <div class="hud-time">{{ currentTime | date:'HH:mm:ss' }}</div>
-        <div class="hud-princess">
-            {{ phase === 'noche' ? '🌙 Princesa Luna' : '☀️ Princesa Celestia' }}
-        </div>
+    <div class="hud-time">{{ currentTime | date:'HH:mm:ss' }}</div>
+    <div class="hud-princess">
+        {{ phase === 'noche' ? '🌙 Princesa Luna' : '☀️ Princesa Celestia' }}
     </div>
-
+  </div>
 </div>

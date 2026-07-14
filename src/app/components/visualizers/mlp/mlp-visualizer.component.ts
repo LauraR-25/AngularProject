@@ -17,11 +17,11 @@ function getSkyPhase(date: Date): SkyPhase {
 }
 
 @Component({
-    selector: 'app-mlp-visualizer',
-    standalone: true,
-    imports: [CommonModule],
-    templateUrl: './mlp-visualizer.component.html',
-    styleUrls: ['./mlp-visualizer.component.css']
+  selector: 'app-mlp-visualizer',
+  standalone: true,
+  imports: [CommonModule],
+  templateUrl: './mlp-visualizer.component.html',
+  styleUrls: ['./mlp-visualizer.component.css']
 })
 export class MlpVisualizerComponent implements OnInit, OnDestroy {
     private timeService = inject(TimeService);
@@ -48,11 +48,14 @@ export class MlpVisualizerComponent implements OnInit, OnDestroy {
             this.phase = getSkyPhase(date);
 
             const state = this.simulator.compute(date);
-            this.skyGradient = state.skyGradient;
+            // Tipado seguro para la asignación del CSS
+            this.skyGradient = state.skyGradient as string;
         });
     }
 
     ngOnDestroy(): void {
-        if (this.timeSub) this.timeSub.unsubscribe();
+        if (this.timeSub) {
+            this.timeSub.unsubscribe();
+        }
     }
 }
