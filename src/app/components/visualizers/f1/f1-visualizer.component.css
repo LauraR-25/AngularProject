@@ -1,0 +1,327 @@
+@import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&display=swap');
+
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* Contenedor F1 con fondo oscuro industrial */
+.f1-scene {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: radial-gradient(circle at center, #1c1d21 0%, #0c0d10 100%);
+    font-family: 'Orbitron', sans-serif;
+    transition: background 1.5s ease;
+    border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Efecto de rejilla de carreras (Carbon Fiber) */
+.grid-overlay {
+    position: absolute;
+    inset: 0;
+    background-image:
+        linear-gradient(rgba(255, 255, 255, 0.01) 1px, transparent 1px),
+        linear-gradient(90deg, rgba(255, 255, 255, 0.01) 1px, transparent 1px);
+    background-size: 20px 20px;
+    pointer-events: none;
+    z-index: 1;
+}
+
+/* 1. HEADER */
+.pit-header {
+    position: absolute;
+    top: 30px;
+    left: 40px;
+    right: 40px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    z-index: 5;
+    border-bottom: 2px solid rgba(255, 0, 0, 0.3);
+    padding-bottom: 10px;
+}
+
+.f1-logo {
+    font-size: 1.2rem;
+    font-weight: 900;
+    color: #e10600;
+    /* Rojo Oficial F1 */
+    text-transform: uppercase;
+    letter-spacing: 0.15em;
+    text-shadow: 0 0 8px rgba(225, 6, 0, 0.3);
+}
+
+.drs-indicator {
+    font-size: 0.9rem;
+    font-weight: bold;
+    color: #555;
+    background: rgba(0, 0, 0, 0.5);
+    padding: 4px 12px;
+    border-radius: 4px;
+    border: 1px solid #333;
+    transition: all 0.3s;
+}
+
+.drs-indicator.active {
+    color: #00ff66;
+    border-color: #00ff66;
+    background: rgba(0, 255, 102, 0.1);
+    box-shadow: 0 0 10px rgba(0, 255, 102, 0.2);
+}
+
+/* 2. TELEMETRÍA CENTRAL */
+.telemetry-center {
+    position: absolute;
+    left: 40px;
+    top: 110px;
+    display: flex;
+    flex-direction: column;
+    gap: 25px;
+    z-index: 3;
+    width: 280px;
+}
+
+.stat-box {
+    background: rgba(10, 15, 25, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 15px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+}
+
+.stat-label {
+    font-size: 0.75rem;
+    color: #888;
+    margin-bottom: 5px;
+}
+
+.stat-val {
+    font-size: 2.2rem;
+    font-weight: 900;
+    color: #fff;
+}
+
+.stat-val .unit {
+    font-size: 1rem;
+    color: #e10600;
+    font-weight: 400;
+}
+
+.progress-bar {
+    width: 100%;
+    height: 6px;
+    background: #111;
+    border-radius: 3px;
+    margin-top: 10px;
+    overflow: hidden;
+}
+
+.bar-fill {
+    height: 100%;
+    background: #e10600;
+    box-shadow: 0 0 8px #e10600;
+    transition: width 0.3s ease-out;
+}
+
+/* Luces del volante de F1 (Shift LEDs) */
+.rev-limiter {
+    display: flex;
+    gap: 6px;
+    margin-top: 12px;
+}
+
+.led {
+    width: 12px;
+    height: 12px;
+    background: #222;
+    border-radius: 50%;
+    transition: background 0.1s;
+}
+
+.led.lit {
+    background: #ffd200;
+    box-shadow: 0 0 8px #ffd200;
+}
+
+.led.green.lit {
+    background: #00b0f0;
+    box-shadow: 0 0 8px #00b0f0;
+}
+
+.led.red.lit {
+    background: #e10600;
+    box-shadow: 0 0 10px #e10600;
+}
+
+.led.blue.lit {
+    background: #e000ff;
+    box-shadow: 0 0 12px #e000ff;
+    animation: blink 0.1s infinite alternate;
+}
+
+/* 3. NEUMÁTICOS */
+.tyre-status {
+    position: absolute;
+    right: 40px;
+    top: 110px;
+    background: rgba(10, 15, 25, 0.75);
+    border: 1px solid rgba(255, 255, 255, 0.05);
+    padding: 20px;
+    border-radius: 8px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 140px;
+    z-index: 3;
+}
+
+.tyre-graphic {
+    width: 75px;
+    height: 75px;
+    border-radius: 50%;
+    background: #151515;
+    border: 15px solid #282828;
+    /* Goma externa */
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: 15px;
+    position: relative;
+    box-shadow: inset 0 0 5px #000;
+}
+
+/* Colores de neumáticos (Medio = Amarillo, Blando = Rojo, Duro = Blanco) */
+.tyre-graphic.practice {
+    border-color: #ffd200;
+}
+
+.tyre-graphic.qualifying {
+    border-color: #e10600;
+}
+
+.tyre-graphic.race {
+    border-color: #f0f0f0;
+}
+
+.tyre-rim {
+    width: 25px;
+    height: 25px;
+    border-radius: 50%;
+    background: #0d0d0d;
+}
+
+.compound-letter {
+    position: absolute;
+    color: #fff;
+    font-size: 0.85rem;
+    font-weight: 900;
+}
+
+.tyre-data {
+    text-align: center;
+}
+
+.tyre-label {
+    font-size: 0.65rem;
+    color: #888;
+}
+
+.tyre-percentage {
+    display: block;
+    font-size: 1.4rem;
+    font-weight: 700;
+    color: #00ff66;
+}
+
+/* 4. ALERTA "BOX BOX" */
+.race-alert {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: rgba(225, 6, 0, 0.9);
+    color: white;
+    font-weight: bold;
+    padding: 15px 30px;
+    font-size: 1.2rem;
+    border-radius: 6px;
+    border: 2px solid white;
+    z-index: 8;
+    text-align: center;
+    box-shadow: 0 0 20px rgba(225, 6, 0, 0.7);
+}
+
+/* 5. HUD INFERIOR */
+.hud-overlay {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.hud-time {
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: #ffffff;
+    text-shadow: 0 0 8px rgba(255, 255, 255, 0.3);
+}
+
+.hud-divider {
+    width: 2px;
+    height: 35px;
+    background: rgba(255, 255, 255, 0.2);
+}
+
+.hud-badge {
+    font-size: 1rem;
+    font-weight: bold;
+    letter-spacing: 0.1em;
+    padding: 5px 15px;
+    border: 1px solid transparent;
+    border-radius: 4px;
+}
+
+.badge-practice {
+    color: #ffd200;
+    border-color: rgba(255, 210, 0, 0.3);
+    background: rgba(255, 210, 0, 0.08);
+}
+
+.badge-qualifying {
+    color: #e000ff;
+    /* Tono morado de récord de sector */
+    border-color: rgba(224, 0, 255, 0.3);
+    background: rgba(224, 0, 255, 0.08);
+}
+
+.badge-race {
+    color: #e10600;
+    border-color: rgba(225, 6, 0, 0.3);
+    background: rgba(225, 6, 0, 0.08);
+}
+
+/* ANIMACIONES */
+.blink {
+    animation: blink 0.6s infinite alternate;
+}
+
+@keyframes blink {
+    0% {
+        opacity: 0.4;
+        box-shadow: 0 0 20px rgba(225, 6, 0, 0.5);
+    }
+
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 20px rgba(225, 6, 0, 0.5);
+    }
+}

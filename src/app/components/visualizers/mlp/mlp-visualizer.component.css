@@ -1,159 +1,197 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
 
 :host {
-  display: block;
-  width: 100%;
-  height: 100%;
+    display: block;
+    width: 100%;
+    height: 100%;
 }
 
 /* 1. CONTENEDOR GENERAL Y FONDO SIMULADO */
 .mlp-scene {
-  position: relative;
-  width: 100%;
-  height: 100%;
-  min-height: 500px;
-  overflow: hidden;
-  border-radius: 12px;
-  background-size: cover;
-  background-position: center;
-  transition: background-image 2s ease-in-out;
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    overflow: hidden;
+    border-radius: 12px;
+    background-size: cover;
+    background-position: center;
+    transition: background-image 2s ease-in-out;
 }
 
 /* 2. MECÁNICA DEL ASTRO DINÁMICO */
 .astro-container {
-  position: absolute;
-  top: 40px;
-  left: 40px;
-  width: 100px;
-  height: 100px;
-  z-index: 5;
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    width: 100px;
+    height: 100px;
+    z-index: 5;
 }
 
 .astro {
-  position: absolute;
-  top: 0;
-  left: 0;
-  font-size: 70px;
-  line-height: 1;
-  opacity: 0;
-  transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
-  transform: scale(0.8) translateY(20px);
-  filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+    position: absolute;
+    top: 0;
+    left: 0;
+    font-size: 70px;
+    line-height: 1;
+    opacity: 0;
+    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
+    transform: scale(0.8) translateY(20px);
+    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
 }
 
 .astro.visible {
-  opacity: 1;
-  transform: scale(1) translateY(0);
+    opacity: 1;
+    transform: scale(1) translateY(0);
 }
 
 .astro-sun {
-  filter: drop-shadow(0 0 30px rgba(255, 220, 80, 0.9));
+    filter: drop-shadow(0 0 30px rgba(255, 220, 80, 0.9));
 }
+
 .astro-moon {
-  filter: drop-shadow(0 0 30px rgba(150, 180, 255, 0.9));
+    filter: drop-shadow(0 0 30px rgba(150, 180, 255, 0.9));
 }
 
 /* 3. POSICIONAMIENTO DEL CASTILLO */
 .castle-layer {
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  right: 0;
-  height: 100%;
-  display: flex;
-  justify-content: flex-end;
-  align-items: flex-end;
-  z-index: 2;
-  pointer-events: none;
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    right: 0;
+    height: 100%;
+    display: flex;
+    justify-content: flex-end;
+    align-items: flex-end;
+    z-index: 2;
+    pointer-events: none;
 }
 
 .castle-img {
-  height: 100%; /* Abarca toda la altura, de abajo hacia arriba */
-  width: auto;
-  object-fit: cover;
-  object-position: right bottom; /* Anclado a la derecha */
-  mix-blend-mode: multiply; /* Fusión perfecta con el cielo */
-  transition: filter 2s ease-in-out;
+    height: 100%;
+    /* Abarca toda la altura, de abajo hacia arriba */
+    width: auto;
+    object-fit: cover;
+    object-position: right bottom;
+    /* Anclado a la derecha */
+    mix-blend-mode: multiply;
+    /* Fusión perfecta con el cielo */
+    transition: filter 2s ease-in-out;
 }
 
-.mlp-scene.dia .castle-img { filter: brightness(0.95) saturate(1.1); }
-.mlp-scene.atardecer .castle-img { filter: brightness(0.7) sepia(0.3) saturate(1.4) hue-rotate(-10deg); }
-.mlp-scene.noche .castle-img { filter: brightness(0.35) saturate(0.6) hue-rotate(200deg); }
+.mlp-scene.dia .castle-img {
+    filter: brightness(0.95) saturate(1.1);
+}
+
+.mlp-scene.atardecer .castle-img {
+    filter: brightness(0.7) sepia(0.3) saturate(1.4) hue-rotate(-10deg);
+}
+
+.mlp-scene.noche .castle-img {
+    filter: brightness(0.35) saturate(0.6) hue-rotate(200deg);
+}
 
 /* 4. PRINCESAS */
 .princess-layer {
-  position: absolute;
-  bottom: -20px; /* Más pegadas al borde inferior */
-  right: -20px;  /* Más pegadas al borde derecho */
-  width: 500px;
-  height: 500px;
-  z-index: 3;
-  pointer-events: none;
+    position: absolute;
+    bottom: -20px;
+    /* Más pegadas al borde inferior */
+    right: -20px;
+    /* Más pegadas al borde derecho */
+    width: 500px;
+    height: 500px;
+    z-index: 3;
+    pointer-events: none;
 }
 
 .princess-img {
-  position: absolute;
-  bottom: 0;
-  right: 20px; /* Ligeramente separadas de la pared para mejor encuadre */
-  width: auto;
-  object-fit: contain;
-  opacity: 0;
-  visibility: hidden;
-  transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out, filter 2s;
-  transform: translateX(30px);
+    position: absolute;
+    bottom: 0;
+    right: 20px;
+    /* Ligeramente separadas de la pared para mejor encuadre */
+    width: auto;
+    object-fit: contain;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out, filter 2s;
+    transform: translateX(30px);
 }
 
 /* Alturas diferentes (Celestia más alta que Luna) y tamaño mucho mayor */
 .princess-img.celestia {
-  height: 480px; /* Celestia imponente */
-  filter: drop-shadow(0 10px 20px rgba(0,0,0,0.4)) drop-shadow(0 0 25px rgba(255,230,80,0.6));
+    height: 480px;
+    /* Celestia imponente */
+    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 25px rgba(255, 230, 80, 0.6));
 }
 
 .princess-img.luna {
-  height: 430px; /* Luna un poco más baja pero igual muy grande */
-  right: 30px;
-  filter: drop-shadow(0 12px 25px rgba(0,0,0,0.6)) drop-shadow(0 0 35px rgba(90,130,255,0.7));
+    height: 430px;
+    /* Luna un poco más baja pero igual muy grande */
+    right: 30px;
+    filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 35px rgba(90, 130, 255, 0.7));
 }
 
 /* Renderizado condicional con fade */
 .princess-img.visible {
-  opacity: 1;
-  visibility: visible;
-  transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
 }
 
 /* HUD OVERLAY */
 .hud-overlay {
-  position: absolute;
-  bottom: 24px;
-  left: 40px;
-  z-index: 10;
-  display: flex;
-  align-items: center;
-  gap: 16px;
-  background: rgba(15, 15, 25, 0.6);
-  backdrop-filter: blur(12px);
-  -webkit-backdrop-filter: blur(12px);
-  border: 1px solid rgba(255, 255, 255, 0.15);
-  border-radius: 100px;
-  padding: 10px 24px;
+    position: absolute;
+    bottom: 24px;
+    left: 40px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    background: rgba(15, 15, 25, 0.6);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border: 1px solid rgba(255, 255, 255, 0.15);
+    border-radius: 100px;
+    padding: 10px 24px;
 }
 
 .hud-time {
-  font-family: 'Cinzel', serif;
-  font-size: 1.1rem;
-  font-weight: 700;
-  color: #ffffff;
+    font-family: 'Cinzel', serif;
+    font-size: 1.1rem;
+    font-weight: 700;
+    color: #ffffff;
 }
+
 .hud-badge {
-  font-family: 'Cinzel', serif;
-  font-size: 0.65rem;
-  font-weight: 700;
-  text-transform: uppercase;
-  padding: 4px 12px;
-  border-radius: 100px;
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    font-weight: 700;
+    text-transform: uppercase;
+    padding: 4px 12px;
+    border-radius: 100px;
 }
-.badge-dia { background: rgba(255,220,60,0.25); color: #ffe066; border: 1px solid rgba(255,220,60,0.4); }
-.badge-atardecer { background: rgba(255,110,30,0.25); color: #ffb347; border: 1px solid rgba(255,110,30,0.4); }
-.badge-noche { background: rgba(80,110,220,0.25); color: #aabfff; border: 1px solid rgba(80,110,220,0.4); }
-.hud-princess { font-family: 'Cinzel', serif; font-size: 0.65rem; color: rgba(255,255,255,0.6); }
+
+.badge-dia {
+    background: rgba(255, 220, 60, 0.25);
+    color: #ffe066;
+    border: 1px solid rgba(255, 220, 60, 0.4);
+}
+
+.badge-atardecer {
+    background: rgba(255, 110, 30, 0.25);
+    color: #ffb347;
+    border: 1px solid rgba(255, 110, 30, 0.4);
+}
+
+.badge-noche {
+    background: rgba(80, 110, 220, 0.25);
+    color: #aabfff;
+    border: 1px solid rgba(80, 110, 220, 0.4);
+}
+
+.hud-princess {
+    font-family: 'Cinzel', serif;
+    font-size: 0.65rem;
+    color: rgba(255, 255, 255, 0.6);
+}

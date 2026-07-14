@@ -1,0 +1,268 @@
+@import url('https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap');
+
+:host {
+    display: block;
+    width: 100%;
+    height: 100%;
+}
+
+/* 1. CONTENEDOR GENERAL */
+.detroit-scene {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    min-height: 500px;
+    overflow: hidden;
+    border-radius: 12px;
+    background: radial-gradient(circle at center, #1a1f24 0%, #05080f 100%);
+    font-family: 'Rajdhani', sans-serif;
+    transition: background 2s ease;
+}
+
+/* 2. LOGO CYBERLIFE */
+.cyberlife-logo {
+    position: absolute;
+    top: 30px;
+    right: 40px;
+    width: 150px;
+    opacity: 0.6;
+    z-index: 5;
+}
+
+/* 3. LED DEL ANDROIDE (CSS PURO) */
+.led-container {
+    position: absolute;
+    top: 40px;
+    left: 40px;
+    z-index: 5;
+}
+
+.led-ring {
+    width: 40px;
+    height: 40px;
+    border-radius: 50%;
+    border: 4px solid transparent;
+    transition: all 1s ease-in-out;
+}
+
+/* Colores y animaciones del LED por estado */
+.detroit-scene.estable .led-ring {
+    border-color: #00b0f0;
+    box-shadow: 0 0 15px #00b0f0, inset 0 0 10px #00b0f0;
+}
+
+.detroit-scene.advertencia .led-ring {
+    border-color: #ffd200;
+    box-shadow: 0 0 20px #ffd200, inset 0 0 15px #ffd200;
+    animation: pulseWarning 2s infinite alternate;
+}
+
+.detroit-scene.desviado .led-ring {
+    border-color: #ff003c;
+    box-shadow: 0 0 25px #ff003c, inset 0 0 20px #ff003c;
+    animation: pulseDeviant 0.5s infinite alternate;
+}
+
+@keyframes pulseWarning {
+    0% {
+        opacity: 0.8;
+        transform: scale(1);
+    }
+
+    100% {
+        opacity: 1;
+        transform: scale(1.05);
+    }
+}
+
+@keyframes pulseDeviant {
+    0% {
+        opacity: 0.5;
+        box-shadow: 0 0 10px #ff003c;
+    }
+
+    100% {
+        opacity: 1;
+        box-shadow: 0 0 35px #ff003c;
+    }
+}
+
+/* 4. HOLOGRAMA CENTRAL Y GLITCH */
+.hologram-container {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 2;
+    pointer-events: none;
+}
+
+.hologram-img {
+    height: 80%;
+    width: auto;
+    opacity: 0.8;
+    filter: drop-shadow(0 0 20px rgba(0, 176, 240, 0.4));
+    transition: filter 2s, opacity 2s;
+}
+
+/* Efectos de Inestabilidad en la imagen */
+.detroit-scene.advertencia .hologram-img {
+    filter: drop-shadow(0 0 25px rgba(255, 210, 0, 0.5));
+    animation: mildGlitch 3s infinite;
+}
+
+.detroit-scene.desviado .hologram-img {
+    filter: drop-shadow(0 0 30px rgba(255, 0, 60, 0.7));
+    animation: severeGlitch 0.2s infinite;
+    opacity: 0.9;
+}
+
+@keyframes mildGlitch {
+
+    0%,
+    95%,
+    100% {
+        transform: translateX(0);
+        opacity: 0.8;
+    }
+
+    96% {
+        transform: translateX(3px);
+        opacity: 0.6;
+    }
+
+    98% {
+        transform: translateX(-3px);
+        opacity: 0.9;
+    }
+}
+
+@keyframes severeGlitch {
+    0% {
+        transform: translate(0);
+    }
+
+    20% {
+        transform: translate(-4px, 2px);
+    }
+
+    40% {
+        transform: translate(-2px, -2px);
+    }
+
+    60% {
+        transform: translate(4px, 2px);
+    }
+
+    80% {
+        transform: translate(2px, -2px);
+    }
+
+    100% {
+        transform: translate(0);
+    }
+}
+
+/* 5. CARTEL DE ADVERTENCIA CRÍTICA */
+.warning-banner {
+    position: absolute;
+    top: 50%;
+    left: 0;
+    width: 100%;
+    background: rgba(255, 0, 60, 0.85);
+    padding: 15px 0;
+    text-align: center;
+    z-index: 10;
+    transform: translateY(-50%);
+    animation: slideIn 0.5s ease-out, flashBanner 1s infinite alternate;
+}
+
+.warning-text {
+    color: white;
+    font-size: 2rem;
+    font-weight: 700;
+    letter-spacing: 0.2em;
+}
+
+@keyframes flashBanner {
+    0% {
+        background: rgba(255, 0, 60, 0.7);
+    }
+
+    100% {
+        background: rgba(255, 0, 60, 0.95);
+    }
+}
+
+@keyframes slideIn {
+    from {
+        transform: translateY(-50%) scaleY(0);
+    }
+
+    to {
+        transform: translateY(-50%) scaleY(1);
+    }
+}
+
+/* 6. HUD TÉCNICO (PANEL INFERIOR) */
+.hud-overlay {
+    position: absolute;
+    bottom: 30px;
+    right: 40px;
+    z-index: 10;
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+.hud-time {
+    font-size: 2.5rem;
+    font-weight: 700;
+    color: #ffffff;
+    letter-spacing: 0.1em;
+    text-shadow: 0 0 10px rgba(255, 255, 255, 0.5);
+}
+
+.hud-divider {
+    width: 2px;
+    height: 40px;
+    background: rgba(255, 255, 255, 0.3);
+}
+
+.hud-badge {
+    font-size: 1.2rem;
+    font-weight: 600;
+    letter-spacing: 0.15em;
+    padding: 5px 15px;
+    border: 1px solid transparent;
+}
+
+.badge-estable {
+    color: #00b0f0;
+    border-color: rgba(0, 176, 240, 0.4);
+    background: rgba(0, 176, 240, 0.1);
+}
+
+.badge-advertencia {
+    color: #ffd200;
+    border-color: rgba(255, 210, 0, 0.4);
+    background: rgba(255, 210, 0, 0.1);
+}
+
+.badge-desviado {
+    color: #ff003c;
+    border-color: rgba(255, 0, 60, 0.4);
+    background: rgba(255, 0, 60, 0.1);
+    animation: blinkText 0.5s infinite alternate;
+}
+
+@keyframes blinkText {
+    from {
+        opacity: 1;
+    }
+
+    to {
+        opacity: 0.3;
+    }
+}

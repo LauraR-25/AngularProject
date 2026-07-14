@@ -6,11 +6,13 @@ import { AuthService } from './services/auth.service';
 import { AuthComponent } from './components/auth/auth.component';
 import { VisualizersComponent } from './components/visualizers/visualizers.component';
 import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visualizer.component';
+import { DetroitVisualizerComponent } from './components/visualizers/detroit/detroit-visualizer.component';
+import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, MlpVisualizerComponent],
+  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, MlpVisualizerComponent, DetroitVisualizerComponent, F1VisualizerComponent],
   template: `
     <div class="app-shell">
       @if (!(authService.authStatus$ | async)) {
@@ -80,7 +82,11 @@ import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visuali
               <div class="sim-info">
                 <div class="sim-info-row">
                   <span class="sim-info-label">MODO</span>
-                  <span class="sim-info-value highlight-yellow">My Little Pony</span>
+                  <select [ngModel]="currentMode" (ngModelChange)="changeMode($event)" class="theme-select">
+                    <option value="mlp">My Little Pony</option>
+                    <option value="detroit">Detroit: Become Human</option>
+                    <option value="f1">Fórmula Uno</option>
+                  </select>
                 </div>
                 <div class="sim-info-row">
                   <span class="sim-info-label">TIEMPO REAL</span>
@@ -91,8 +97,17 @@ import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visuali
 
             <!-- Visualizador -->
             <section class="visualizer-stage">
-              <!-- MlpVisualizerComponent se suscribe internamente a TimeService -->
-              <app-mlp-visualizer></app-mlp-visualizer>
+              @switch (currentMode) {
+                @case ('mlp') {
+                  <app-mlp-visualizer></app-mlp-visualizer>
+                }
+                @case ('detroit') {
+                  <app-detroit-visualizer></app-detroit-visualizer>
+                }
+                @case ('f1') {
+                  <app-f1-visualizer></app-f1-visualizer>
+                }
+              }
             </section>
 
           </main>
@@ -329,13 +344,31 @@ import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visuali
     }
     .sim-info-value.highlight-yellow { color: #ffd60a; }
 
+    .theme-select {
+      background: #1e1e1e;
+      color: #ffd60a;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.6rem;
+      border: 1px solid #333;
+      border-radius: 4px;
+      padding: 4px 8px;
+      outline: none;
+      cursor: pointer;
+    }
+    .theme-select:focus {
+      border-color: #ffd60a;
+    }
+
     /* ===== ESCENARIO DEL VISUALIZADOR ===== */
     .visualizer-stage {
       flex: 1;
       overflow: hidden;
       position: relative;
     }
-    .visualizer-stage app-mlp-visualizer {
+    .visualizer-stage app-mlp-visualizer,
+    .visualizer-stage app-detroit-visualizer,
+    .visualizer-stage app-f1-visualizer,
+    .visualizer-stage app-visualizers {
       display: block;
       width: 100%;
       height: 100%;
@@ -346,12 +379,17 @@ export class AppComponent {
   timeService = inject(TimeService);
   authService = inject(AuthService);
 
+  currentMode: string = 'mlp'; // Por defecto inicia en My Little Pony
   timeOffset: number = 0;
   realTime = new Date();
 
   constructor() {
     // Actualizar la hora real cada segundo para mostrarla en el panel
     setInterval(() => this.realTime = new Date(), 1000);
+  }
+
+  changeMode(mode: string): void {
+    this.currentMode = mode;
   }
 
   updateTime() {

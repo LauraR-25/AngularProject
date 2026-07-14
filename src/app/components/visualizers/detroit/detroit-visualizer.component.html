@@ -1,0 +1,26 @@
+<div class="detroit-scene" [ngClass]="systemState">
+
+    <img src="assets/images/detroit/logo_cyberlife.png" alt="CyberLife" class="cyberlife-logo" />
+
+    <div class="led-container">
+        <div class="led-ring"></div>
+    </div>
+
+    <div class="hologram-container">
+        <img src="assets/images/detroit/silueta.png" alt="Android Hologram" class="hologram-img" />
+    </div>
+
+    @if (systemState === 'desviado') {
+    <div class="warning-banner">
+        <span class="warning-text">SOFTWARE INSTABILITY: CRITICAL / DEVIANT DETECTED</span>
+    </div>
+    }
+
+    <div class="hud-overlay">
+        <div class="hud-time">{{ currentTime | date:'HH:mm:ss' }}</div>
+        <div class="hud-divider"></div>
+        <div class="hud-badge" [ngClass]="'badge-' + systemState">
+            {{ stateLabel }}
+        </div>
+    </div>
+</div>
