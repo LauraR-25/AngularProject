@@ -14,10 +14,35 @@
     min-height: 500px;
     overflow: hidden;
     border-radius: 12px;
-    background: radial-gradient(circle at center, #1c1d21 0%, #0c0d10 100%);
+    background-color: #0c0d10;
     font-family: 'Orbitron', sans-serif;
     transition: background 1.5s ease;
     border: 1px solid rgba(255, 255, 255, 0.05);
+}
+
+/* Capa de fondo de fibra de carbono (carbon_background.png)
+   El background-image se aplica en el template (style inline) porque el
+   plugin CSS de Angular no resuelve rutas de assets en archivos .css.
+   Atenuado y oscurecido para que las líneas rojas sean solo un sutil detalle. */
+.carbon-bg {
+    position: absolute;
+    inset: 0;
+    background-size: cover;
+    background-position: center;
+    opacity: 0.25;
+    filter: brightness(0.35) contrast(1.1) saturate(0.6);
+    z-index: 0;
+    pointer-events: none;
+}
+
+/* Capa oscura superpuesta para fusionar el fondo con el entorno */
+.carbon-bg::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    background:
+        radial-gradient(circle at center, rgba(12, 13, 16, 0.55) 0%, rgba(8, 9, 11, 0.85) 100%),
+        linear-gradient(180deg, rgba(0, 0, 0, 0.45), rgba(0, 0, 0, 0.65));
 }
 
 /* Efecto de rejilla de carreras (Carbon Fiber) */
@@ -30,6 +55,28 @@
     background-size: 20px 20px;
     pointer-events: none;
     z-index: 1;
+}
+
+/* MONOPLAZA CENTRAL (protagonista, nítido y vibrante) */
+.car-container {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 4;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    pointer-events: none;
+    filter: drop-shadow(0 0 24px rgba(225, 6, 0, 0.25));
+}
+
+.f1-car-img {
+    width: clamp(320px, 46vw, 720px);
+    height: auto;
+    object-fit: contain;
+    filter: none;
+    opacity: 1;
 }
 
 /* 1. HEADER */
