@@ -1,220 +1,190 @@
-/* Escenario oscuro premium con profundidad de iluminación */
+/* Escenario de presentación general */
 .clock-stage {
-  width: 100%;
-  height: 100vh;
-  background: radial-gradient(circle at center, #121214 0%, #050506 100%);
   display: flex;
-  align-items: center;
   justify-content: center;
-  overflow: hidden;
-  position: relative;
-}
-
-.clock-workshops {
-  position: relative;
-  width: 450px;
-  height: 450px;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  box-sizing: border-box;
 }
 
 /* ==========================================================================
-   ANIMACIÓN DEL CICLO CROMÁTICO (Naranja -> Verde -> Azul)
+   ESTRUCTURA EXTERIOR (Caja de Reloj de Bolsillo Antiguo)
    ========================================================================== */
-@keyframes neonShift {
-  0%, 33% {
-    --neon-main: #ff5500;
-    --neon-glow: rgba(255, 85, 0, 0.4);
-  }
-  38%, 66% {
-    --neon-main: #00ff44;
-    --neon-glow: rgba(0, 255, 68, 0.4);
-  }
-  71%, 95% {
-    --neon-main: #00d2ff;
-    --neon-glow: rgba(0, 210, 255, 0.4);
-  }
-  100% {
-    --neon-main: #ff5500;
-    --neon-glow: rgba(255, 85, 0, 0.4);
-  }
-}
-
-.neon-dynamic-cycle {
-  animation: neonShift 12s infinite ease-in-out;
-}
-
-/* ==========================================================================
-   ESFERA PRINCIPAL Y NÚMEROS ROMANOS (Alineación radial verticalizada)
-   ========================================================================== */
-.clock-face {
-  position: absolute;
-  width: 400px;
-  height: 400px;
-  top: 25px;
-  left: 25px;
+.antique-clock-case {
+  position: relative;
+  width: 360px;
+  height: 360px;
+  background: linear-gradient(135deg, #d4af37 0%, #aa7c11 40%, #5b4006 100%);
   border-radius: 50%;
-  background: rgba(8, 8, 10, 0.85);
-  border: 4px solid var(--neon-main);
-  box-shadow: inset 0 0 25px var(--neon-glow), 0 0 30px var(--neon-glow);
-  z-index: 5;
-  transition: border-color 0.6s ease, box-shadow 0.6s ease;
+  padding: 18px;
+  box-shadow: 
+    0 15px 35px rgba(0, 0, 0, 0.6),
+    inset 0 4px 10px rgba(255, 255, 255, 0.4),
+    inset 0 -4px 10px rgba(0, 0, 0, 0.6);
+  box-sizing: border-box;
 }
 
-.roman {
+/* Esfera/Dial interno (Efecto pergamino envejecido) */
+.clock-dial {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(circle, #fbf6eb 60%, #e8dcbf 100%);
+  border-radius: 50%;
+  border: 4px solid #4a3405;
+  box-shadow: inset 0 5px 15px rgba(0, 0, 0, 0.3);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   NÚMEROS ROMANOS (Distribución Radial Matemática PerfectA)
+   ========================================================================== */
+.roman-number {
   position: absolute;
-  width: 40px;
+  top: 50%;
+  left: 50%;
+  width: 50px;
   height: 40px;
-  top: 180px;
-  left: 180px;
-  font-family: 'Times New Roman', Times, serif;
+  margin-top: -20px;   /* Centrado perfecto respecto a su propio eje */
+  margin-left: -25px;  /* Centrado perfecto respecto a su propio eje */
+  color: #2c1e03;
+  font-family: "Times New Roman", Times, serif;
   font-size: 26px;
-  font-weight: 800;
+  font-weight: bold;
   text-align: center;
   line-height: 40px;
-  color: var(--neon-main);
-  text-shadow: 0 0 10px var(--neon-glow);
-  transition: color 0.6s ease, text-shadow 0.6s ease;
 }
 
-/* Posicionamiento geométrico circular manteniendo el texto derecho */
-.r12 { transform: rotate(0deg) translateY(-155px) rotate(0deg); }
-.r1  { transform: rotate(30deg) translateY(-155px) rotate(-30deg); }
-.r2  { transform: rotate(60deg) translateY(-155px) rotate(-60deg); }
-.r3  { transform: rotate(90deg) translateY(-155px) rotate(-90deg); }
-.r4  { transform: rotate(120deg) translateY(-155px) rotate(-120deg); }
-.r5  { transform: rotate(150deg) translateY(-155px) rotate(-150deg); }
-.r6  { transform: rotate(180deg) translateY(-155px) rotate(-180deg); }
-.r7  { transform: rotate(210deg) translateY(-155px) rotate(-210deg); }
-.r8  { transform: rotate(240deg) translateY(-155px) rotate(-240deg); }
-.r9  { transform: rotate(270deg) translateY(-155px) rotate(-270deg); }
-.r10 { transform: rotate(300deg) translateY(-155px) rotate(-300deg); }
-.r11 { transform: rotate(330deg) translateY(-155px) rotate(-330deg); }
+/* 
+   Cada número rota sobre el centro del reloj, se desplaza hacia el borde 
+   exactamente 125px y luego se contrarrotal para que el texto quede derecho.
+*/
+.num-12 { transform: rotate(0deg) translateY(-125px) rotate(0deg); }
+.num-1  { transform: rotate(30deg) translateY(-125px) rotate(-30deg); }
+.num-2  { transform: rotate(60deg) translateY(-125px) rotate(-60deg); }
+.num-3  { transform: rotate(90deg) translateY(-125px) rotate(-90deg); }
+.num-4  { transform: rotate(120deg) translateY(-125px) rotate(-120deg); }
+.num-5  { transform: rotate(150deg) translateY(-125px) rotate(-150deg); }
+.num-6  { transform: rotate(180deg) translateY(-125px) rotate(-180deg); }
+.num-7  { transform: rotate(210deg) translateY(-125px) rotate(-210deg); }
+.num-8  { transform: rotate(240deg) translateY(-125px) rotate(-240deg); }
+.num-9  { transform: rotate(270deg) translateY(-125px) rotate(-270deg); }
+.num-10 { transform: rotate(300deg) translateY(-125px) rotate(-300deg); }
+.num-11 { transform: rotate(330deg) translateY(-125px) rotate(-330deg); }
 
 /* ==========================================================================
-   AGUJAS MECÁNICAS DE ALTA FIDELIDAD
+   ENGRANAJES MECÁNICOS (Subterráneos, Transparentes y Animados)
    ========================================================================== */
-.hand {
+.gears-bg-layer {
   position: absolute;
   width: 100%;
   height: 100%;
   top: 0;
   left: 0;
-  will-change: transform;
+  z-index: 1;
+  opacity: 0.15;
+  pointer-events: none;
 }
 
-/* HORAS: Aguja robusta con la insignia de tres divisiones internas */
-.needle-hour {
+.gear {
   position: absolute;
-  width: 8px;
-  height: 95px;
-  background: #1a1a1a;
-  border: 1.5px solid var(--neon-main);
-  box-shadow: 0 0 8px var(--neon-glow);
-  left: 50%;
-  bottom: 50%;
-  transform: translateX(-50%);
-  border-radius: 4px 4px 0 0;
-}
-
-.mechanical-badge {
-  position: absolute;
-  top: -16px;
-  left: -11px;
-  width: 26px;
-  height: 26px;
-  border: 2px solid var(--neon-main);
+  border: 6px dashed #4a3405;
   border-radius: 50%;
-  background: #0d0d0f;
-  box-shadow: 0 0 10px var(--neon-glow);
+  box-sizing: border-box;
 }
-
-.mechanical-badge::before {
+.gear::before {
   content: '';
   position: absolute;
-  top: 2px; left: 2px; right: 2px; bottom: 2px;
-  border-radius: 50%;
-  background: repeating-conic-gradient(from 0deg, var(--neon-main) 0deg 35deg, transparent 35deg 120deg);
-  opacity: 0.9;
-}
-
-/* MINUTOS: Aguja larga calada */
-.needle-minute {
-  position: absolute;
-  width: 5px;
-  height: 145px;
-  background: #262626;
-  border: 1.5px solid var(--neon-main);
-  box-shadow: 0 0 8px var(--neon-glow);
+  top: 50%;
   left: 50%;
-  bottom: 50%;
-  transform: translateX(-50%);
-  border-radius: 3px 3px 0 0;
-}
-
-/* SEGUNDOS: Aguja lineal ultra fina */
-.needle-second {
-  position: absolute;
-  width: 1.5px;
-  height: 165px;
-  background: var(--neon-main);
-  box-shadow: 0 0 12px var(--neon-main);
-  left: 50%;
-  bottom: 35px; /* Crea el efecto de contrapeso inferior */
-  transform: translateX(-50%);
-}
-
-/* Perno central de fijación */
-.center-pin {
-  position: absolute;
-  width: 18px;
-  height: 18px;
-  background: #151518;
-  border: 2px solid var(--neon-main);
+  transform: translate(-50%, -50%);
   border-radius: 50%;
-  top: 191px;
-  left: 191px;
-  z-index: 10;
-  box-shadow: 0 2px 8px rgba(0,0,0,0.8);
+  border: 4px solid #4a3405;
+}
+
+.large-gear {
+  width: 160px;
+  height: 160px;
+  top: 40px;
+  left: 30px;
+  animation: spin-clockwise 25s linear infinite;
+}
+.large-gear::before { width: 60px; height: 60px; }
+
+.medium-gear {
+  width: 120px;
+  height: 120px;
+  bottom: 50px;
+  right: 40px;
+  animation: spin-counter-clockwise 18s linear infinite;
+}
+.medium-gear::before { width: 40px; height: 40px; }
+
+.small-gear {
+  width: 80px;
+  height: 80px;
+  top: 130px;
+  right: 120px;
+  animation: spin-clockwise 10s linear infinite;
+}
+.small-gear::before { width: 24px; height: 24px; }
+
+@keyframes spin-clockwise {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(360deg); }
+}
+@keyframes spin-counter-clockwise {
+  0% { transform: rotate(0deg); }
+  100% { transform: rotate(-360deg); }
 }
 
 /* ==========================================================================
-   MAQUINARIA DE FONDO SKELETON (Tuercas Huecas y Entrelazadas)
+   MANECILLAS CLÁSICAS (Agujas mecánicas de Época)
    ========================================================================== */
-.gear {
+.hand {
   position: absolute;
+  bottom: 50%;
+  left: 50%;
+  background-color: #1c1301;
+  transform-origin: bottom center;
+  border-radius: 4px 4px 0 0;
+  z-index: 3;
+}
+
+.hour-hand {
+  width: 6px;
+  height: 70px;
+  margin-left: -3px;
+  background: linear-gradient(to top, #1c1301 80%, transparent 100%);
+}
+
+.minute-hand {
+  width: 4px;
+  height: 110px;
+  margin-left: -2px;
+}
+
+.second-hand {
+  width: 2px;
+  height: 125px;
+  margin-left: -1px;
+  background-color: #a62626;
+  z-index: 4;
+}
+
+.center-pin {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  width: 14px;
+  height: 14px;
+  background: #d4af37;
+  border: 2px solid #1c1301;
   border-radius: 50%;
-  opacity: 0.06; /* Ultra sutil para no robarle protagonismo a las manecillas */
-  will-change: transform;
-  
-  /* EL TRUCO MAESTRO: Corta el centro de la rueda usando una máscara pura de CSS.
-     Esto hace que el engranaje sea hueco y se pueda ver el fondo a través de él. */
-  -webkit-mask: radial-gradient(circle, transparent 40%, black 41%);
-  mask: radial-gradient(circle, transparent 40%, black 41%);
-}
-
-/* Rueda Grande Central (Tracción principal) */
-.gear-back-large {
-  width: 340px;
-  height: 340px;
-  top: 55px;
-  left: 15px;
-  /* Genera los dientes del engranaje intercalando color y transparencia */
-  background: repeating-conic-gradient(from 0deg, #ffffff 0deg 7deg, transparent 7deg 14deg);
-}
-
-/* Rueda Mediana Inferior Derecha (Se cruza por debajo de la grande) */
-.gear-back-medium {
-  width: 240px;
-  height: 240px;
-  top: 170px;
-  left: 190px;
-  background: repeating-conic-gradient(from 3deg, #ffffff 0deg 10deg, transparent 10deg 20deg);
-}
-
-/* Rueda Pequeña Superior Derecha (Escapamiento rápido) */
-.gear-back-small {
-  width: 150px;
-  height: 150px;
-  top: 35px;
-  left: 240px;
-  background: repeating-conic-gradient(from 0deg, #ffffff 0deg 12deg, transparent 12deg 24deg);
+  z-index: 10;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
