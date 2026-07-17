@@ -1,0 +1,30 @@
+<div class="neon-container">
+  
+  <!-- El reloj de arena. Gira 180deg acumulado al cambiar de hora -->
+  <div class="hourglass" [style.transform]="'rotate(' + flipRotation + 'deg)'" [class.flipping]="isFlipping">
+    
+    <!-- Contenedor superior -->
+    <div class="bulb top-bulb">
+      <div class="sand top-sand" [style.height.%]="topSandHeight"></div>
+      <div class="glass-reflection"></div>
+    </div>
+    
+    <!-- Cuello del reloj (por donde cae la arena) -->
+    <div class="neck">
+      <div class="sand-stream" *ngIf="isStreaming"></div>
+    </div>
+    
+    <!-- Contenedor inferior -->
+    <div class="bulb bottom-bulb">
+      <div class="sand bottom-sand" [style.height.%]="bottomSandHeight"></div>
+      <div class="glass-reflection"></div>
+    </div>
+
+  </div>
+
+  <!-- Reloj digital futurista -->
+  <div class="time-overlay">
+    <span class="neon-text">{{ displayTime }}</span>
+  </div>
+
+</div>

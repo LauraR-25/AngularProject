@@ -1,0 +1,111 @@
+/* Contenedor oscuro principal */
+.neon-container {
+  width: 100%;
+  height: 100vh;
+  min-height: 600px;
+  background-color: #050508;
+  background-image: radial-gradient(circle at center, #1a0b2e 0%, #050508 70%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+/* Estructura del reloj */
+.hourglass {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.2));
+  transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+}
+
+/* Cristal de los bulbos con Glassmorphism */
+.bulb {
+  width: 180px;
+  height: 160px;
+  background: rgba(255, 255, 255, 0.03);
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+  border: 2px solid rgba(255, 105, 180, 0.3);
+  box-shadow: inset 0 0 25px rgba(255, 0, 255, 0.1), 0 0 30px rgba(128, 0, 128, 0.2);
+  position: relative;
+  overflow: hidden;
+}
+
+.top-bulb {
+  border-radius: 10px 10px 50% 50%;
+  border-bottom: none;
+}
+
+.bottom-bulb {
+  border-radius: 50% 50% 10px 10px;
+  border-top: none;
+}
+
+/* Reflejos de luz en el cristal */
+.glass-reflection {
+  position: absolute;
+  top: 10px;
+  left: 15px;
+  width: 40px;
+  height: 80%;
+  background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  border-radius: 50%;
+  transform: rotate(15deg);
+  pointer-events: none;
+  z-index: 10;
+}
+
+/* Arena Degradada (Rosa a Morado) */
+.sand {
+  width: 100%;
+  background: linear-gradient(180deg, #ff007f, #7400b8);
+  box-shadow: 0 0 25px #ff007f;
+  position: absolute;
+  bottom: 0;
+  transition: height 1s linear;
+}
+
+/* Cuello del reloj */
+.neck {
+  width: 20px;
+  height: 40px;
+  background: rgba(255, 255, 255, 0.08);
+  border-left: 2px solid rgba(255, 105, 180, 0.5);
+  border-right: 2px solid rgba(255, 105, 180, 0.5);
+  position: relative;
+  display: flex;
+  justify-content: center;
+  z-index: 5;
+}
+
+/* Flujo constante de arena */
+.sand-stream {
+  width: 6px;
+  height: 100%;
+  background: linear-gradient(180deg, #ff007f, #7400b8);
+  box-shadow: 0 0 10px #ff007f;
+  animation: fall 0.4s linear infinite;
+}
+
+@keyframes fall {
+  0% { transform: translateY(-100%); opacity: 0; }
+  50% { opacity: 1; }
+  100% { transform: translateY(100%); opacity: 0; }
+}
+
+/* Tipografía del Tiempo */
+.time-overlay {
+  margin-top: 50px;
+}
+
+.neon-text {
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 3.5rem;
+  font-weight: bold;
+  color: #fff;
+  text-shadow: 0 0 10px #ff007f, 0 0 20px #7400b8, 0 0 40px #7400b8;
+  letter-spacing: 4px;
+}

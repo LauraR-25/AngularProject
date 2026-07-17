@@ -8,11 +8,13 @@ import { VisualizersComponent } from './components/visualizers/visualizers.compo
 import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visualizer.component';
 import { DetroitVisualizerComponent } from './components/visualizers/detroit/detroit-visualizer.component';
 import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer.component';
+import { SuVisualizerComponent } from './components/visualizers/su/su-visualizer.component';
+import { HourglassVisualizerComponent } from './components/visualizers/hourglass/hourglass-visualizer.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, F1VisualizerComponent, MlpVisualizerComponent, DetroitVisualizerComponent],
+  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, F1VisualizerComponent, MlpVisualizerComponent, DetroitVisualizerComponent, SuVisualizerComponent, HourglassVisualizerComponent],
   template: `   
     <div class="app-shell">
       @if (!(authService.authStatus$ | async)) {
@@ -86,6 +88,8 @@ import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer
                     <option value="mlp">My Little Pony</option>
                     <option value="detroit">Detroit: Become Human</option>
                     <option value="f1">Formula 1</option>
+                    <option value="su">Steven Universe</option>
+                    <option value="hourglass">Reloj de Arena</option>
                   </select>
                 </div>
                 <div class="sim-info-row">
@@ -106,6 +110,16 @@ import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer
                 }
                 @case ('f1') {
                   <app-f1-visualizer></app-f1-visualizer>
+                }
+                @case ('su') {
+                  @if (timeService.currentTime$ | async; as suTime) {
+                    <app-su-visualizer [currentTime]="suTime"></app-su-visualizer>
+                  }
+                }
+                @case ('hourglass') {
+                  @if (timeService.currentTime$ | async; as hgTime) {
+                    <app-hourglass-visualizer [currentTime]="hgTime"></app-hourglass-visualizer>
+                  }
                 }
               }
             </section>
@@ -368,6 +382,8 @@ import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer
     .visualizer-stage app-mlp-visualizer,
     .visualizer-stage app-detroit-visualizer,
     .visualizer-stage app-f1-visualizer,
+    .visualizer-stage app-su-visualizer,
+    .visualizer-stage app-hourglass-visualizer,
     .visualizer-stage app-visualizers {
       display: block;
       width: 100%;
