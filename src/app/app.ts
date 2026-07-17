@@ -10,11 +10,13 @@ import { DetroitVisualizerComponent } from './components/visualizers/detroit/det
 import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer.component';
 import { SuVisualizerComponent } from './components/visualizers/su/su-visualizer.component';
 import { HourglassVisualizerComponent } from './components/visualizers/hourglass/hourglass-visualizer.component';
+import { AppleWatchComponent } from './components/visualizers/watch/apple-watch.component';
+import { MechanicalClockComponent } from './components/visualizers/mechanical/mechanical-clock.component';
 
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, F1VisualizerComponent, MlpVisualizerComponent, DetroitVisualizerComponent, SuVisualizerComponent, HourglassVisualizerComponent],
+  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, F1VisualizerComponent, MlpVisualizerComponent, DetroitVisualizerComponent, SuVisualizerComponent, HourglassVisualizerComponent, AppleWatchComponent, MechanicalClockComponent],
   template: `   
     <div class="app-shell">
       @if (!(authService.authStatus$ | async)) {
@@ -77,6 +79,18 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
                   [class.active]="currentMode === 'hourglass'"
                   (click)="changeMode('hourglass')"
                 >Reloj de Arena</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'watch'"
+                  (click)="changeMode('watch')"
+                >Apple Watch</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'mechanical'"
+                  (click)="changeMode('mechanical')"
+                >Reloj Mecánico</button>
               </nav>
 
               <button id="reset-time-btn" class="btn-reset" (click)="resetTime()">
@@ -135,6 +149,16 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
                 @case ('hourglass') {
                   @if (timeService.currentTime$ | async; as hgTime) {
                     <app-hourglass-visualizer [currentTime]="hgTime"></app-hourglass-visualizer>
+                  }
+                }
+                @case ('watch') {
+                  @if (timeService.currentTime$ | async; as watchTime) {
+                    <app-apple-watch [currentTime]="watchTime"></app-apple-watch>
+                  }
+                }
+                @case ('mechanical') {
+                  @if (timeService.currentTime$ | async; as mechTime) {
+                    <app-mechanical-clock [currentTime]="mechTime"></app-mechanical-clock>
                   }
                 }
               }
@@ -404,6 +428,8 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
     .visualizer-stage app-f1-visualizer,
     .visualizer-stage app-su-visualizer,
     .visualizer-stage app-hourglass-visualizer,
+    .visualizer-stage app-apple-watch,
+    .visualizer-stage app-mechanical-clock,
     .visualizer-stage app-visualizers {
       display: block;
       width: 100%;

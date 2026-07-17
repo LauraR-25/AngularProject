@@ -263,7 +263,7 @@
   animation: hg-core-pulse 3s ease-in-out infinite;
 }
 
-/* ---- Cuello + flujo granular ---- */
+/* ---- Cuello (túnel transparente) ---- */
 .hg-neck {
   position: relative;
   width: 26px;
@@ -273,17 +273,21 @@
   backdrop-filter: blur(4px);
   border-left: 2px solid rgba(180, 230, 255, 0.3);
   border-right: 2px solid rgba(180, 230, 255, 0.3);
-  display: flex;
-  justify-content: center;
   z-index: 4;
 }
+
+/* ---- Flujo de arena continuo (cuello -> bulbo inferior) ---- */
 .hg-stream {
-  position: relative;
+  position: absolute;
+  left: 50%;
+  top: 198px;            /* justo al terminar el bulbo superior */
   width: 3px;
-  height: 100%;
-  background: linear-gradient(180deg, #ffffff, #00E5FF 40%, #00a6c9);
+  height: 238px;         /* atraviesa el cuello y llega al fondo del bulbo inferior */
+  transform: translateX(-50%);
+  background: linear-gradient(180deg, #ffffff, #00E5FF 30%, #00a6c9 80%, rgba(0,166,201,0.2));
   border-radius: 2px;
   box-shadow: 0 0 10px #00E5FF, 0 0 20px rgba(0, 229, 255, 0.8);
+  z-index: 2;            /* por debajo de la arena acumulada (z-index:3) para conectar */
   animation: hg-stream-vibrate 0.18s ease-in-out infinite;
 }
 .hg-grain {
@@ -302,11 +306,11 @@
 .hg-grain:nth-child(3) { animation-delay: 0.4s; left: 45%; }
 
 @keyframes hg-stream-vibrate {
-  0%   { transform: scaleX(1)   translateY(0); }
-  25%  { transform: scaleX(0.55) translateY(-1px); }
-  50%  { transform: scaleX(1.1) translateY(0); }
-  75%  { transform: scaleX(0.7) translateY(1px); }
-  100% { transform: scaleX(1)   translateY(0); }
+  0%   { transform: translateX(-50%) scaleX(1)   translateY(0); }
+  25%  { transform: translateX(-50%) scaleX(0.55) translateY(-1px); }
+  50%  { transform: translateX(-50%) scaleX(1.1) translateY(0); }
+  75%  { transform: translateX(-50%) scaleX(0.7) translateY(1px); }
+  100% { transform: translateX(-50%) scaleX(1)   translateY(0); }
 }
 @keyframes hg-grain-fall {
   0%   { top: 0;   opacity: 0; transform: translateX(-50%) scale(0.6); }

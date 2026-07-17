@@ -35,13 +35,14 @@
       <div class="hg-blue-halo"></div>
     </div>
 
-    <!-- Cuello con flujo granular -->
-    <div class="hg-neck">
-      <div class="hg-stream" *ngIf="isStreaming">
-        <span class="hg-grain"></span>
-        <span class="hg-grain"></span>
-        <span class="hg-grain"></span>
-      </div>
+    <!-- Cuello (túnel transparente) -->
+    <div class="hg-neck"></div>
+
+    <!-- Flujo de arena continuo: atraviesa el cuello y llega al bulbo inferior -->
+    <div class="hg-stream" *ngIf="isStreaming">
+      <span class="hg-grain"></span>
+      <span class="hg-grain"></span>
+      <span class="hg-grain"></span>
     </div>
 
     <!-- Bulbo inferior -->
