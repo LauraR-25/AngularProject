@@ -1,0 +1,50 @@
+<div class="clock-stage">
+  <!-- Este contenedor gestiona el ciclo global de color de neón mediante variables CSS -->
+  <div class="clock-workshops neon-dynamic-cycle">
+    
+    <!-- MAQUINARIA VISIBLE DE FONDO (SKELETON BACKDROP) -->
+    <div class="gear gear-back-large" [style.transform]="'rotate(' + slowGearDegrees + 'deg)'"></div>
+    <div class="gear gear-back-medium" [style.transform]="'rotate(' + mediumGearDegrees + 'deg)'"></div>
+    <div class="gear gear-back-small" [style.transform]="'rotate(' + fastGearDegrees + 'deg)'"></div>
+
+    <!-- ESFERA CENTRAL DEL RELOJ -->
+    <div class="clock-face">
+      
+      <!-- DISTRIBUCIÓN POLAR DE LOS NÚMEROS ROMANOS -->
+      <div class="roman r12">XII</div>
+      <div class="roman r1">I</div>
+      <div class="roman r2">II</div>
+      <div class="roman r3">III</div>
+      <div class="roman r4">IV</div>
+      <div class="roman r5">V</div>
+      <div class="roman r6">VI</div>
+      <div class="roman r7">VII</div>
+      <div class="roman r8">VIII</div>
+      <div class="roman r9">IX</div>
+      <div class="roman r10">X</div>
+      <div class="roman r11">XI</div>
+      
+      <!-- SISTEMA DE MANECILLAS INTERACTIVAS -->
+      <!-- Manecilla de las Horas (Con el tridente/insignia circular del video) -->
+      <div class="hand hour-hand" [style.transform]="'rotate(' + hourDegrees + 'deg)'">
+        <div class="needle-hour">
+          <div class="mechanical-badge"></div>
+        </div>
+      </div>
+      
+      <!-- Manecilla de los Minutos (Fina y alargada con calado metálico) -->
+      <div class="hand minute-hand" [style.transform]="'rotate(' + minuteDegrees + 'deg)'">
+        <div class="needle-minute"></div>
+      </div>
+      
+      <!-- Manecilla de los Segundos (Aguja ultra delgada de respuesta inmediata) -->
+      <div class="hand second-hand" [style.transform]="'rotate(' + secondDegrees + 'deg)'">
+        <div class="needle-second"></div>
+      </div>
+
+      <!-- Perno e inclusive eje central que unifica el hardware del reloj -->
+      <div class="center-pin"></div>
+    </div>
+
+  </div>
+</div>

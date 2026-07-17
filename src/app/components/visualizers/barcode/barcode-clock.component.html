@@ -1,0 +1,58 @@
+<div class="scanner-stage">
+  
+  <!-- Contenedor principal del escáner con efecto de cuadrícula de fondo -->
+  <div class="scanner-interface">
+    
+    <!-- Decoración estilo Sci-Fi (Esquinas) -->
+    <div class="corner top-left"></div>
+    <div class="corner top-right"></div>
+    <div class="corner bottom-left"></div>
+    <div class="corner bottom-right"></div>
+
+    <div class="header-text">SYS.TIME // SCANNER_MODULE_ACTV</div>
+
+    <!-- PISTA DE HORAS -->
+    <div class="data-row">
+      <div class="data-label">
+        <span class="prefix">HRS</span>
+        <span class="value">[{{ displayHours }}]</span>
+      </div>
+      <div class="barcode-track">
+        <!-- Relleno de la barra. El width cambia dinámicamente con [style.width.%] -->
+        <div class="barcode-fill color-hours" [style.width.%]="hourProgress">
+          <div class="laser-head"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PISTA DE MINUTOS -->
+    <div class="data-row">
+      <div class="data-label">
+        <span class="prefix">MIN</span>
+        <span class="value">[{{ displayMinutes }}]</span>
+      </div>
+      <div class="barcode-track">
+        <div class="barcode-fill color-minutes" [style.width.%]="minuteProgress">
+          <div class="laser-head"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PISTA DE SEGUNDOS -->
+    <div class="data-row">
+      <div class="data-label">
+        <span class="prefix">SEC</span>
+        <span class="value">[{{ displaySeconds }}]</span>
+      </div>
+      <div class="barcode-track">
+        <div class="barcode-fill color-seconds" [style.width.%]="secondProgress">
+          <div class="laser-head"></div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Línea de escaneo global (Efecto visual que barre toda la pantalla de arriba a abajo) -->
+    <div class="global-scanline"></div>
+
+  </div>
+</div>

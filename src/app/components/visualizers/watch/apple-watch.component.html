@@ -1,0 +1,57 @@
+<div class="watch-stage">
+  <!-- Chasis de aluminio/acero del Apple Watch -->
+  <div class="watch-hardware">
+    <div class="digital-crown"></div>
+    <div class="side-button"></div>
+    
+    <!-- Pantalla de cristal negro profundo -->
+    <div class="watch-screen">
+      
+      <!-- Zona Superior: Hora Digital -->
+      <div class="top-section">
+        <div class="time-display">{{ displayTime }}</div>
+      </div>
+
+      <!-- Zona Inferior: Widgets Dinámicos -->
+      <div class="bottom-section">
+        
+        <!-- Widget Izquierdo: Ilustraciones CSS (Renderizado condicional) -->
+        <div class="widget-left">
+          
+          <!-- Arte: Mañana -->
+          <div *ngIf="timeOfDay === 'morning'" class="art-morning">
+            <div class="css-sun"></div>
+            <div class="css-cloud"></div>
+          </div>
+
+          <!-- Arte: Tarde / Atardecer -->
+          <div *ngIf="timeOfDay === 'afternoon'" class="art-afternoon">
+            <div class="sunset-sky">
+              <div class="sunset-sun"></div>
+              <div class="sunset-horizon"></div>
+            </div>
+          </div>
+
+          <!-- Arte: Noche -->
+          <div *ngIf="timeOfDay === 'night'" class="art-night">
+            <div class="css-moon"></div>
+            <div class="css-stars"></div>
+          </div>
+
+        </div>
+
+        <!-- Widget Derecho: Clima -->
+        <div class="widget-right">
+          <div class="temperature-display" 
+               [ngClass]="{'temp-morning': timeOfDay === 'morning', 
+                           'temp-afternoon': timeOfDay === 'afternoon', 
+                           'temp-night': timeOfDay === 'night'}">
+            {{ temperature }}
+          </div>
+        </div>
+
+      </div>
+      
+    </div>
+  </div>
+</div>
