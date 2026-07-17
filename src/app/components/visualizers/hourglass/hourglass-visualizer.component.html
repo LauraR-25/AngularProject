@@ -1,30 +1,71 @@
-<div class="neon-container">
-  
-  <!-- El reloj de arena. Gira 180deg acumulado al cambiar de hora -->
-  <div class="hourglass" [style.transform]="'rotate(' + flipRotation + 'deg)'" [class.flipping]="isFlipping">
-    
-    <!-- Contenedor superior -->
-    <div class="bulb top-bulb">
-      <div class="sand top-sand" [style.height.%]="topSandHeight"></div>
-      <div class="glass-reflection"></div>
+<div class="hg-stage">
+
+  <!-- Atmósfera: humo púrpura + partículas -->
+  <div class="hg-smoke"></div>
+  <div class="hg-particles">
+    <span class="p p-blue"></span>
+    <span class="p p-magenta"></span>
+    <span class="p p-white"></span>
+    <span class="p p-blue"></span>
+    <span class="p p-magenta"></span>
+    <span class="p p-white"></span>
+    <span class="p p-blue"></span>
+  </div>
+
+  <!-- Columnas LED laterales (magenta neón) -->
+  <div class="hg-rail hg-rail-left"></div>
+  <div class="hg-rail hg-rail-right"></div>
+
+  <!-- Base inferior de cromo -->
+  <div class="hg-base hg-base-bottom">
+    <div class="hg-chrome-ring"></div>
+    <div class="hg-base-slots"></div>
+    <div class="hg-led-strip"></div>
+  </div>
+
+  <!-- Reloj de arena -->
+  <div class="hg-glass" [style.transform]="'rotate(' + flipRotation + 'deg)'" [class.flipping]="isFlipping">
+
+    <!-- Bulbo superior -->
+    <div class="hg-bulb hg-top">
+      <div class="hg-energy hg-energy-top" [style.height.%]="topSandHeight">
+        <div class="hg-core"></div>
+      </div>
+      <div class="hg-glass-reflection"></div>
+      <div class="hg-blue-halo"></div>
     </div>
-    
-    <!-- Cuello del reloj (por donde cae la arena) -->
-    <div class="neck">
-      <div class="sand-stream" *ngIf="isStreaming"></div>
+
+    <!-- Cuello con flujo granular -->
+    <div class="hg-neck">
+      <div class="hg-stream" *ngIf="isStreaming">
+        <span class="hg-grain"></span>
+        <span class="hg-grain"></span>
+        <span class="hg-grain"></span>
+      </div>
     </div>
-    
-    <!-- Contenedor inferior -->
-    <div class="bulb bottom-bulb">
-      <div class="sand bottom-sand" [style.height.%]="bottomSandHeight"></div>
-      <div class="glass-reflection"></div>
+
+    <!-- Bulbo inferior -->
+    <div class="hg-bulb hg-bottom">
+      <div class="hg-energy hg-energy-bottom" [style.height.%]="bottomSandHeight">
+        <div class="hg-core"></div>
+      </div>
+      <div class="hg-glass-reflection"></div>
+      <div class="hg-blue-halo"></div>
     </div>
 
   </div>
 
-  <!-- Reloj digital futurista -->
-  <div class="time-overlay">
-    <span class="neon-text">{{ displayTime }}</span>
+  <!-- Base superior de cromo -->
+  <div class="hg-base hg-base-top">
+    <div class="hg-chrome-ring"></div>
+    <div class="hg-base-slots"></div>
+    <div class="hg-led-strip"></div>
+  </div>
+
+  <!-- HUD digital -->
+  <div class="hg-hud">
+    <span class="hg-hud-text">{{ displayTime }}</span>
+    <span class="hg-hud-sub">ENERGY FLUX // SYNTH-TIME</span>
   </div>
 
 </div>

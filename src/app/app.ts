@@ -26,18 +26,12 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
 
           <!-- Header -->
           <header class="dash-header">
-            <div class="dash-logo">
-              <span class="logo-icon">☀️</span>
-              <div class="logo-text">
-                <span class="logo-title">EQUESTRIA</span>
-                <span class="logo-sub">Ciclo Sol &amp; Luna · MLP</span>
-              </div>
-            </div>
-
-            <div class="header-clock">
+            <div class="header-clock header-clock-left">
               <span class="clock-label">HORA SIMULADA</span>
               <span class="clock-time">{{ (timeService.currentTime$ | async) | date:'HH:mm:ss' }}</span>
             </div>
+
+            <h1 class="app-title">Visualizador de tiempo</h1>
 
             <button id="logout-btn" class="btn-logout" (click)="authService.logout()">
               ⏻ Salir
@@ -47,13 +41,49 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
           <!-- Contenido principal -->
           <main class="dash-main">
 
-            <!-- Panel de control del tiempo -->
+            <!-- Panel de control del tiempo (columna izquierda) -->
             <aside class="controls-panel">
-              <div class="controls-header">
-                <span class="controls-icon">⏱</span>
-                <span class="controls-title">CONTROL TEMPORAL</span>
-              </div>
 
+              <!-- Lista vertical de modos -->
+              <nav class="mode-list">
+                <span class="mode-list-title">MODO DE VISUALIZACIÓN</span>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'mlp'"
+                  (click)="changeMode('mlp')"
+                >My Little Pony</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'detroit'"
+                  (click)="changeMode('detroit')"
+                >Detroit: Become Human</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'f1'"
+                  (click)="changeMode('f1')"
+                >Formula 1</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'su'"
+                  (click)="changeMode('su')"
+                >Steven Universe</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'hourglass'"
+                  (click)="changeMode('hourglass')"
+                >Reloj de Arena</button>
+              </nav>
+
+              <button id="reset-time-btn" class="btn-reset" (click)="resetTime()">
+                ↺ Restablecer al presente
+              </button>
+
+              <!-- Desfase de horario (parte inferior izquierda) -->
               <div class="offset-group">
                 <div class="offset-labels">
                   <label class="field-label">DESFASE HORARIO</label>
@@ -76,22 +106,8 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
                 </div>
               </div>
 
-              <button id="reset-time-btn" class="btn-reset" (click)="resetTime()">
-                ↺ Restablecer al presente
-              </button>
-
               <!-- Info del simulador -->
               <div class="sim-info">
-                <div class="sim-info-row">
-                  <span class="sim-info-label">MODO</span>
-                  <select [ngModel]="currentMode" (ngModelChange)="changeMode($event)" class="theme-select">
-                    <option value="mlp">My Little Pony</option>
-                    <option value="detroit">Detroit: Become Human</option>
-                    <option value="f1">Formula 1</option>
-                    <option value="su">Steven Universe</option>
-                    <option value="hourglass">Reloj de Arena</option>
-                  </select>
-                </div>
                 <div class="sim-info-row">
                   <span class="sim-info-label">TIEMPO REAL</span>
                   <span class="sim-info-value">{{ realTime | date:'HH:mm:ss' }}</span>
@@ -159,23 +175,16 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
       border-bottom: 1px solid #1e1e1e;
       flex-shrink: 0;
     }
-    .dash-logo { display: flex; align-items: center; gap: 12px; }
-    .logo-icon { font-size: 1.6rem; }
-    .logo-text { display: flex; flex-direction: column; }
-    .logo-title {
+
+    .app-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 1rem;
-      font-weight: 900;
-      letter-spacing: 0.2em;
+      font-size: 1.1rem;
+      font-weight: 700;
+      letter-spacing: 0.18em;
       color: #ffffff;
+      text-align: center;
+      flex: 1;
       text-shadow: 0 0 12px rgba(230, 57, 70, 0.4);
-    }
-    .logo-sub {
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.5rem;
-      letter-spacing: 0.15em;
-      color: #ffd60a;
-      opacity: 0.8;
     }
 
     .header-clock {
@@ -183,6 +192,7 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
       flex-direction: column;
       align-items: center;
       gap: 2px;
+      min-width: 140px;
     }
     .clock-label {
       font-family: 'Orbitron', sans-serif;
@@ -223,7 +233,7 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
       gap: 0;
     }
 
-    /* ===== PANEL DE CONTROLES ===== */
+    /* ===== PANEL DE CONTROLES (columna izquierda) ===== */
     .controls-panel {
       width: 260px;
       flex-shrink: 0;
@@ -232,25 +242,50 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
       padding: 24px 20px;
       display: flex;
       flex-direction: column;
-      gap: 24px;
+      gap: 20px;
       overflow-y: auto;
     }
 
-    .controls-header {
+    /* Lista vertical de modos */
+    .mode-list {
       display: flex;
-      align-items: center;
-      gap: 8px;
+      flex-direction: column;
+      gap: 10px;
     }
-    .controls-icon { font-size: 1rem; }
-    .controls-title {
+    .mode-list-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.6rem;
+      font-size: 0.55rem;
       font-weight: 700;
       letter-spacing: 0.2em;
       color: #555;
+      margin-bottom: 4px;
+    }
+    .mode-item {
+      width: 100%;
+      text-align: left;
+      background: #141414;
+      border: 1px solid #2a2a2a;
+      border-radius: 4px;
+      color: #bbb;
+      font-family: 'Orbitron', sans-serif;
+      font-size: 0.65rem;
+      letter-spacing: 0.08em;
+      padding: 12px 14px;
+      cursor: pointer;
+      transition: border-color 0.2s, color 0.2s, background 0.2s, box-shadow 0.2s;
+    }
+    .mode-item:hover {
+      border-color: #e63946;
+      color: #fff;
+    }
+    .mode-item.active {
+      background: rgba(230, 57, 70, 0.12);
+      border-color: #e63946;
+      color: #fff;
+      box-shadow: 0 0 10px rgba(230, 57, 70, 0.25);
     }
 
-    .offset-group { display: flex; flex-direction: column; gap: 10px; }
+    .offset-group { display: flex; flex-direction: column; gap: 10px; margin-top: auto; }
     .offset-labels {
       display: flex;
       justify-content: space-between;
@@ -357,21 +392,6 @@ import { HourglassVisualizerComponent } from './components/visualizers/hourglass
       color: #888;
     }
     .sim-info-value.highlight-yellow { color: #ffd60a; }
-
-    .theme-select {
-      background: #1e1e1e;
-      color: #ffd60a;
-      font-family: 'Orbitron', sans-serif;
-      font-size: 0.6rem;
-      border: 1px solid #333;
-      border-radius: 4px;
-      padding: 4px 8px;
-      outline: none;
-      cursor: pointer;
-    }
-    .theme-select:focus {
-      border-color: #ffd60a;
-    }
 
     /* ===== ESCENARIO DEL VISUALIZADOR ===== */
     .visualizer-stage {

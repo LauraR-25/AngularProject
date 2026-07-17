@@ -12,7 +12,7 @@ export class HourglassVisualizerComponent {
   displayTime: string = '00:00:00';
   topSandHeight: number = 100;
   bottomSandHeight: number = 0;
-  
+
   isStreaming: boolean = true;
   isFlipping: boolean = false;
   flipRotation: number = 0;
@@ -20,24 +20,27 @@ export class HourglassVisualizerComponent {
 
   @Input() set currentTime(date: Date | null) {
     if (!date) return;
-    
+
     this.displayTime = date.toLocaleTimeString('es-ES', { hour12: false });
-    
+
     const hours = date.getHours();
     const minutes = date.getMinutes();
     const seconds = date.getSeconds();
 
-    // Detectar cambio de hora para disparar la animación de giro
+    // Cambio de hora -> giro orgánico de 180deg (acumulado para evitar saltos)
     if (this.lastHour !== -1 && hours !== this.lastHour) {
       this.triggerFlip();
     }
     this.lastHour = hours;
 
-    // Lógica del flujo de arena (si no está girando)
     if (!this.isFlipping) {
-      const totalSeconds = (minutes * 60) + seconds;
-      const percentage = (totalSeconds / 60) * 100; // 60 segundos = 100% del minuto
-      
+      // Progreso matemático de la hora local: 3600s = 100% de la hora
+      const elapsedInHour = minutes * 60 + seconds;
+      const percentage = (elapsedInHour / 3600) * 100;
+
+      // La arena cae de forma continua y proporcional al tiempo transcurrido.
+      // Al iniciar la hora (00:00) la superior está llena (100) y la inferior vacía (0).
+      // Al terminar la hora (59:59) la superior está vacía (0) y la inferior llena (100).
       this.topSandHeight = 100 - percentage;
       this.bottomSandHeight = percentage;
       this.isStreaming = percentage > 0 && percentage < 100;
@@ -47,16 +50,17 @@ export class HourglassVisualizerComponent {
   private triggerFlip() {
     this.isFlipping = true;
     this.isStreaming = false;
-    
-    // Acumulamos 180deg para evitar saltos visuales en giros consecutivos
-    this.flipRotation += 180;
 
-    // Esperamos 1.5s (lo que dura la animación CSS) antes de resetear los valores
+    // Esperar 300-500 ms antes de iniciar la rotación (la arena queda fija en el cristal)
     setTimeout(() => {
-      this.isFlipping = false;
-      this.topSandHeight = 100;
-      this.bottomSandHeight = 0;
-      this.isStreaming = true;
-    }, 1500);
+      this.flipRotation += 180;
+
+      // La rotación dura 1.5s (ease-in-out en CSS). Al finalizar, la antigua
+      // parte inferior (llena) pasa a ser la nueva superior y el flujo recomienza.
+      setTimeout(() => {
+        this.isFlipping = false;
+        this.isStreaming = true;
+      }, 1500);
+    }, 400);
   }
 }

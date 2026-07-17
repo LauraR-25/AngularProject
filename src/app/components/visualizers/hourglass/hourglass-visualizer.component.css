@@ -1,111 +1,363 @@
-/* Contenedor oscuro principal */
-.neon-container {
+/* ============================================================
+   HOURGLASS VISUALIZER — Cyberpunk / Synthwave / Tron Legacy
+   Código puro CSS, cero imágenes.
+   ============================================================ */
+
+:host {
+  display: block;
   width: 100%;
-  height: 100vh;
+  height: 100%;
+}
+
+/* ---- Escenario cinemático ---- */
+.hg-stage {
+  position: relative;
+  width: 100%;
+  height: 100%;
   min-height: 600px;
-  background-color: #050508;
-  background-image: radial-gradient(circle at center, #1a0b2e 0%, #050508 70%);
+  overflow: hidden;
   display: flex;
   flex-direction: column;
   align-items: center;
   justify-content: center;
-  overflow: hidden;
+  background:
+    radial-gradient(circle at 50% 35%, #0B0818 0%, #090014 55%, #05030A 100%);
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  box-sizing: border-box;
 }
 
-/* Estructura del reloj */
-.hourglass {
+/* ---- Humo púrpura difuso y lento ---- */
+.hg-smoke {
+  position: absolute;
+  inset: -20%;
+  background:
+    radial-gradient(circle at 30% 40%, rgba(157, 0, 255, 0.18), transparent 45%),
+    radial-gradient(circle at 70% 60%, rgba(94, 0, 200, 0.14), transparent 50%),
+    radial-gradient(circle at 50% 80%, rgba(200, 0, 255, 0.10), transparent 55%);
+  filter: blur(40px);
+  animation: hg-smoke-drift 22s ease-in-out infinite alternate;
+  pointer-events: none;
+  z-index: 0;
+}
+
+@keyframes hg-smoke-drift {
+  0%   { transform: translate3d(-4%, -2%, 0) scale(1); opacity: 0.7; }
+  100% { transform: translate3d(4%, 3%, 0) scale(1.15); opacity: 1; }
+}
+
+/* ---- Partículas flotantes multicolor ---- */
+.hg-particles {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 1;
+}
+.hg-particles .p {
+  position: absolute;
+  bottom: -10px;
+  width: 4px;
+  height: 4px;
+  border-radius: 50%;
+  opacity: 0;
+  animation: hg-float 14s linear infinite;
+}
+.p-blue    { left: 22%; background: #00E5FF; box-shadow: 0 0 8px #00E5FF; animation-delay: 0s; }
+.p-magenta { left: 54%; background: #ff2bd6; box-shadow: 0 0 8px #ff2bd6; animation-delay: 3s; }
+.p-white   { left: 78%; background: #ffffff; box-shadow: 0 0 8px #ffffff; animation-delay: 6s; }
+.p-blue:nth-of-type(4)    { left: 38%; animation-delay: 9s; }
+.p-magenta:nth-of-type(5) { left: 66%; animation-delay: 12s; }
+.p-white:nth-of-type(7)   { left: 12%; animation-delay: 4s; }
+
+@keyframes hg-float {
+  0%   { transform: translateY(0) scale(1); opacity: 0; }
+  10%  { opacity: 0.9; }
+  90%  { opacity: 0.6; }
+  100% { transform: translateY(-620px) scale(0.4); opacity: 0; }
+}
+
+/* ---- Columnas LED laterales (magenta neón) ---- */
+.hg-rail {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  width: 4%;
+  max-width: 18px;
+  height: 64%;
+  border-radius: 10px;
+  background: linear-gradient(180deg, #ff2bd6, #7a0066);
+  box-shadow:
+    0 0 12px #ff2bd6,
+    0 0 28px rgba(255, 43, 214, 0.7),
+    inset 0 0 6px rgba(255, 255, 255, 0.4);
+  animation: hg-breathe 4s ease-in-out infinite;
+  z-index: 2;
+  pointer-events: none;
+}
+.hg-rail-left  { left: 8%; }
+.hg-rail-right { right: 8%; }
+
+/* ---- Bases de cromo negro reflectante ---- */
+.hg-base {
+  position: relative;
+  width: 240px;
+  max-width: 70%;
+  height: 34px;
+  border-radius: 8px;
+  background:
+    linear-gradient(180deg, #3a3a42 0%, #0c0c10 18%, #1c1c22 50%, #050507 82%, #2a2a30 100%);
+  box-shadow:
+    0 6px 18px rgba(0, 0, 0, 0.8),
+    inset 0 2px 3px rgba(255, 255, 255, 0.18),
+    inset 0 -3px 6px rgba(0, 0, 0, 0.9);
+  z-index: 3;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  animation: hg-breathe 5s ease-in-out infinite;
+}
+.hg-base-top    { margin-bottom: -6px; transform: rotate(180deg); }
+.hg-base-bottom { margin-top: -6px; }
+
+/* Anillo exterior magenta brillante */
+.hg-chrome-ring {
+  position: absolute;
+  inset: 4px 10px;
+  border-radius: 6px;
+  border: 2px solid rgba(255, 43, 214, 0.85);
+  box-shadow: 0 0 10px rgba(255, 43, 214, 0.6), inset 0 0 6px rgba(255, 43, 214, 0.4);
+}
+
+/* Ranuras concéntricas */
+.hg-base-slots {
+  position: absolute;
+  inset: 8px 16px;
+  background: repeating-linear-gradient(
+    90deg,
+    rgba(0, 0, 0, 0.55) 0px,
+    rgba(0, 0, 0, 0.55) 2px,
+    rgba(255, 255, 255, 0.06) 4px,
+    rgba(255, 255, 255, 0.06) 6px
+  );
+  border-radius: 3px;
+}
+
+/* Tira LED integrada */
+.hg-led-strip {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  transform: translate(-50%, -50%);
+  width: 60%;
+  height: 5px;
+  border-radius: 3px;
+  background: #00E5FF;
+  box-shadow: 0 0 10px #00E5FF, 0 0 20px rgba(0, 229, 255, 0.7);
+  animation: hg-breathe 3.5s ease-in-out infinite;
+}
+
+/* ---- Reloj de arena (cristal + giro) ---- */
+.hg-glass {
+  position: relative;
+  width: 200px;
+  height: 480px; /* Altura = 2.4 x Ancho */
   display: flex;
   flex-direction: column;
   align-items: center;
-  filter: drop-shadow(0 0 20px rgba(255, 0, 255, 0.2));
-  transition: transform 1.5s cubic-bezier(0.65, 0, 0.35, 1);
+  z-index: 4;
+  transform-origin: center center;
+  transition: transform 1.5s ease-in-out;
+  filter: drop-shadow(0 0 26px rgba(0, 229, 255, 0.25));
+}
+.hg-glass.flipping {
+  transition: transform 1.5s cubic-bezier(0.45, 0, 0.55, 1);
 }
 
-/* Cristal de los bulbos con Glassmorphism */
-.bulb {
-  width: 180px;
-  height: 160px;
-  background: rgba(255, 255, 255, 0.03);
-  backdrop-filter: blur(10px);
-  -webkit-backdrop-filter: blur(10px);
-  border: 2px solid rgba(255, 105, 180, 0.3);
-  box-shadow: inset 0 0 25px rgba(255, 0, 255, 0.1), 0 0 30px rgba(128, 0, 128, 0.2);
+/* ---- Bulbos de cristal glassmorphism ---- */
+.hg-bulb {
   position: relative;
+  width: 200px;
+  height: 200px;
+  background: rgba(255, 255, 255, 0.025);
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+  border: 3px solid rgba(180, 230, 255, 0.28);
+  box-shadow:
+    inset 0 0 22px rgba(0, 229, 255, 0.18),
+    0 0 16px rgba(0, 229, 255, 0.22);
   overflow: hidden;
 }
-
-.top-bulb {
-  border-radius: 10px 10px 50% 50%;
+.hg-top {
+  border-radius: 12px 12px 50% 50% / 12px 12px 30% 30%;
   border-bottom: none;
 }
-
-.bottom-bulb {
-  border-radius: 50% 50% 10px 10px;
+.hg-bottom {
+  border-radius: 50% 50% 12px 12px / 30% 30% 12px 12px;
   border-top: none;
 }
 
-/* Reflejos de luz en el cristal */
-.glass-reflection {
+/* Reflejo curvo realista */
+.hg-glass-reflection {
   position: absolute;
-  top: 10px;
-  left: 15px;
-  width: 40px;
-  height: 80%;
-  background: linear-gradient(90deg, rgba(255,255,255,0.1) 0%, transparent 100%);
+  top: 8px;
+  left: 18px;
+  width: 46px;
+  height: 78%;
+  background: linear-gradient(90deg, rgba(255, 255, 255, 0.16), transparent 100%);
   border-radius: 50%;
-  transform: rotate(15deg);
+  transform: rotate(16deg);
   pointer-events: none;
-  z-index: 10;
+  z-index: 6;
 }
 
-/* Arena Degradada (Rosa a Morado) */
-.sand {
-  width: 100%;
-  background: linear-gradient(180deg, #ff007f, #7400b8);
-  box-shadow: 0 0 25px #ff007f;
+/* Halo azul perimetral */
+.hg-blue-halo {
   position: absolute;
-  bottom: 0;
-  transition: height 1s linear;
+  inset: 0;
+  border-radius: inherit;
+  box-shadow: inset 0 0 30px rgba(0, 229, 255, 0.25);
+  pointer-events: none;
+  z-index: 5;
+  animation: hg-breathe 4.5s ease-in-out infinite;
 }
 
-/* Cuello del reloj */
-.neck {
-  width: 20px;
-  height: 40px;
-  background: rgba(255, 255, 255, 0.08);
-  border-left: 2px solid rgba(255, 105, 180, 0.5);
-  border-right: 2px solid rgba(255, 105, 180, 0.5);
+/* ---- Arena de energía neón ---- */
+.hg-energy {
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: radial-gradient(
+    ellipse at 50% 40%,
+    #ffffff 0%,
+    #00E5FF 35%,
+    #00a6c9 70%,
+    #0077a8 100%
+  );
+  box-shadow:
+    0 0 40px #00E5FF,
+    0 0 70px rgba(0, 229, 255, 0.6),
+    0 0 80px rgba(120, 220, 255, 0.4);
+  border-radius: 50% 50% 0 0 / 12% 12% 0 0;
+  transition: height 1s linear;
+  z-index: 3;
+}
+.hg-energy-top {
+  border-radius: 0 0 45% 45% / 0 0 55% 55%; /* montaña invertida: el pico desciende */
+  top: auto;
+}
+.hg-energy-bottom {
+  border-radius: 50% 50% 6% 6% / 55% 55% 6% 6%; /* cono cónico que crece desde el impacto */
+}
+
+/* Núcleo brillante interno */
+.hg-core {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 60%;
+  height: 60%;
+  transform: translate(-50%, -50%);
+  background: radial-gradient(circle, #ffffff 0%, rgba(0, 229, 255, 0.5) 60%, transparent 100%);
+  border-radius: 50%;
+  filter: blur(2px);
+  animation: hg-core-pulse 3s ease-in-out infinite;
+}
+
+/* ---- Cuello + flujo granular ---- */
+.hg-neck {
   position: relative;
+  width: 26px;
+  height: 36px;
+  background: rgba(255, 255, 255, 0.05);
+  -webkit-backdrop-filter: blur(4px);
+  backdrop-filter: blur(4px);
+  border-left: 2px solid rgba(180, 230, 255, 0.3);
+  border-right: 2px solid rgba(180, 230, 255, 0.3);
   display: flex;
   justify-content: center;
-  z-index: 5;
+  z-index: 4;
 }
-
-/* Flujo constante de arena */
-.sand-stream {
-  width: 6px;
+.hg-stream {
+  position: relative;
+  width: 3px;
   height: 100%;
-  background: linear-gradient(180deg, #ff007f, #7400b8);
-  box-shadow: 0 0 10px #ff007f;
-  animation: fall 0.4s linear infinite;
+  background: linear-gradient(180deg, #ffffff, #00E5FF 40%, #00a6c9);
+  border-radius: 2px;
+  box-shadow: 0 0 10px #00E5FF, 0 0 20px rgba(0, 229, 255, 0.8);
+  animation: hg-stream-vibrate 0.18s ease-in-out infinite;
+}
+.hg-grain {
+  position: absolute;
+  left: 50%;
+  width: 3px;
+  height: 3px;
+  border-radius: 50%;
+  background: #eaffff;
+  box-shadow: 0 0 8px #00E5FF;
+  transform: translateX(-50%);
+  animation: hg-grain-fall 0.6s linear infinite;
+}
+.hg-grain:nth-child(1) { animation-delay: 0s; left: 30%; }
+.hg-grain:nth-child(2) { animation-delay: 0.2s; left: 55%; }
+.hg-grain:nth-child(3) { animation-delay: 0.4s; left: 45%; }
+
+@keyframes hg-stream-vibrate {
+  0%   { transform: scaleX(1)   translateY(0); }
+  25%  { transform: scaleX(0.55) translateY(-1px); }
+  50%  { transform: scaleX(1.1) translateY(0); }
+  75%  { transform: scaleX(0.7) translateY(1px); }
+  100% { transform: scaleX(1)   translateY(0); }
+}
+@keyframes hg-grain-fall {
+  0%   { top: 0;   opacity: 0; transform: translateX(-50%) scale(0.6); }
+  20%  { opacity: 1; }
+  100% { top: 100%; opacity: 0; transform: translateX(-50%) scale(1.2); }
 }
 
-@keyframes fall {
-  0% { transform: translateY(-100%); opacity: 0; }
-  50% { opacity: 1; }
-  100% { transform: translateY(100%); opacity: 0; }
+/* ---- HUD digital ---- */
+.hg-hud {
+  position: absolute;
+  bottom: 8%;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+  z-index: 7;
+  text-align: center;
+  animation: hg-hud-flicker 5s steps(40) infinite;
 }
-
-/* Tipografía del Tiempo */
-.time-overlay {
-  margin-top: 50px;
+.hg-hud-text {
+  font-family: 'Segoe UI', 'Helvetica Neue', Arial, sans-serif;
+  font-weight: 200;
+  font-size: 3.4rem;
+  letter-spacing: 6px;
+  color: #dff6ff;
+  text-shadow:
+    0 0 8px #00E5FF,
+    0 0 18px rgba(0, 229, 255, 0.7),
+    0 0 36px rgba(0, 229, 255, 0.4);
 }
-
-.neon-text {
-  font-family: 'Courier New', Courier, monospace;
-  font-size: 3.5rem;
-  font-weight: bold;
-  color: #fff;
-  text-shadow: 0 0 10px #ff007f, 0 0 20px #7400b8, 0 0 40px #7400b8;
+.hg-hud-sub {
+  font-size: 0.65rem;
   letter-spacing: 4px;
+  color: rgba(255, 43, 214, 0.85);
+  text-shadow: 0 0 8px rgba(255, 43, 214, 0.6);
+}
+
+/* ---- Animaciones de respiración / pulsos ---- */
+@keyframes hg-breathe {
+  0%, 100% { opacity: 0.75; filter: brightness(0.9); }
+  50%      { opacity: 1;    filter: brightness(1.25); }
+}
+@keyframes hg-core-pulse {
+  0%, 100% { opacity: 0.55; transform: translate(-50%, -50%) scale(0.9); }
+  50%      { opacity: 1;    transform: translate(-50%, -50%) scale(1.1); }
+}
+@keyframes hg-hud-flicker {
+  0%, 96%, 100% { opacity: 1; }
+  97%           { opacity: 0.6; }
+  98%           { opacity: 1; }
+  99%           { opacity: 0.85; }
 }
