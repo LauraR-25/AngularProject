@@ -1,48 +1,81 @@
 <div class="escenario-estaciones">
 
-  <!-- ÁRBOL CENTRADO -->
+  <!-- ÁRBOL SVG CENTRADO -->
   <div class="zona-arbol">
-    <div class="contenedor-arbol" [ngClass]="infoSimulada?.estacion || 'verano'">
+    <svg class="arbol-svg" viewBox="0 0 400 340" xmlns="http://www.w3.org/2000/svg">
 
-      <!-- Ramas principales -->
-      <div class="rama rama-izq"></div>
-      <div class="rama rama-der"></div>
-      <div class="rama rama-izq-baja"></div>
-      <div class="rama rama-der-baja"></div>
+      <!-- Suelo -->
+      <ellipse cx="200" cy="320" rx="155" ry="18" class="suelo-svg"
+               [ngClass]="infoSimulada?.estacion || 'verano'"/>
 
-      <!-- Gran Tronco central -->
-      <div class="gran-tronco"></div>
+      <!-- TRONCO -->
+      <rect x="183" y="155" width="34" height="165" rx="6" class="tronco-svg"
+            [ngClass]="infoSimulada?.estacion || 'verano'"/>
 
-      <!-- Copas de hojas voluminosas -->
-      <div class="copa-hojas hojas-capas"></div>
-      <div class="copa-hojas hojas-capacentro"></div>
-      <div class="copa-hojas hojas-capafrente"></div>
+      <!-- RAMAS (conectadas al tronco) -->
+      <line x1="200" y1="190" x2="140" y2="160" class="rama-svg"
+            [ngClass]="infoSimulada?.estacion || 'verano'"/>
+      <line x1="200" y1="195" x2="125" y2="185" class="rama-svg rama-baja"
+            [ngClass]="infoSimulada?.estacion || 'verano'"/>
+      <line x1="200" y1="200" x2="115" y2="220" class="rama-svg rama-baja"
+            [ngClass]="infoSimulada?.estacion || 'verano'"/>
+      <line x1="200" y1="185" x2="265" y2="155" class="rama-svg"
+            [ngClass]="infoSimulada?.estacion || 'verano'"/>
+      <line x1="200" y1="192" x2="278" y2="188" class="rama-svg rama-baja"
+            [ngClass]="infoSimulada?.estacion || 'verano'"/>
+      <line x1="200" y1="205" x2="285" y2="225" class="rama-svg rama-baja"
+            [ngClass]="infoSimulada?.estacion || 'verano'"/>
 
-      <!-- Capa de flores (solo primavera) -->
-      <div class="capa-flores">
-        <div class="flor f1"></div>
-        <div class="flor f2"></div>
-        <div class="flor f3"></div>
-        <div class="flor f4"></div>
-        <div class="flor f5"></div>
-        <div class="flor f6"></div>
-        <div class="flor f7"></div>
-      </div>
+      <!-- COPA DE HOJAS (múltiples círculos) -->
+      <ng-container *ngIf="infoSimulada?.estacion !== 'invierno'">
+        <circle *ngFor="let hoja of hojas; trackBy: trackByIndex"
+                [attr.cx]="hoja.cx" [attr.cy]="hoja.cy" [attr.r]="hoja.r"
+                [attr.fill]="hoja.color" class="hoja-svg"/>
+      </ng-container>
 
-      <!-- Hojas caídas en suelo (solo otoño) -->
-      <div class="capa-hojas-suelo">
-        <div class="hoja-suelo hs1"></div>
-        <div class="hoja-suelo hs2"></div>
-        <div class="hoja-suelo hs3"></div>
-        <div class="hoja-suelo hs4"></div>
-        <div class="hoja-suelo hs5"></div>
-        <div class="hoja-suelo hs6"></div>
-      </div>
+      <!-- FLORES (primavera) -->
+      <ng-container *ngIf="infoSimulada?.estacion === 'primavera'">
+        <g *ngFor="let flor of flores; trackBy: trackByIndex" class="flor-grupo">
+          <!-- 4 pétalos -->
+          <circle [attr.cx]="flor.cx - 5" [attr.cy]="flor.cy" r="4.5"
+                  [attr.fill]="flor.petalos[0]" class="petalo"/>
+          <circle [attr.cx]="flor.cx + 5" [attr.cy]="flor.cy" r="4.5"
+                  [attr.fill]="flor.petalos[0]" class="petalo"/>
+          <circle [attr.cx]="flor.cx" [attr.cy]="flor.cy - 5" r="4.5"
+                  [attr.fill]="flor.petalos[0]" class="petalo"/>
+          <circle [attr.cx]="flor.cx" [attr.cy]="flor.cy + 5" r="4.5"
+                  [attr.fill]="flor.petalos[0]" class="petalo"/>
+          <!-- Centro -->
+          <circle [attr.cx]="flor.cx" [attr.cy]="flor.cy" r="3"
+                  [attr.fill]="flor.centro" class="centro-flor"/>
+        </g>
+      </ng-container>
 
-      <!-- Suelo / césped -->
-      <div class="suelo"></div>
+      <!-- HOJAS CAÍDAS (otoño) -->
+      <ng-container *ngIf="infoSimulada?.estacion === 'otono'">
+        <rect *ngFor="let hoja of hojasSuelo; trackBy: trackByIndex"
+              [attr.x]="hoja.x" [attr.y]="hoja.y"
+              width="11" height="7" rx="3"
+              [attr.fill]="hoja.color"
+              [attr.transform]="'rotate(' + hoja.rotacion + ' ' + (hoja.x + 5) + ' ' + (hoja.y + 3) + ')'"
+              class="hoja-suelo-svg"/>
+      </ng-container>
 
-    </div>
+      <!-- NIEVE EN RAMAS (invierno) -->
+      <ng-container *ngIf="infoSimulada?.estacion === 'invierno'">
+        <circle *ngFor="let n of nieveRamas; trackBy: trackByIndex"
+                [attr.cx]="n.cx" [attr.cy]="n.cy" [attr.r]="n.r"
+                fill="#ffffff" opacity="0.9" class="nieve-svg"/>
+      </ng-container>
+
+      <!-- NIEVE EN SUELO (invierno) -->
+      <ng-container *ngIf="infoSimulada?.estacion === 'invierno'">
+        <circle *ngFor="let n of nieveSuelo; trackBy: trackByIndex"
+                [attr.cx]="n.cx" [attr.cy]="n.cy" [attr.r]="n.r"
+                fill="#e8eef5" opacity="0.75" class="nieve-svg"/>
+      </ng-container>
+
+    </svg>
   </div>
 
   <!-- PANEL INFERIOR: FECHA + RELOJ -->
@@ -52,19 +85,16 @@
     <div class="seccion-calendario">
       <span class="lbl-sub">{{ manualMode ? 'FECHA MANUAL' : 'FECHA SIMULADA' }}</span>
 
-      <!-- Display de fecha -->
       <div class="display-fecha">
         <span class="num-dia">{{ manualMode ? manualDia : (infoSimulada?.dia) }}</span>
         <span class="txt-mes">{{ manualMode ? manualMesNombre : (infoSimulada?.mes) }}</span>
         <span class="num-anio">{{ manualMode ? manualAnio : (infoSimulada?.anio) }}</span>
       </div>
 
-      <!-- Estación activa -->
       <div class="badge-estacion">
         Estación: <strong class="txt-estacion">{{ infoSimulada?.estacion }}</strong>
       </div>
 
-      <!-- Botones +/- (solo en modo manual) -->
       @if (manualMode) {
         <div class="fecha-controles">
           <div class="ctrl-grupo">

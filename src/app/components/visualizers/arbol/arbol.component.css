@@ -1,5 +1,5 @@
 /* ==========================================================================
-   ESCENARIO PRINCIPAL — Flexbox centrado absoluto
+   ESCENARIO PRINCIPAL
    ========================================================================== */
 .escenario-estaciones {
   display: flex;
@@ -20,270 +20,91 @@
 }
 
 /* ==========================================================================
-   CONTENEDOR DEL ÁRBOL (referencia para todos los elementos absolutos)
+   ÁRBOL SVG
    ========================================================================== */
-.contenedor-arbol {
-  position: relative;
+.arbol-svg {
   width: 360px;
   height: 340px;
-  transition: filter 0.8s ease;
 }
 
-/* ==========================================================================
-   TRONCO
-   ========================================================================== */
-.gran-tronco {
-  position: absolute;
-  bottom: 24px;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 46px;
-  height: 155px;
-  background: linear-gradient(
-    to right,
-    #3b2213 0%,
-    #5c3a26 40%,
-    #6b4530 55%,
-    #4a2e1a 100%
-  );
-  border-radius: 8px 8px 5px 5px;
-  z-index: 3;
-  transition: filter 0.6s ease;
+/* ─── TRONCO ─── */
+.tronco-svg {
+  fill: #5c3a26;
+  transition: fill 0.6s ease, filter 0.6s ease;
+}
+.tronco-svg.invierno {
+  filter: brightness(0.65) saturate(0.5);
 }
 
-/* ==========================================================================
-   RAMAS
-   ========================================================================== */
-.rama {
-  position: absolute;
-  background: linear-gradient(to top, #4a2e1a, #5c3a26);
-  border-radius: 5px;
-  z-index: 2;
-  transition: opacity 0.6s ease, filter 0.6s ease;
+/* ─── RAMAS ─── */
+.rama-svg {
+  stroke: #5c3a26;
+  stroke-width: 7;
+  stroke-linecap: round;
+  fill: none;
+  transition: stroke 0.6s ease, filter 0.6s ease;
 }
-.rama-izq {
-  width: 15px;
-  height: 62px;
-  bottom: 112px;
-  left: 118px;
-  transform: rotate(-38deg);
-  transform-origin: bottom center;
+.rama-svg.rama-baja {
+  stroke-width: 5;
 }
-.rama-der {
-  width: 13px;
-  height: 58px;
-  bottom: 128px;
-  right: 118px;
-  transform: rotate(42deg);
-  transform-origin: bottom center;
-}
-.rama-izq-baja {
-  width: 11px;
-  height: 42px;
-  bottom: 80px;
-  left: 128px;
-  transform: rotate(-55deg);
-  transform-origin: bottom center;
-}
-.rama-der-baja {
-  width: 10px;
-  height: 38px;
-  bottom: 90px;
-  right: 130px;
-  transform: rotate(50deg);
-  transform-origin: bottom center;
+.rama-svg.invierno {
+  filter: brightness(0.6) saturate(0.4);
 }
 
-/* ==========================================================================
-   COPAS DE HOJAS — Capas circulares voluminosas (estilo Steven Universe)
-   ========================================================================== */
-.copa-hojas {
-  position: absolute;
-  border-radius: 50%;
-  z-index: 4;
-  transition:
-    background 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
-    box-shadow 0.7s ease;
-}
-
-.hojas-capas {
-  width: 160px;
-  height: 160px;
-  top: 8px;
-  left: 50px;
-}
-.hojas-capacentro {
-  width: 185px;
-  height: 185px;
-  top: -20px;
-  left: 80px;
-}
-.hojas-capafrente {
-  width: 145px;
-  height: 145px;
-  top: 28px;
-  right: 50px;
-}
-
-/* ==========================================================================
-   SUELO / CÉSPED
-   ========================================================================== */
-.suelo {
-  position: absolute;
-  bottom: 0;
-  left: 50%;
-  transform: translateX(-50%);
-  width: 300px;
-  height: 24px;
-  background: #232d1a;
-  border-radius: 50% / 100% 100% 0 0;
-  z-index: 1;
-  transition: background 0.7s ease, box-shadow 0.7s ease;
-}
-
-/* ==========================================================================
-   FLORES — Solo primavera
-   ========================================================================== */
-.capa-flores {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 6;
-  opacity: 0;
+/* ─── HOJAS (círculos de copa) ─── */
+.hoja-svg {
   transition: opacity 0.7s ease;
 }
 
-.flor {
-  position: absolute;
-  border-radius: 50%;
-  width: 14px;
-  height: 14px;
-  box-shadow:
-    0 0 6px rgba(255, 150, 180, 0.5),
-    inset 0 -2px 3px rgba(255, 100, 150, 0.3);
+/* ─── FLORES ─── */
+.flor-grupo {
+  opacity: 1;
+}
+.petalo {
+  filter: drop-shadow(0 0 2px rgba(255, 150, 180, 0.4));
+}
+.centro-flor {
+  filter: drop-shadow(0 0 3px rgba(255, 200, 0, 0.5));
 }
 
-.f1 { top: 38px; left: 108px; background: radial-gradient(circle at 40% 35%, #ffd6e8, #ff80ab); }
-.f2 { top: 12px; left: 168px; background: radial-gradient(circle at 40% 35%, #ffe0ec, #ff6fa8); }
-.f3 { top: 55px; left: 222px; background: radial-gradient(circle at 40% 35%, #ffd6e8, #ff80ab); }
-.f4 { top: 85px; left: 138px; background: radial-gradient(circle at 40% 35%, #ffe8f0, #ff90bb); }
-.f5 { top: 48px; left: 182px; background: radial-gradient(circle at 40% 35%, #ffd6e8, #ff6fa8); }
-.f6 { top: 25px; left: 132px; background: radial-gradient(circle at 40% 35%, #ffe0ec, #ff80ab); }
-.f7 { top: 65px; left: 198px; background: radial-gradient(circle at 40% 35%, #ffd6e8, #ff90bb); }
+/* ─── HOJAS SUELO ─── */
+.hoja-suelo-svg {
+  opacity: 0.85;
+}
+
+/* ─── NIEVE ─── */
+.nieve-svg {
+  filter: drop-shadow(0 1px 3px rgba(180, 200, 230, 0.3));
+}
+
+/* ─── SUELO ─── */
+.suelo-svg {
+  transition: fill 0.7s ease, filter 0.7s ease;
+}
 
 /* ==========================================================================
-   HOJAS CAÍDAS — Solo otoño
-   ========================================================================== */
-.capa-hojas-suelo {
-  position: absolute;
-  width: 100%;
-  height: 100%;
-  top: 0;
-  left: 0;
-  pointer-events: none;
-  z-index: 5;
-  opacity: 0;
-  transition: opacity 0.7s ease;
-}
-
-.hoja-suelo {
-  position: absolute;
-  bottom: 10px;
-  border-radius: 50% 0 50% 0;
-  width: 13px;
-  height: 8px;
-  z-index: 5;
-}
-
-.hs1 { left: 85px; transform: rotate(18deg); }
-.hs2 { left: 125px; transform: rotate(-12deg); }
-.hs3 { left: 175px; transform: rotate(40deg); }
-.hs4 { right: 90px; transform: rotate(-25deg); }
-.hs5 { right: 120px; transform: rotate(55deg); }
-.hs6 { left: 155px; transform: rotate(-40deg); }
-
-/* ==========================================================================
-   LAS 4 ESTACIONES — Estilo Steven Universe (colores voluminosos)
+   LAS 4 ESTACIONES — Paletas SVG
    ========================================================================== */
 
 /* ─── VERANO ─── */
-.verano .copa-hojas { opacity: 1; transform: scale(1); }
-.verano .hojas-capas {
-  background: radial-gradient(circle at 45% 40%, #2e9e28, #1a6b14);
-  box-shadow: 0 8px 30px rgba(30, 120, 20, 0.35);
-}
-.verano .hojas-capacentro {
-  background: radial-gradient(circle at 50% 45%, #43b840, #278522);
-  box-shadow: 0 10px 40px rgba(40, 140, 30, 0.4);
-}
-.verano .hojas-capafrente {
-  background: radial-gradient(circle at 55% 40%, #5ec95a, #36a032);
-  box-shadow: 0 6px 25px rgba(50, 150, 40, 0.3);
-}
-.verano .suelo {
-  background: linear-gradient(to top, #1c4a12, #2d6e1f);
-  box-shadow: 0 -4px 12px rgba(35, 100, 20, 0.25);
-}
+.suelo-svg.verano { fill: #1c4a12; }
+.tronco-svg.verano { fill: #5c3a26; }
+.rama-svg.verano { stroke: #5c3a26; }
 
 /* ─── PRIMAVERA ─── */
-.primavera .copa-hojas { opacity: 1; transform: scale(1); }
-.primavera .hojas-capas {
-  background: radial-gradient(circle at 45% 40%, #2a8c24, #17610f);
-  box-shadow: 0 8px 28px rgba(25, 110, 18, 0.3);
-}
-.primavera .hojas-capacentro {
-  background: radial-gradient(circle at 50% 45%, #3baa37, #1f7a1b);
-  box-shadow: 0 10px 36px rgba(35, 130, 25, 0.35);
-}
-.primavera .hojas-capafrente {
-  background: radial-gradient(circle at 55% 40%, #4fc04b, #2d9428);
-  box-shadow: 0 6px 22px rgba(45, 140, 35, 0.28);
-}
-.primavera .suelo {
-  background: linear-gradient(to top, #1a3e10, #2a6018);
-  box-shadow: 0 -4px 10px rgba(30, 90, 18, 0.2);
-}
-.primavera .capa-flores { opacity: 1; }
+.suelo-svg.primavera { fill: #1a3e10; }
+.tronco-svg.primavera { fill: #5c3a26; }
+.rama-svg.primavera { stroke: #5c3a26; }
 
 /* ─── OTOÑO ─── */
-.otono .copa-hojas { opacity: 1; transform: scale(0.82); }
-.otono .hojas-capas {
-  background: radial-gradient(circle at 45% 40%, #8b3a00, #6e2e00);
-  box-shadow: 0 6px 24px rgba(140, 50, 0, 0.3);
-}
-.otono .hojas-capacentro {
-  background: radial-gradient(circle at 50% 45%, #cc5500, #a84400);
-  box-shadow: 0 8px 32px rgba(200, 70, 0, 0.35);
-}
-.otono .hojas-capafrente {
-  background: radial-gradient(circle at 55% 40%, #e07818, #c46200);
-  box-shadow: 0 5px 20px rgba(220, 100, 20, 0.28);
-}
-.otono .suelo {
-  background: linear-gradient(to top, #3d2b14, #5a3f20);
-  box-shadow: 0 -4px 10px rgba(80, 50, 20, 0.2);
-}
-.otono .capa-hojas-suelo { opacity: 1; }
-.otono .hs1 { background: linear-gradient(135deg, #cc5500, #a84400); }
-.otono .hs2 { background: linear-gradient(135deg, #8b3a00, #6e2e00); }
-.otono .hs3 { background: linear-gradient(135deg, #e07818, #c46200); }
-.otono .hs4 { background: linear-gradient(135deg, #d94f00, #b84000); }
-.otono .hs5 { background: linear-gradient(135deg, #cc5500, #a84400); }
-.otono .hs6 { background: linear-gradient(135deg, #e07818, #8b3a00); }
+.suelo-svg.otono { fill: #3d2b14; }
+.tronco-svg.otono { fill: #4a2e1a; }
+.rama-svg.otono { stroke: #4a2e1a; }
 
 /* ─── INVIERNO ─── */
-.invierno .copa-hojas { opacity: 0; transform: scale(0); }
-.invierno .suelo {
-  background: linear-gradient(to top, #2c3340, #3a4455);
-  box-shadow: 0 -6px 18px rgba(80, 100, 130, 0.15);
-}
-.invierno .gran-tronco { filter: brightness(0.7) saturate(0.5); }
-.invierno .rama { filter: brightness(0.65) saturate(0.45); }
+.suelo-svg.invierno { fill: #c8d4e0; }
+.tronco-svg.invierno { fill: #3b2820; }
+.rama-svg.invierno { stroke: #3b2820; }
 
 /* ==========================================================================
    PANEL INFERIOR — Layout flex de 3 columnas
@@ -311,9 +132,7 @@
   font-family: 'Courier New', monospace;
 }
 
-/* ==========================================================================
-   SECCIÓN CALENDARIO (izquierda)
-   ========================================================================== */
+/* ─── SECCIÓN CALENDARIO ─── */
 .seccion-calendario {
   flex: 1;
   min-width: 0;
@@ -353,9 +172,7 @@
   text-transform: capitalize;
 }
 
-/* ==========================================================================
-   CONTROLES MANUALES DE FECHA — Cyberpunk / Neón
-   ========================================================================== */
+/* ─── CONTROLES MANUALES ─── */
 .fecha-controles {
   display: flex;
   align-items: flex-end;
@@ -384,7 +201,6 @@
   gap: 4px;
 }
 
-/* Botón neón + / − */
 .btn-neon {
   width: 30px;
   height: 30px;
@@ -420,7 +236,6 @@
   box-shadow: 0 0 16px rgba(0, 229, 204, 0.5);
 }
 
-/* Input fecha nativo estilizado */
 .ctrl-datepick {
   margin-left: 4px;
 }
@@ -455,9 +270,7 @@
   cursor: pointer;
 }
 
-/* ==========================================================================
-   TOGGLE SWITCH — Cyberpunk / Neón
-   ========================================================================== */
+/* ─── TOGGLE SWITCH ─── */
 .seccion-toggle {
   display: flex;
   flex-direction: column;
@@ -522,9 +335,7 @@
   text-shadow: 0 0 6px rgba(0, 229, 204, 0.3);
 }
 
-/* ==========================================================================
-   SECCIÓN RELOJ (derecha)
-   ========================================================================== */
+/* ─── SECCIÓN RELOJ ─── */
 .seccion-hora-simulada {
   text-align: right;
   flex-shrink: 0;
