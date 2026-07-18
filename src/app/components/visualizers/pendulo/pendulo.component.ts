@@ -10,10 +10,13 @@ import { CommonModule } from '@angular/common';
 })
 export class PenduloComponent {
   horaSimulada: Date = new Date();
-  
+
   anguloIzquierdo = 0;
   anguloDerecho = 0;
   intensidadImpacto = 0;
+
+  private readonly MAX_ANGULO = 35;
+  private readonly DURACION_CICLO = 2;
 
   @Input() set currentTime(date: Date | null | undefined) {
     if (date) {
@@ -23,29 +26,26 @@ export class PenduloComponent {
   }
 
   private calcularFisicas(fecha: Date) {
-    const segundos = fecha.getSeconds();
-    const milisegundos = fecha.getMilliseconds();
-    
-    // Convertimos el tiempo a una línea continua con decimales
-    const t = segundos + (milisegundos / 1000);
-    
-    // Un ciclo completo del péndulo dura 2 segundos (1s izq, 1s der)
-    const ciclo = t % 2; 
+    const t = fecha.getSeconds() + fecha.getMilliseconds() / 1000;
+    const ciclo = t % this.DURACION_CICLO;
 
-    // Calculamos el arco de la oscilación usando la función matemática Seno
+    // Potencia < 1 → la curva se aplana en los extremos (lento arriba)
+    // y se empina en el centro (rápido abajo). Simula aceleración por gravedad.
+    const CURVA_GRAVEDAD = 0.7;
+
     if (ciclo < 1) {
-      // Movimiento de la esfera izquierda (del segundo 0 al 1)
-      this.anguloIzquierdo = Math.sin(ciclo * Math.PI) * 35; // 35 grados de inclinación máx.
+      const seno = Math.sin(ciclo * Math.PI);
+      this.anguloIzquierdo = Math.pow(seno, CURVA_GRAVEDAD) * this.MAX_ANGULO;
       this.anguloDerecho = 0;
     } else {
-      // Movimiento de la esfera derecha (del segundo 1 al 2)
+      const seno = Math.sin((ciclo - 1) * Math.PI);
+      this.anguloDerecho = -Math.pow(seno, CURVA_GRAVEDAD) * this.MAX_ANGULO;
       this.anguloIzquierdo = 0;
-      this.anguloDerecho = -Math.sin((ciclo - 1) * Math.PI) * 35;
     }
 
-    // Calculamos el destello de energía en el centro justo en el momento del choque.
-    // El choque ocurre exactamente en los segundos enteros (0.0, 1.0, 2.0...).
-    // Usamos Coseno elevado a una potencia alta para crear un pico brusco de luz.
-    this.intensidadImpacto = Math.pow(Math.max(0, Math.cos(t * Math.PI)), 12);
+    // Flash de impacto: pico agudo en los bordes del ciclo (0s, 1s, 2s...)
+    // cos(t·π) alcanza máximo exacto en cada entero; exponente alto = flash breve
+    const coseno = Math.cos(t * Math.PI);
+    this.intensidadImpacto = Math.pow(Math.max(0, coseno), 14);
   }
 }
