@@ -128,8 +128,6 @@ import { AuthService } from '../../services/auth.service';
     </div>
   `,
   styles: [`
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700;900&family=Inter:wght@300;400;500&display=swap');
-
     /* ===== FONDO ===== */
     .auth-bg {
       min-height: 100vh;

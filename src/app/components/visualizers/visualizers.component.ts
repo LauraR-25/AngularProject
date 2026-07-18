@@ -48,8 +48,6 @@ import { TimeSimulatorService, CelestialState } from '../../services/time-simula
     </div>
   `,
   styles: [`
-    @import url('https://fonts.googleapis.com/css2?family=Orbitron:wght@400;700&display=swap');
-
     :host { display: block; width: 100%; height: 100%; }
 
     .sky-wrapper {
