@@ -7,7 +7,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { VisualizersComponent } from './components/visualizers/visualizers.component';
 import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visualizer.component';
 import { DetroitVisualizerComponent } from './components/visualizers/detroit/detroit-visualizer.component';
-import { MeltingCandleComponent } from './components/visualizers/candle/melting-candle.component';
+import { VelaComponent } from './components/visualizers/vela/vela.component';
 import { SuVisualizerComponent } from './components/visualizers/su/su-visualizer.component';
 import { HourglassVisualizerComponent } from './components/visualizers/hourglass/hourglass-visualizer.component';
 import { AppleWatchComponent } from './components/visualizers/watch/apple-watch.component';
@@ -16,8 +16,20 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, MeltingCandleComponent, MlpVisualizerComponent, DetroitVisualizerComponent, SuVisualizerComponent, HourglassVisualizerComponent, AppleWatchComponent, MechanicalClockComponent],
-  template: `   
+  imports: [
+    CommonModule,
+    FormsModule,
+    AuthComponent,
+    VisualizersComponent,
+    VelaComponent,
+    MlpVisualizerComponent,
+    DetroitVisualizerComponent,
+    SuVisualizerComponent,
+    HourglassVisualizerComponent,
+    AppleWatchComponent,
+    MechanicalClockComponent
+  ],
+  template: `
     <div class="app-shell">
       @if (!(authService.authStatus$ | async)) {
         <!-- ===== VISTA: AUTH ===== -->
@@ -52,6 +64,12 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                 <button
                   type="button"
                   class="mode-item"
+                  [class.active]="currentMode === 'vela'"
+                  (click)="changeMode('vela')"
+                >Vela de Tiempo</button>
+                <button
+                  type="button"
+                  class="mode-item"
                   [class.active]="currentMode === 'mlp'"
                   (click)="changeMode('mlp')"
                 >My Little Pony</button>
@@ -61,12 +79,6 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                   [class.active]="currentMode === 'detroit'"
                   (click)="changeMode('detroit')"
                 >Detroit: Become Human</button>
-                <button
-                  type="button"
-                  class="mode-item"
-                  [class.active]="currentMode === 'candle'"
-                  (click)="changeMode('candle')"
-                >Vela de Tiempo</button>
                 <button
                   type="button"
                   class="mode-item"
@@ -132,16 +144,14 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
             <!-- Visualizador -->
             <section class="visualizer-stage">
               @switch (currentMode) {
+                @case ('vela') {
+                  <app-vela [currentTime]="(timeService.currentTime$ | async)"></app-vela>
+                }
                 @case ('mlp') {
                   <app-mlp-visualizer></app-mlp-visualizer>
                 }
                 @case ('detroit') {
                   <app-detroit-visualizer></app-detroit-visualizer>
-                }
-                @case ('candle') {
-                  @if (timeService.currentTime$ | async; as candleTime) {
-                    <app-melting-candle [currentTime]="candleTime"></app-melting-candle>
-                  }
                 }
                 @case ('su') {
                   @if (timeService.currentTime$ | async; as suTime) {
@@ -417,17 +427,19 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
       font-weight: 700;
       color: #888;
     }
-    .sim-info-value.highlight-yellow { color: #ffd60a; }
 
-    /* ===== ESCENARIO DEL VISUALIZADOR ===== */
+    /* ===== ESCENARIO DEL VISUALIZADOR (centrado y flexible) ===== */
     .visualizer-stage {
       flex: 1;
       overflow: hidden;
       position: relative;
+      display: flex;
+      align-items: center;
+      justify-content: center;
     }
+    .visualizer-stage app-vela,
     .visualizer-stage app-mlp-visualizer,
     .visualizer-stage app-detroit-visualizer,
-    .visualizer-stage app-melting-candle,
     .visualizer-stage app-su-visualizer,
     .visualizer-stage app-hourglass-visualizer,
     .visualizer-stage app-apple-watch,
@@ -443,7 +455,7 @@ export class AppComponent {
   timeService = inject(TimeService);
   authService = inject(AuthService);
 
-  currentMode: string = 'mlp'; // Por defecto inicia en My Little Pony
+  currentMode: string = 'vela'; // Por defecto inicia en la Vela de Tiempo
   timeOffset: number = 0;
   realTime = new Date();
 

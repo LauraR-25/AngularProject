@@ -1,0 +1,29 @@
+<div class="escenario-vela">
+  <div class="contenedor-vela">
+    
+    <!-- Candelabro antiguo de bronce -->
+    <div class="candelabro">
+      <div class="candelabro-tope"></div>
+      <div class="candelabro-base"></div>
+    </div>
+
+    <!-- Cuerpo de la vela (Altura controlada dinámicamente desde el TS) -->
+    <div class="cuerpo-vela" [style.height.px]="alturaVelaPx">
+      
+      <!-- Aura luminosa ambiental -->
+      <div class="resplandor-llama"></div>
+      
+      <!-- Llama animada -->
+      <div class="llama"></div>
+      
+      <!-- Pabilo / Hilo negro -->
+      <div class="pabilo"></div>
+
+      <!-- Gotas decorativas de cera derretida -->
+      <div class="gota-cera gota-izquierda"></div>
+      <div class="gota-cera gota-derecha"></div>
+      
+    </div>
+
+  </div>
+</div>
