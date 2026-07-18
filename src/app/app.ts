@@ -9,7 +9,7 @@ import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visuali
 import { DetroitVisualizerComponent } from './components/visualizers/detroit/detroit-visualizer.component';
 import { VelaComponent } from './components/visualizers/vela/vela.component';
 import { ArbolComponent } from './components/visualizers/arbol/arbol.component';
-import { HourglassVisualizerComponent } from './components/visualizers/hourglass/hourglass-visualizer.component';
+import { PenduloComponent } from './components/visualizers/pendulo/pendulo.component';
 import { AppleWatchComponent } from './components/visualizers/watch/apple-watch.component';
 import { MechanicalClockComponent } from './components/visualizers/mechanical/mechanical-clock.component';
 import { EcualizadorComponent } from './components/visualizers/ecualizador/ecualizador.component';
@@ -28,7 +28,7 @@ import { BarcodeComponent } from './components/visualizers/barcode/barcode.compo
     MlpVisualizerComponent,
     DetroitVisualizerComponent,
     ArbolComponent,
-    HourglassVisualizerComponent,
+    PenduloComponent,
     AppleWatchComponent,
     MechanicalClockComponent,
     EcualizadorComponent,
@@ -88,9 +88,9 @@ import { BarcodeComponent } from './components/visualizers/barcode/barcode.compo
                 <button
                   type="button"
                   class="mode-item"
-                  [class.active]="currentMode === 'hourglass'"
-                  (click)="changeMode('hourglass')"
-                >Reloj de Arena</button>
+                  [class.active]="currentMode === 'pendulo'"
+                  (click)="changeMode('pendulo')"
+                >Péndulo de Newton</button>
                 <button
                   type="button"
                   class="mode-item"
@@ -182,10 +182,8 @@ import { BarcodeComponent } from './components/visualizers/barcode/barcode.compo
                     <app-arbol [currentTime]="arbolTime"></app-arbol>
                   }
                 }
-                @case ('hourglass') {
-                  @if (timeService.currentTime$ | async; as hgTime) {
-                    <app-hourglass-visualizer [currentTime]="hgTime"></app-hourglass-visualizer>
-                  }
+                @case ('pendulo') {
+                  <app-pendulo [currentTime]="(timeService.currentTime$ | async)"></app-pendulo>
                 }
                 @case ('watch') {
                   @if (timeService.currentTime$ | async; as watchTime) {
@@ -473,7 +471,7 @@ import { BarcodeComponent } from './components/visualizers/barcode/barcode.compo
     .visualizer-stage app-vela,
     .visualizer-stage app-mlp-visualizer,
     .visualizer-stage app-detroit-visualizer,
-    .visualizer-stage app-hourglass-visualizer,
+    .visualizer-stage app-pendulo,
     .visualizer-stage app-apple-watch,
     .visualizer-stage app-mechanical-clock,
     .visualizer-stage app-arbol,

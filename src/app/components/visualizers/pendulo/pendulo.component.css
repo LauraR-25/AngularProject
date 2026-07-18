@@ -1,0 +1,94 @@
+.escenario-pendulo {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+  background: radial-gradient(circle at center, #0a0a0f 0%, #000000 100%);
+}
+
+.contenedor-pendulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+}
+
+/* ==========================================================================
+   ESTRUCTURA DEL PÉNDULO
+   ========================================================================== */
+.barra-soporte {
+  width: 280px;
+  height: 8px;
+  background: #1a1a24;
+  border-radius: 4px;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.8), inset 0 1px 1px rgba(255, 255, 255, 0.05);
+  z-index: 2;
+  margin-bottom: -4px; /* Oculta el inicio del hilo para que nazca de adentro */
+}
+
+.sistema-esferas {
+  display: flex;
+  justify-content: center;
+  height: 240px; /* Longitud total de los hilos */
+}
+
+.pendulo {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: 46px; /* Define la distancia perfecta para que se toquen sin atravesarse */
+  transform-origin: top center;
+}
+
+.hilo {
+  width: 1.5px;
+  height: 194px;
+  background: rgba(0, 229, 255, 0.2);
+}
+
+/* ==========================================================================
+   ESFERAS Y SUS ESTADOS
+   ========================================================================== */
+.esfera {
+  width: 46px;
+  height: 46px;
+  border-radius: 50%;
+  /* Azul base plano y elegante */
+  background: radial-gradient(circle at 35% 35%, #00e5ff, #005577);
+  box-shadow: inset -4px -4px 10px rgba(0, 0, 0, 0.6), 0 5px 12px rgba(0, 0, 0, 0.4);
+  transition: background 0.15s ease;
+}
+
+/* Estado: Cuando la esfera de los extremos está volando/moviéndose */
+.esfera.esfera-activa {
+  background: radial-gradient(circle at 35% 35%, #ff00ff, #770077);
+  box-shadow: inset -4px -4px 10px rgba(0, 0, 0, 0.6), 0 0 18px rgba(255, 0, 255, 0.6);
+}
+
+/* Estado: Las esferas del centro que reciben la onda de impacto */
+.esfera-central {
+  background: radial-gradient(circle at 35% 35%, #ff00ff, #550055);
+}
+
+/* ==========================================================================
+   BASE INFERIOR
+   ========================================================================== */
+.base-digital {
+  margin-top: 40px;
+  padding: 12px 35px;
+  background: #090e0a;
+  border: 1px solid rgba(0, 229, 255, 0.15);
+  border-radius: 8px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+.tiempo-texto {
+  font-family: monospace;
+  font-size: 24px;
+  color: #00e5ff;
+  text-shadow: 0 0 8px rgba(0, 229, 255, 0.4);
+  letter-spacing: 2px;
+}

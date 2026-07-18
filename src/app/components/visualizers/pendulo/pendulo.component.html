@@ -1,0 +1,47 @@
+<div class="escenario-pendulo">
+  <div class="contenedor-pendulo">
+    
+    <!-- Soporte superior -->
+    <div class="barra-soporte"></div>
+
+    <div class="sistema-esferas">
+      <!-- Esfera 1 (Izquierda oscilante) -->
+      <div class="pendulo" [style.transform]="'rotate(' + anguloIzquierdo + 'deg)'">
+        <div class="hilo"></div>
+        <div class="esfera" [class.esfera-activa]="anguloIzquierdo > 0"></div>
+      </div>
+
+      <!-- Esferas Centrales (Transmisoras de energía) -->
+      <!-- Su opacidad y resplandor brillan con la intensidad calculada en el TS -->
+      <div class="pendulo">
+        <div class="hilo"></div>
+        <div class="esfera esfera-central" [style.opacity]="0.3 + (intensidadImpacto * 0.7)"></div>
+      </div>
+      
+      <div class="pendulo">
+        <div class="hilo"></div>
+        <div class="esfera esfera-central" 
+             [style.opacity]="0.3 + (intensidadImpacto * 0.7)"
+             [style.box-shadow]="'0 0 ' + (intensidadImpacto * 20) + 'px #ff00ff'">
+        </div>
+      </div>
+      
+      <div class="pendulo">
+        <div class="hilo"></div>
+        <div class="esfera esfera-central" [style.opacity]="0.3 + (intensidadImpacto * 0.7)"></div>
+      </div>
+
+      <!-- Esfera 5 (Derecha oscilante) -->
+      <div class="pendulo" [style.transform]="'rotate(' + anguloDerecho + 'deg)'">
+        <div class="hilo"></div>
+        <div class="esfera" [class.esfera-activa]="anguloDerecho < 0"></div>
+      </div>
+    </div>
+    
+    <!-- Reloj Digital Minimalista en la Base -->
+    <div class="base-digital">
+      <span class="tiempo-texto">{{ horaSimulada | date:'HH:mm:ss' }}</span>
+    </div>
+
+  </div>
+</div>
