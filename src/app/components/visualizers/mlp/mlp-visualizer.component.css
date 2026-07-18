@@ -22,14 +22,17 @@
 }
 
 /* ==========================================================================
-   ASTROS — Sol y Luna en arco orbital
+   CAPA1: CIELO — z-index:1 (estrellas fijas y astros)
    ========================================================================== */
+
+/* ─── ASTROS — descenso vertical en lateral izquierdo ─── */
 .astro {
   position: absolute;
+  left: 8%;
   transform: translate(-50%, -50%);
-  z-index: 5;
+  z-index: 1;
   pointer-events: none;
-  transition: left 0.4s linear, top 0.4s linear, opacity 1.5s ease-in-out;
+  transition: top 0.5s linear, opacity 1.5s ease-in-out;
 }
 
 /* ─── SOL ─── */
@@ -60,7 +63,7 @@
 /* ─── LUNA ─── */
 .luna {
   opacity: 0;
-  transition: left 0.4s linear, top 0.4s linear, opacity 2s ease-in-out;
+  transition: top 0.5s linear, opacity 2s ease-in-out;
 }
 
 .mlp-scene.noche .luna {
@@ -87,15 +90,14 @@
   animation: pulsoLuna 4s ease-in-out infinite alternate;
 }
 
-/* ==========================================================================
-   ESTRELLAS
-   ========================================================================== */
+/* ─── ESTRELLAS FIJAS — puntos diminutos (1-2px) SOLO en lateral izquierdo ─── */
 .stars-layer {
   position: absolute;
-  inset: 0;
-  width: 100%;
+  top: 0;
+  left: 0;
+  width: 45%;
   height: 100%;
-  z-index: 1;
+  z-index: 1;          /* capa más profunda del cielo */
   pointer-events: none;
   opacity: 0;
   transition: opacity 2s ease-in-out;
@@ -105,51 +107,21 @@
   opacity: 1;
 }
 
-.estrella {
+/* Punto de estrella real: círculo de 1-2px, sin destellos ni formas complejas */
+.estrella-punto {
+  position: absolute;
+  border-radius: 50%;
+  background: #ffffff;
+  box-shadow: 0 0 2px rgba(255, 255, 255, 0.8);
+  z-index: 1;
   animation: parpadeoEstrella 3s ease-in-out infinite alternate;
 }
 
-/* ─── Estrellas fugaces ─── */
-.shooting-stars-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 1;
-  pointer-events: none;
-  opacity: 0;
-  transition: opacity 2s ease-in-out;
-}
-
-.mlp-scene.noche .shooting-stars-layer {
-  opacity: 1;
-}
-
-.estrella-fugaz {
-  opacity: 0;
-  animation: disparoEstrella 1.5s ease-in infinite;
-}
-
 /* ==========================================================================
-   NUBES
+   CAPA2: IMÁGENES — z-index:10 (castillo y princesas por encima del cielo)
    ========================================================================== */
-.clouds-layer {
-  position: absolute;
-  inset: 0;
-  width: 100%;
-  height: 100%;
-  z-index: 4;
-  pointer-events: none;
-  transition: opacity 1.5s ease-in-out;
-}
 
-.nube-grupo {
-  animation: derivaNube 20s ease-in-out infinite alternate;
-}
-
-/* ==========================================================================
-   CASTILLO
-   ========================================================================== */
+/* ─── CASTILLO ─── */
 .castle-layer {
   position: absolute;
   top: 0;
@@ -159,7 +131,7 @@
   display: flex;
   justify-content: flex-end;
   align-items: flex-end;
-  z-index: 2;
+  z-index: 10;
   pointer-events: none;
 }
 
@@ -182,16 +154,14 @@
   filter: brightness(0.35) saturate(0.6) hue-rotate(200deg);
 }
 
-/* ==========================================================================
-   PRINCESAS — Transición suave: opacity + scale + translateY
-   ========================================================================== */
+/* ─── PRINCESAS — transición suave: opacity + scale + translateY ─── */
 .princess-layer {
   position: absolute;
   bottom: -20px;
   right: -20px;
   width: 500px;
   height: 500px;
-  z-index: 3;
+  z-index: 10;
   pointer-events: none;
 }
 
@@ -307,17 +277,4 @@
   0% { opacity: 0.3; }
   50% { opacity: 1; }
   100% { opacity: 0.5; }
-}
-
-@keyframes disparoEstrella {
-  0% { opacity: 0; stroke-dashoffset: 30; }
-  5% { opacity: 1; }
-  15% { opacity: 1; stroke-dashoffset: 0; }
-  20% { opacity: 0; }
-  100% { opacity: 0; }
-}
-
-@keyframes derivaNube {
-  0% { transform: translateX(0); }
-  100% { transform: translateX(4px); }
 }

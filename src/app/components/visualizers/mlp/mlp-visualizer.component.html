@@ -1,50 +1,38 @@
 <div class="mlp-scene" [ngClass]="phase" [style.background]="skyGradient">
 
-  <!-- ESTRELLAS (capa de fondo, solo de noche) -->
-  <svg *ngIf="showStars" class="stars-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <circle *ngFor="let est of estrellas; trackBy: trackByIndex"
-            [attr.cx]="est.cx" [attr.cy]="est.cy" [attr.r]="est.r"
-            fill="#ffffff" [attr.opacity]="est.opacidad" class="estrella"/>
-  </svg>
+  <!-- ═══════════════════════════════════════════════════════════════
+       CAPA1: CIELO — z-index:1 (estrellas, astros, nubes)
+       ═══════════════════════════════════════════════════════════════ -->
 
-  <!-- ESTRELLAS FUGACES -->
-  <svg *ngIf="showStars" class="shooting-stars-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <line *ngFor="let f of estrellasFugaces; trackBy: trackByIndex"
-          [attr.x1]="f.x1" [attr.y1]="f.y1"
-          [attr.x2]="f.x2" [attr.y2]="f.y2"
-          stroke="#ffffff" stroke-width="0.3" stroke-linecap="round"
-          class="estrella-fugaz"
-          [style.animation-duration]="f.duracion + 's'"
-          [style.animation-delay]="f.retraso + 's'"/>
-  </svg>
+  <!-- ESTRELLAS — puntos diminutos (1-2px) esparcidos SOLO en lateral izquierdo -->
+  <div *ngIf="showStars" class="stars-layer">
+    <span *ngFor="let est of estrellas; trackBy: trackByIndex"
+          class="estrella-punto"
+          [style.left.%]="est.cx"
+          [style.top.%]="est.cy"
+          [style.opacity]="est.opacidad"
+          [style.width.px]="est.r > 0.5 ? 2 : 1"
+          [style.height.px]="est.r > 0.5 ? 2 : 1"
+          [style.animation-delay]="(est.cy * 0.1) + 's'"></span>
+  </div>
 
-  <!-- SOL (arco orbital diurno) -->
+  <!-- SOL — descenso vertical en lateral izquierdo -->
   <div *ngIf="sunVisible" class="astro sol"
-       [style.left.%]="sunX"
        [style.top.%]="sunY">
     <div class="sol-cuerpo"></div>
     <div class="sol-brillo"></div>
   </div>
 
-  <!-- LUNA (arco orbital nocturno) -->
+  <!-- LUNA — descenso vertical en lateral izquierdo -->
   <div *ngIf="moonVisible" class="astro luna"
-       [style.left.%]="moonX"
        [style.top.%]="moonY">
     <div class="luna-cuerpo"></div>
     <div class="luna-brillo"></div>
   </div>
 
-  <!-- NUBES (SVG flotantes) -->
-  <svg class="clouds-layer" viewBox="0 0 100 100" preserveAspectRatio="none">
-    <g *ngFor="let nube of nubes; trackBy: trackByIndex"
-       class="nube-grupo"
-       [style.animation-delay]="(nube.cx * 0.3) + 's'"
-       [attr.transform]="'translate(' + nube.cx + ',' + nube.cy + ') scale(' + nube.scale + ')'">
-      <ellipse cx="0" cy="0" rx="8" ry="4" [attr.fill]="cloudColor" [attr.opacity]="nube.opacity * cloudOpacity"/>
-      <ellipse cx="-5" cy="1" rx="5" ry="3" [attr.fill]="cloudColor" [attr.opacity]="nube.opacity * cloudOpacity"/>
-      <ellipse cx="5" cy="0.5" rx="6" ry="3.5" [attr.fill]="cloudColor" [attr.opacity]="nube.opacity * cloudOpacity"/>
-    </g>
-  </svg>
+  <!-- ═══════════════════════════════════════════════════════════════
+       CAPA2: IMÁGENES — z-index:10 (castillo y princesas por encima)
+       ═══════════════════════════════════════════════════════════════ -->
 
   <!-- CASTILLO -->
   <div class="castle-layer">
