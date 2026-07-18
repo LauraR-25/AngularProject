@@ -1,0 +1,169 @@
+.escenario-radar {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.pantalla-radar {
+  position: relative;
+  width: 320px;
+  height: 320px;
+  background: radial-gradient(circle, #02140a 0%, #000000 100%);
+  border: 2px solid #00ff6633;
+  border-radius: 50%;
+  box-shadow: 0 0 20px rgba(0, 255, 102, 0.1);
+  margin-top: 15px;
+  overflow: hidden;
+}
+
+/* ==========================================================================
+   LÍNEA DE BARRIDO PRINCIPAL
+   ========================================================================== */
+.linea-barrido {
+  position: absolute;
+  width: 50%;
+  height: 50%;
+  top: 0;
+  left: 50%;
+  transform-origin: bottom left;
+  /* Crea el efecto de haz de luz desvanecido */
+  background: linear-gradient(30deg, rgba(0, 255, 102, 0.25) 0%, rgba(0, 255, 102, 0) 60%);
+  border-left: 1.5px solid #00ff66;
+  z-index: 5;
+  pointer-events: none;
+}
+
+/* ==========================================================================
+   SISTEMA DE ÓRBITAS Y NODOS PLANETARIOS
+   ========================================================================== */
+.orbita {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border: 1px dashed rgba(0, 255, 102, 0.15);
+  border-radius: 50%;
+}
+
+.orbita-horas { width: 120px; height: 120px; }
+.orbita-minutos { width: 200px; height: 200px; }
+.orbita-segundos { width: 280px; height: 280px; }
+
+/* Contenedor invisible que rota desde el centro del radar */
+.contenedor-nodo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  transform-origin: center center;
+  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+}
+
+/* Los pequeños planetas del tiempo */
+.nodo {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 12px currentcolor;
+}
+
+.nodo-horas {
+  width: 18px;
+  height: 18px;
+  background: #00ff66;
+  color: #000;
+}
+
+.nodo-minutos {
+  width: 14px;
+  height: 14px;
+  background: #00e5ff;
+  color: #000;
+}
+
+.nodo-segundos {
+  width: 10px;
+  height: 10px;
+  background: #ff0055;
+  color: transparent; /* No muestra texto por ser muy pequeño */
+}
+
+.hud-nodo {
+  font-family: monospace;
+  font-size: 9px;
+  font-weight: bold;
+}
+
+/* ==========================================================================
+   RETÍCULA TÁCTICA DE RETROFONDO
+   ========================================================================== */
+.eje-x, .eje-y {
+  position: absolute;
+  background: rgba(0, 255, 102, 0.08);
+}
+.eje-x { width: 100%; height: 1px; top: 50%; left: 0; }
+.eje-y { height: 100%; width: 1px; left: 50%; top: 0; }
+
+.circulo-central {
+  position: absolute;
+  width: 8px;
+  height: 8px;
+  background: #00ff66;
+  border-radius: 50%;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  box-shadow: 0 0 8px #00ff66;
+  z-index: 6;
+}
+
+/* ==========================================================================
+   PANEL INFERIOR (ESTILO MILITAR / HUD)
+   ========================================================================== */
+.panel-telemetria {
+  width: 100%;
+  background: #090e0a;
+  border: 1px solid #00ff6622;
+  border-radius: 6px;
+  padding: 12px 18px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.lbl-radar {
+  font-size: 9px;
+  color: #00ff6666;
+  font-weight: bold;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 3px;
+}
+
+.coordenadas {
+  font-family: monospace;
+  font-size: 11px;
+  color: #00e5ff;
+  display: flex;
+  gap: 12px;
+}
+
+.hora-radar {
+  font-family: monospace;
+  font-size: 22px;
+  color: #00ff66;
+  margin: 0;
+  text-shadow: 0 0 6px rgba(0, 255, 102, 0.4);
+}

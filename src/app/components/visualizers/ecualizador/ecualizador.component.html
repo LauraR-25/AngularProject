@@ -1,0 +1,19 @@
+<div class="escenario-ecualizador">
+  <div class="contenedor-barras">
+    
+    <!-- Iteramos sobre las 15 barras generadas en el TS -->
+    <div *ngFor="let barra of barras" 
+         class="barra-audio"
+         [style.height.px]="barra.alturaPx"
+         [style.background-color]="barra.color"
+         [style.box-shadow]="barra.sombra">
+    </div>
+
+  </div>
+
+  <!-- Decoración tipo display analítico -->
+  <div class="hud-tecnico">
+    <span class="hud-texto">FREQ: SIN(t)</span>
+    <span class="hud-texto">AMP: {{ (barras[7].alturaPx / 2.5) | number:'1.0-0' }} dB</span>
+  </div>
+</div>

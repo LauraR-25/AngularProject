@@ -1,0 +1,57 @@
+<div class="escenario-radar">
+  
+  <div class="pantalla-radar">
+    <!-- Línea de Barrido Constante (Aguja del radar) -->
+    <div class="linea-barrido" [style.transform]="'rotate(' + anguloSegundos + 'deg)'"></div>
+
+    <!-- Órbita 1: HORAS (Interna) -->
+    <div class="orbita orbita-horas">
+      <div class="contenedor-nodo" [style.transform]="'rotate(' + anguloHoras + 'deg)'">
+        <div class="nodo nodo-horas">
+          <span class="hud-nodo">H</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Órbita 2: MINUTOS (Media) -->
+    <div class="orbita orbita-minutos">
+      <div class="contenedor-nodo" [style.transform]="'rotate(' + anguloMinutos + 'deg)'">
+        <div class="nodo nodo-minutos">
+          <span class="hud-nodo">M</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Órbita 3: SEGUNDOS (Externa) -->
+    <div class="orbita orbita-segundos">
+      <div class="contenedor-nodo" [style.transform]="'rotate(' + anguloSegundos + 'deg)'">
+        <div class="nodo nodo-segundos">
+          <span class="hud-nodo">S</span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Retícula decorativa (Líneas de mira militar de fondo) -->
+    <div class="eje-x"></div>
+    <div class="eje-y"></div>
+    <div class="circulo-central"></div>
+  </div>
+
+  <!-- PANEL INFERIOR DE TELEMETRÍA -->
+  <footer class="panel-telemetria">
+    <div class="datos-rastreo">
+      <span class="lbl-radar">SISTEMA DE RASTREO TEMPORAL</span>
+      <div class="coordenadas">
+        <span>ANG_H: {{ anguloHoras | number:'1.0-0' }}°</span>
+        <span>ANG_M: {{ anguloMinutos | number:'1.0-0' }}°</span>
+        <span>ANG_S: {{ anguloSegundos | number:'1.0-0' }}°</span>
+      </div>
+    </div>
+    
+    <div class="reloj-digital-radar">
+      <span class="lbl-radar">TELEMETRÍA DIGITAL</span>
+      <h3 class="hora-radar">{{ horaSimulada | date:'HH:mm:ss' }}</h3>
+    </div>
+  </footer>
+
+</div>

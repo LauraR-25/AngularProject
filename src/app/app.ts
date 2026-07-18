@@ -12,6 +12,8 @@ import { ArbolComponent } from './components/visualizers/arbol/arbol.component';
 import { HourglassVisualizerComponent } from './components/visualizers/hourglass/hourglass-visualizer.component';
 import { AppleWatchComponent } from './components/visualizers/watch/apple-watch.component';
 import { MechanicalClockComponent } from './components/visualizers/mechanical/mechanical-clock.component';
+import { EcualizadorComponent } from './components/visualizers/ecualizador/ecualizador.component';
+import { RadarComponent } from './components/visualizers/radar/radar.component';
 
 @Component({
   selector: 'app-root',
@@ -27,7 +29,9 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
     ArbolComponent,
     HourglassVisualizerComponent,
     AppleWatchComponent,
-    MechanicalClockComponent
+    MechanicalClockComponent,
+    EcualizadorComponent,
+    RadarComponent
   ],
   template: `
     <div class="app-shell">
@@ -82,12 +86,6 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                 <button
                   type="button"
                   class="mode-item"
-                  [class.active]="currentMode === 'su'"
-                  (click)="changeMode('su')"
-                >Steven Universe</button>
-                <button
-                  type="button"
-                  class="mode-item"
                   [class.active]="currentMode === 'hourglass'"
                   (click)="changeMode('hourglass')"
                 >Reloj de Arena</button>
@@ -109,6 +107,18 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                   [class.active]="currentMode === 'arbol'"
                   (click)="changeMode('arbol')"
                 >Estaciones del Árbol</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'ecualizador'"
+                  (click)="changeMode('ecualizador')"
+                >Ecualizador Sintetizado</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'radar'"
+                  (click)="changeMode('radar')"
+                >Radar Orbital</button>
               </nav>
 
               <button id="reset-time-btn" class="btn-reset" (click)="resetTime()">
@@ -179,8 +189,11 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                     <app-mechanical-clock [currentTime]="mechTime"></app-mechanical-clock>
                   }
                 }
-                @case ('arbol') {
-                  <app-arbol [currentTime]="(timeService.currentTime$ | async)"></app-arbol>
+                @case ('ecualizador') {
+                  <app-ecualizador [currentTime]="(timeService.currentTime$ | async)"></app-ecualizador>
+                }
+                @case ('radar') {
+                  <app-radar [currentTime]="(timeService.currentTime$ | async)"></app-radar>
                 }
               }
             </section>
@@ -449,11 +462,12 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
     .visualizer-stage app-vela,
     .visualizer-stage app-mlp-visualizer,
     .visualizer-stage app-detroit-visualizer,
-    .visualizer-stage app-su-visualizer,
     .visualizer-stage app-hourglass-visualizer,
     .visualizer-stage app-apple-watch,
     .visualizer-stage app-mechanical-clock,
     .visualizer-stage app-arbol,
+    .visualizer-stage app-ecualizador,
+    .visualizer-stage app-radar,
     .visualizer-stage app-visualizers {
       display: block;
       width: 100%;
