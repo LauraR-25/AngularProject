@@ -9,21 +9,40 @@
 
     <div class="watch-screen-display">
 
-      <!-- Hora en la parte superior -->
+      <!-- ZONA SUPERIOR: Hora estirada -->
       <div class="watch-top">
         <h1 class="time-text">{{ displayTime }}</h1>
       </div>
 
-      <!-- Fila inferior: emoji + barras -->
+      <!-- ZONA CENTRAL: Reproductor de música -->
+      <div class="watch-music">
+        <div class="music-controls">
+          <button class="music-btn" type="button">⏮</button>
+          <button class="music-btn music-btn-play" type="button" (click)="togglePlay()">
+            {{ isPlaying ? '⏸' : '▶' }}
+          </button>
+          <button class="music-btn" type="button">⏭</button>
+        </div>
+        <div class="music-progress-track">
+          <div class="music-progress-fill" [style.width.%]="progress"></div>
+        </div>
+      </div>
+
+      <!-- ZONA INFERIOR: Emoji | Fecha | Barras -->
       <div class="watch-bottom">
 
-        <!-- Emoji día/noche -->
+        <!-- Izquierda: Emoji día/noche -->
         <div class="watch-emoji-area">
           <span *ngIf="!isNight" class="emoji-style">☀️</span>
           <span *ngIf="isNight" class="emoji-style">🌙</span>
         </div>
 
-        <!-- Barras de actividad estilo Apple Watch -->
+        <!-- Centro: Fecha -->
+        <div class="watch-date-area">
+          <span class="date-text">{{ displayDate }}</span>
+        </div>
+
+        <!-- Derecha: Barras de actividad -->
         <div class="watch-bars-area">
           <div class="activity-bar">
             <div class="bar-track">
