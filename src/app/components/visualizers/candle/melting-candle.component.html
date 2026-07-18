@@ -1,0 +1,27 @@
+<div class="candle-stage">
+  <div class="candle-wrapper">
+    
+    <!-- Candelabro o base antigua -->
+    <div class="candle-holder">
+      <div class="holder-top"></div>
+      <div class="holder-base"></div>
+    </div>
+
+    <!-- Cuerpo de la vela (Su altura es controlada por el TS) -->
+    <div class="candle-stick" [style.height.px]="candleHeightPx">
+      
+      <!-- Aura de luz y Llama -->
+      <div class="flame-glow"></div>
+      <div class="flame"></div>
+      
+      <!-- Pabilo (Hilo negro de la vela) -->
+      <div class="wick"></div>
+
+      <!-- Gotas de cera derretida (Detalle estético) -->
+      <div class="wax-drip drip-left"></div>
+      <div class="wax-drip drip-right"></div>
+      
+    </div>
+
+  </div>
+</div>

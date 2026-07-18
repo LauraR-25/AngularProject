@@ -7,7 +7,7 @@ import { AuthComponent } from './components/auth/auth.component';
 import { VisualizersComponent } from './components/visualizers/visualizers.component';
 import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visualizer.component';
 import { DetroitVisualizerComponent } from './components/visualizers/detroit/detroit-visualizer.component';
-import { F1VisualizerComponent } from './components/visualizers/f1/f1-visualizer.component';
+import { MeltingCandleComponent } from './components/visualizers/candle/melting-candle.component';
 import { SuVisualizerComponent } from './components/visualizers/su/su-visualizer.component';
 import { HourglassVisualizerComponent } from './components/visualizers/hourglass/hourglass-visualizer.component';
 import { AppleWatchComponent } from './components/visualizers/watch/apple-watch.component';
@@ -16,7 +16,7 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
 @Component({
   selector: 'app-root',
   standalone: true,
-  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, F1VisualizerComponent, MlpVisualizerComponent, DetroitVisualizerComponent, SuVisualizerComponent, HourglassVisualizerComponent, AppleWatchComponent, MechanicalClockComponent],
+  imports: [CommonModule, FormsModule, AuthComponent, VisualizersComponent, MeltingCandleComponent, MlpVisualizerComponent, DetroitVisualizerComponent, SuVisualizerComponent, HourglassVisualizerComponent, AppleWatchComponent, MechanicalClockComponent],
   template: `   
     <div class="app-shell">
       @if (!(authService.authStatus$ | async)) {
@@ -64,9 +64,9 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                 <button
                   type="button"
                   class="mode-item"
-                  [class.active]="currentMode === 'f1'"
-                  (click)="changeMode('f1')"
-                >Formula 1</button>
+                  [class.active]="currentMode === 'candle'"
+                  (click)="changeMode('candle')"
+                >Vela de Tiempo</button>
                 <button
                   type="button"
                   class="mode-item"
@@ -138,8 +138,10 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                 @case ('detroit') {
                   <app-detroit-visualizer></app-detroit-visualizer>
                 }
-                @case ('f1') {
-                  <app-f1-visualizer></app-f1-visualizer>
+                @case ('candle') {
+                  @if (timeService.currentTime$ | async; as candleTime) {
+                    <app-melting-candle [currentTime]="candleTime"></app-melting-candle>
+                  }
                 }
                 @case ('su') {
                   @if (timeService.currentTime$ | async; as suTime) {
@@ -425,7 +427,7 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
     }
     .visualizer-stage app-mlp-visualizer,
     .visualizer-stage app-detroit-visualizer,
-    .visualizer-stage app-f1-visualizer,
+    .visualizer-stage app-melting-candle,
     .visualizer-stage app-su-visualizer,
     .visualizer-stage app-hourglass-visualizer,
     .visualizer-stage app-apple-watch,
