@@ -48,9 +48,19 @@
       </div>
     </div>
     
+    <div class="datos-velocidad">
+      <span class="lbl-radar">VELOCIDAD</span>
+      <div class="coordenadas">
+        <span [class.vel-activa]="speed !== 1">{{ speed }}x</span>
+        @if (paused) {
+          <span class="estado-pausa">■ PAUSA</span>
+        }
+      </div>
+    </div>
+
     <div class="reloj-digital-radar">
       <span class="lbl-radar">TELEMETRÍA DIGITAL</span>
-      <h3 class="hora-radar">{{ horaSimulada | date:'HH:mm:ss' }}</h3>
+      <h3 class="hora-radar">{{ horaSimulada | date:'HH:mm:ss.SSS' }}</h3>
     </div>
   </footer>
 

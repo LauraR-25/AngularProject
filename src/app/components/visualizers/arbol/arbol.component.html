@@ -75,6 +75,29 @@
                 fill="#e8eef5" opacity="0.75" class="nieve-svg"/>
       </ng-container>
 
+      <!-- ═══ PARTÍCULAS ANIMADAS (caída libre sincronizada con velocidad) ═══ -->
+      <ng-container *ngIf="particles.length > 0">
+        <ng-container *ngFor="let p of particles; trackBy: trackParticle">
+          <!-- Hojas: elipse rotada -->
+          <ellipse *ngIf="p.type === 'leaf'"
+                   [attr.cx]="p.x" [attr.cy]="p.y"
+                   [attr.rx]="p.size" [attr.ry]="p.size * 0.55"
+                   [attr.fill]="p.color" [attr.opacity]="p.opacity"
+                   [attr.transform]="'rotate(' + p.rotation + ' ' + p.x + ' ' + p.y + ')'"
+                   class="particle-el"/>
+          <!-- Pétalos: círculo pequeño -->
+          <circle *ngIf="p.type === 'petal'"
+                  [attr.cx]="p.x" [attr.cy]="p.y" [attr.r]="p.size * 0.7"
+                  [attr.fill]="p.color" [attr.opacity]="p.opacity"
+                  class="particle-el"/>
+          <!-- Nieve: círculo blanco con brillo -->
+          <circle *ngIf="p.type === 'snow'"
+                  [attr.cx]="p.x" [attr.cy]="p.y" [attr.r]="p.size"
+                  [attr.fill]="p.color" [attr.opacity]="p.opacity"
+                  class="particle-el particle-snow"/>
+        </ng-container>
+      </ng-container>
+
     </svg>
   </div>
 

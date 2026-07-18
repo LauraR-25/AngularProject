@@ -55,7 +55,11 @@
 .orbita-minutos { width: 255px; height: 255px; }
 .orbita-segundos { width: 360px; height: 360px; }
 
-/* Contenedor invisible que rota desde el centro del radar */
+/* Contenedor invisible que rota desde el centro del radar.
+   Sin transition: los ángulos se calculan con precisión de milisegundos
+   directamente desde el TimeService, por lo que la rotación ya es suave
+   cuadro por cuadro. La transition causaba un efecto de "perseguir"
+   el ángulo real, generando lag visible a altas velocidades. */
 .contenedor-nodo {
   position: absolute;
   width: 100%;
@@ -63,7 +67,7 @@
   top: 0;
   left: 0;
   transform-origin: center center;
-  transition: transform 0.5s cubic-bezier(0.25, 0.8, 0.25, 1);
+  will-change: transform;
 }
 
 /* Los pequeños planetas del tiempo */
@@ -167,4 +171,20 @@
   color: #00ff66;
   margin: 0;
   text-shadow: 0 0 6px rgba(0, 255, 102, 0.4);
+}
+
+.datos-velocidad {
+  text-align: center;
+}
+
+.vel-activa {
+  color: #ff3366 !important;
+  text-shadow: 0 0 6px rgba(255, 51, 102, 0.5);
+}
+
+.estado-pausa {
+  color: #ffaa00;
+  font-family: monospace;
+  font-size: 11px;
+  text-shadow: 0 0 6px rgba(255, 170, 0, 0.4);
 }
