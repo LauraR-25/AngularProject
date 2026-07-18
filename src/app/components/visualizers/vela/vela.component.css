@@ -16,7 +16,7 @@
 }
 
 /* ==========================================================================
-   CANDELABRO (Estilo bronce antiguo/metal envejecido)
+   CANDELABRO
    ========================================================================== */
 .candelabro {
   position: absolute;
@@ -49,31 +49,31 @@
 }
 
 /* ==========================================================================
-   CUERPO DE LA VELA (Gradiente 3D suave de cera blanquecina/pergamino)
+   CUERPO DE LA VELA
    ========================================================================== */
 .cuerpo-vela {
   position: absolute;
-  bottom: 34px; /* Apoyada exactamente sobre el candelabro */
+  bottom: 34px;
   left: 50%;
   transform: translateX(-50%);
   width: 52px;
   background: linear-gradient(to right, #eaf2e8 0%, #ffffff 30%, #ebdcc5 100%);
   border-radius: 6px 6px 3px 3px;
   box-shadow: inset -6px 0 12px rgba(0, 0, 0, 0.08), 0 4px 10px rgba(0, 0, 0, 0.15);
-  transition: height 0.2s ease-out; /* Transición limpia para cambios fluidos con el slider */
+  transition: height 0.4s ease-out;
   z-index: 2;
 }
 
-/* Lágrimas de cera cayendo por los costados */
+/* Gotas de cera */
 .gota-cera {
   position: absolute;
   background: #ffffff;
   border-radius: 10px;
+  transition: height 0.4s ease-out;
 }
 
 .gota-izquierda {
   width: 7px;
-  height: 38px;
   top: 6px;
   left: -2px;
   box-shadow: 1px 2px 3px rgba(0, 0, 0, 0.08);
@@ -81,14 +81,13 @@
 
 .gota-derecha {
   width: 6px;
-  height: 24px;
   top: 14px;
   right: -2px;
   box-shadow: -1px 2px 3px rgba(0, 0, 0, 0.08);
 }
 
 /* ==========================================================================
-   PABILO Y ELEMENTOS DE FUEGO
+   PABILO
    ========================================================================== */
 .pabilo {
   position: absolute;
@@ -96,27 +95,44 @@
   left: 50%;
   transform: translateX(-50%);
   width: 3px;
-  height: 14px;
   background: #1a1a1a;
   border-radius: 2px;
+  transition: height 0.4s ease-out;
   z-index: 3;
 }
 
-/* La Llama con forma de gota perfecta estilizada */
+/* ==========================================================================
+   LLAMA — contenedor externo: controla escala y opacidad dinámicas
+   ========================================================================== */
 .llama {
   position: absolute;
   top: -44px;
   left: 50%;
   width: 18px;
   height: 36px;
-  background: radial-gradient(ellipse at bottom, #ffffff 12%, #ffcc00 45%, #ff5500 85%, transparent 100%);
-  border-radius: 50% 50% 20% 20% / 60% 60% 30% 30%;
   transform-origin: bottom center;
-  animation: parpadeoFuego 0.14s infinite alternate;
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
   z-index: 4;
 }
 
-/* Aura cálida que simula el destello de la luz sobre el fondo negro */
+/* Núcleo interno: recibe la animación de parpadeo sin interferir con el scale externo */
+.llama-nucleo {
+  width: 100%;
+  height: 100%;
+  background: radial-gradient(ellipse at bottom, #ffffff 12%, #ffcc00 45%, #ff5500 85%, transparent 100%);
+  border-radius: 50% 50% 20% 20% / 60% 60% 30% 30%;
+  animation: parpadeoFuego 0.14s infinite alternate;
+}
+
+/* Cuando la vela se apaga por completo */
+.llama.apagada {
+  visibility: hidden;
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out, visibility 0s 0.4s;
+}
+
+/* ==========================================================================
+   RESPLANDOR AMBIENTAL
+   ========================================================================== */
 .resplandor-llama {
   position: absolute;
   top: -68px;
@@ -126,23 +142,30 @@
   height: 130px;
   background: radial-gradient(circle, rgba(255, 160, 0, 0.22) 0%, rgba(255, 80, 0, 0) 70%);
   border-radius: 50%;
-  animation: latidoLuz 2.5s infinite alternate;
   pointer-events: none;
+  transition: transform 0.4s ease-out, opacity 0.4s ease-out;
   z-index: 1;
+}
+
+/* Respiración del resplandor: usa filter brightness para no entrar en conflicto
+   con el transform dinámico del padre */
+.resplandor-pulso {
+  width: 100%;
+  height: 100%;
+  border-radius: 50%;
+  animation: latidoLuz 2.5s infinite alternate;
 }
 
 /* ==========================================================================
    ANIMACIONES CSS
    ========================================================================== */
-/* Micro movimiendo asimétrico para simular una llama real */
 @keyframes parpadeoFuego {
-  0%   { transform: translateX(-50%) rotate(-1.5deg) scaleY(0.98); opacity: 0.9; }
-  50%  { transform: translateX(-50%) rotate(1deg) scaleY(1.04); opacity: 1; }
-  100% { transform: translateX(-50%) rotate(-1deg) scaleY(0.96); opacity: 0.88; }
+  0%   { transform: rotate(-1.5deg) scaleY(0.98); opacity: 0.9; }
+  50%  { transform: rotate(1deg) scaleY(1.04); opacity: 1; }
+  100% { transform: rotate(-1deg) scaleY(0.96); opacity: 0.88; }
 }
 
-/* Efecto respiración/latido para el resplandor ambiental */
 @keyframes latidoLuz {
-  0%   { transform: translateX(-50%) scale(0.96); opacity: 0.8; }
-  100% { transform: translateX(-50%) scale(1.06); opacity: 1; }
+  0%   { transform: scale(0.96); opacity: 0.8; }
+  100% { transform: scale(1.06); opacity: 1; }
 }

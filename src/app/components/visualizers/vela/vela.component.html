@@ -1,28 +1,37 @@
 <div class="escenario-vela">
   <div class="contenedor-vela">
-    
+
     <!-- Candelabro antiguo de bronce -->
     <div class="candelabro">
       <div class="candelabro-tope"></div>
       <div class="candelabro-base"></div>
     </div>
 
-    <!-- Cuerpo de la vela (Altura controlada dinámicamente desde el TS) -->
+    <!-- Cuerpo de la vela -->
     <div class="cuerpo-vela" [style.height.px]="alturaVelaPx">
-      
-      <!-- Aura luminosa ambiental -->
-      <div class="resplandor-llama"></div>
-      
-      <!-- Llama animada -->
-      <div class="llama"></div>
-      
-      <!-- Pabilo / Hilo negro -->
-      <div class="pabilo"></div>
 
-      <!-- Gotas decorativas de cera derretida -->
-      <div class="gota-cera gota-izquierda"></div>
-      <div class="gota-cera gota-derecha"></div>
-      
+      <!-- Aura luminosa ambiental -->
+      <div class="resplandor-llama"
+           [style.transform]="'translateX(-50%) scale(' + resplandorScale + ')'"
+           [style.opacity]="resplandorOpacidad">
+        <div class="resplandor-pulso"></div>
+      </div>
+
+      <!-- Llama animada -->
+      <div class="llama"
+           [class.apagada]="!llamaEncendida"
+           [style.transform]="'translateX(-50%) scale(' + llamaScale + ')'"
+           [style.opacity]="llamaOpacidad">
+        <div class="llama-nucleo"></div>
+      </div>
+
+      <!-- Pabilo -->
+      <div class="pabilo" [style.height.px]="pabiloAltura"></div>
+
+      <!-- Gotas de cera -->
+      <div class="gota-cera gota-izquierda" [style.height.px]="gotaIzqAltura"></div>
+      <div class="gota-cera gota-derecha" [style.height.px]="gotaDerAltura"></div>
+
     </div>
 
   </div>

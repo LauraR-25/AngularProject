@@ -1,21 +1,50 @@
 <div class="watch-wrapper">
   <div class="apple-watch-hardware">
-    
+
     <div class="strap top-strap"></div>
     <div class="strap bottom-strap"></div>
-    
+
     <div class="digital-crown"></div>
     <div class="side-button"></div>
 
     <div class="watch-screen-display">
-      
-      <div class="watch-center-content">
+
+      <!-- Hora en la parte superior -->
+      <div class="watch-top">
         <h1 class="time-text">{{ displayTime }}</h1>
-        
-        <div class="watch-emoji-container">
+      </div>
+
+      <!-- Fila inferior: emoji + barras -->
+      <div class="watch-bottom">
+
+        <!-- Emoji día/noche -->
+        <div class="watch-emoji-area">
           <span *ngIf="!isNight" class="emoji-style">☀️</span>
           <span *ngIf="isNight" class="emoji-style">🌙</span>
         </div>
+
+        <!-- Barras de actividad estilo Apple Watch -->
+        <div class="watch-bars-area">
+          <div class="activity-bar">
+            <div class="bar-track">
+              <div class="bar-fill bar-activity" [style.height.%]="barActivity"></div>
+            </div>
+            <span class="bar-label">A</span>
+          </div>
+          <div class="activity-bar">
+            <div class="bar-track">
+              <div class="bar-fill bar-exercise" [style.height.%]="barExercise"></div>
+            </div>
+            <span class="bar-label">E</span>
+          </div>
+          <div class="activity-bar">
+            <div class="bar-track">
+              <div class="bar-fill bar-stand" [style.height.%]="barStand"></div>
+            </div>
+            <span class="bar-label">S</span>
+          </div>
+        </div>
+
       </div>
 
     </div>

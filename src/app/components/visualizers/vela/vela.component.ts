@@ -9,32 +9,67 @@ import { CommonModule } from '@angular/common';
   styleUrl: './vela.component.css'
 })
 export class VelaComponent {
-  // Altura inicial de la vela en píxeles (cuando está entera)
+  porcentajeConsumo: number = 0;
   alturaVelaPx: number = 250;
 
-  // Escucha los cambios del flujo de tiempo en tiempo real
   @Input() set currentTime(date: Date | null | undefined) {
     if (date) {
-      this.calcularDerretimiento(date);
+      this.calcularEstadoVela(date);
     }
   }
 
-  private calcularDerretimiento(date: Date) {
-    const horas = date.getHours();
-    const minutos = date.getMinutes();
-    const segundos = date.getSeconds();
+  // Altura máxima de diseño (vela nueva)
+  private readonly ALTURA_MAX = 250;
 
-    // Convertimos el tiempo transcurrido del día a minutos totales (0 a 1440 minutos en 24h)
-    const minutosTotales = (horas * 60) + minutos + (segundos / 60);
+  get llamaEncendida(): boolean {
+    return this.porcentajeConsumo < 100;
+  }
 
-    // Límites de diseño para la altura de la cera
-    const alturaMaxima = 250; // Al inicio del día (00:00) la vela está nueva
-    const alturaMinima = 45;  // Al final del día (23:59) queda un cabo de vela pequeño
+  get llamaScale(): number {
+    // Proporcional al tamaño de la cera: 1.0 cuando nueva, ~0.18 cuando consumida
+    return this.alturaVelaPx / this.ALTURA_MAX;
+  }
 
-    // Proporción del día que queda disponible (va de 1 a 0)
-    const porcentajeRestante = (1440 - minutosTotales) / 1440;
+  get llamaOpacidad(): number {
+    // Mism proporción que la cera restante
+    return this.alturaVelaPx / this.ALTURA_MAX;
+  }
 
-    // Ajuste dinámico de la altura
-    this.alturaVelaPx = alturaMinima + ((alturaMaxima - alturaMinima) * porcentajeRestante);
+  get resplandorScale(): number {
+    // Proporcional pero con un mínimo más generoso para que no desaparezca tan rápido
+    const proporcion = this.alturaVelaPx / this.ALTURA_MAX;
+    return Math.max(0.15, proporcion);
+  }
+
+  get resplandorOpacidad(): number {
+    const proporcion = this.alturaVelaPx / this.ALTURA_MAX;
+    return Math.max(0, proporcion - 0.05);
+  }
+
+  get pabiloAltura(): number {
+    // 14px cuando nueva, 5px cuando casi consumida
+    return 14 - (this.porcentajeConsumo / 100) * 9;
+  }
+
+  get gotaIzqAltura(): number {
+    return 38 + (this.porcentajeConsumo / 100) * 14;
+  }
+
+  get gotaDerAltura(): number {
+    return 24 + (this.porcentajeConsumo / 100) * 10;
+  }
+
+  private calcularEstadoVela(date: Date) {
+    const minutosTotales = (date.getHours() * 60) + date.getMinutes() + (date.getSeconds() / 60);
+    const duracionCiclo = 1440;
+
+    // 0% al inicio del día (vela nueva), 100% al final (consumida)
+    this.porcentajeConsumo = (minutosTotales / duracionCiclo) * 100;
+    this.porcentajeConsumo = Math.min(100, Math.max(0, this.porcentajeConsumo));
+
+    const alturaMaxima = 250;
+    const alturaMinima = 45;
+    const porcentajeRestante = 1 - this.porcentajeConsumo / 100;
+    this.alturaVelaPx = alturaMinima + (alturaMaxima - alturaMinima) * porcentajeRestante;
   }
 }
