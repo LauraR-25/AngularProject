@@ -1,84 +1,185 @@
+/* ==========================================================================
+   ESCENARIO PRINCIPAL — Flexbox centrado absoluto
+   ========================================================================== */
 .escenario-estaciones {
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: center;
   width: 100%;
   height: 100%;
-  padding: 20px;
-  box-sizing: border-box;
+  background: #08080c;
+  overflow: hidden;
 }
 
-.contenedor-arbol {
+.zona-arbol {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
   position: relative;
-  width: 350px;
-  height: 320px;
-  margin-top: 20px;
 }
 
 /* ==========================================================================
-   ANATOMÍA FIJA DEL ÁRBOL
+   CONTENEDOR DEL ÁRBOL (referencia para todos los elementos absolutos)
+   ========================================================================== */
+.contenedor-arbol {
+  position: relative;
+  width: 360px;
+  height: 340px;
+  transition: filter 0.8s ease;
+}
+
+/* ==========================================================================
+   TRONCO
    ========================================================================== */
 .gran-tronco {
   position: absolute;
-  bottom: 20px;
+  bottom: 24px;
   left: 50%;
   transform: translateX(-50%);
-  width: 44px;
-  height: 150px;
-  background: linear-gradient(to right, #422a1d, #5c3a26, #331f14);
-  border-radius: 6px 6px 4px 4px;
+  width: 46px;
+  height: 155px;
+  background: linear-gradient(
+    to right,
+    #3b2213 0%,
+    #5c3a26 40%,
+    #6b4530 55%,
+    #4a2e1a 100%
+  );
+  border-radius: 8px 8px 5px 5px;
   z-index: 3;
+  transition: filter 0.6s ease;
 }
 
+/* ==========================================================================
+   RAMAS
+   ========================================================================== */
 .rama {
   position: absolute;
-  background: #422a1d;
-  border-radius: 4px;
+  background: linear-gradient(to top, #4a2e1a, #5c3a26);
+  border-radius: 5px;
   z-index: 2;
+  transition: opacity 0.6s ease, filter 0.6s ease;
 }
-.rama-izquierda {
-  width: 14px;
-  height: 60px;
-  bottom: 110px;
-  left: 120px;
-  transform: rotate(-35deg);
+.rama-izq {
+  width: 15px;
+  height: 62px;
+  bottom: 112px;
+  left: 118px;
+  transform: rotate(-38deg);
+  transform-origin: bottom center;
 }
-.rama-derecha {
-  width: 12px;
-  height: 55px;
-  bottom: 125px;
-  right: 120px;
-  transform: rotate(45deg);
+.rama-der {
+  width: 13px;
+  height: 58px;
+  bottom: 128px;
+  right: 118px;
+  transform: rotate(42deg);
+  transform-origin: bottom center;
+}
+.rama-izq-baja {
+  width: 11px;
+  height: 42px;
+  bottom: 80px;
+  left: 128px;
+  transform: rotate(-55deg);
+  transform-origin: bottom center;
+}
+.rama-der-baja {
+  width: 10px;
+  height: 38px;
+  bottom: 90px;
+  right: 130px;
+  transform: rotate(50deg);
+  transform-origin: bottom center;
 }
 
+/* ==========================================================================
+   COPAS DE HOJAS — Capas circulares voluminosas (estilo Steven Universe)
+   ========================================================================== */
+.copa-hojas {
+  position: absolute;
+  border-radius: 50%;
+  z-index: 4;
+  transition:
+    background 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    opacity 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    transform 0.7s cubic-bezier(0.4, 0, 0.2, 1),
+    box-shadow 0.7s ease;
+}
+
+.hojas-capas {
+  width: 160px;
+  height: 160px;
+  top: 8px;
+  left: 50px;
+}
+.hojas-capacentro {
+  width: 185px;
+  height: 185px;
+  top: -20px;
+  left: 80px;
+}
+.hojas-capafrente {
+  width: 145px;
+  height: 145px;
+  top: 28px;
+  right: 50px;
+}
+
+/* ==========================================================================
+   SUELO / CÉSPED
+   ========================================================================== */
 .suelo {
   position: absolute;
   bottom: 0;
   left: 50%;
   transform: translateX(-50%);
-  width: 280px;
-  height: 20px;
+  width: 300px;
+  height: 24px;
   background: #232d1a;
   border-radius: 50% / 100% 100% 0 0;
   z-index: 1;
-  transition: background 0.5s ease;
+  transition: background 0.7s ease, box-shadow 0.7s ease;
 }
 
 /* ==========================================================================
-   DISEÑO VOLUMINOSO DE LAS HOJAS (Efecto de capas circulares)
+   FLORES — Solo primavera
    ========================================================================== */
-.copa-hojas {
+.capa-flores {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 6;
+  opacity: 0;
+  transition: opacity 0.7s ease;
+}
+
+.flor {
   position: absolute;
   border-radius: 50%;
-  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
-  z-index: 4;
+  width: 14px;
+  height: 14px;
+  box-shadow:
+    0 0 6px rgba(255, 150, 180, 0.5),
+    inset 0 -2px 3px rgba(255, 100, 150, 0.3);
 }
-.hojas-atras { width: 150px; height: 150px; top: 10px; left: 55px; }
-.hojas-centro { width: 170px; height: 170px; top: -15px; left: 85px; }
-.hojas-frente { width: 140px; height: 140px; top: 30px; right: 55px; }
 
-.capa-flores, .hojas-suelo {
+.f1 { top: 38px; left: 108px; background: radial-gradient(circle at 40% 35%, #ffd6e8, #ff80ab); }
+.f2 { top: 12px; left: 168px; background: radial-gradient(circle at 40% 35%, #ffe0ec, #ff6fa8); }
+.f3 { top: 55px; left: 222px; background: radial-gradient(circle at 40% 35%, #ffd6e8, #ff80ab); }
+.f4 { top: 85px; left: 138px; background: radial-gradient(circle at 40% 35%, #ffe8f0, #ff90bb); }
+.f5 { top: 48px; left: 182px; background: radial-gradient(circle at 40% 35%, #ffd6e8, #ff6fa8); }
+.f6 { top: 25px; left: 132px; background: radial-gradient(circle at 40% 35%, #ffe0ec, #ff80ab); }
+.f7 { top: 65px; left: 198px; background: radial-gradient(circle at 40% 35%, #ffd6e8, #ff90bb); }
+
+/* ==========================================================================
+   HOJAS CAÍDAS — Solo otoño
+   ========================================================================== */
+.capa-hojas-suelo {
   position: absolute;
   width: 100%;
   height: 100%;
@@ -86,112 +187,355 @@
   left: 0;
   pointer-events: none;
   z-index: 5;
+  opacity: 0;
+  transition: opacity 0.7s ease;
 }
-.hojas-suelo { display: none; }
+
+.hoja-suelo {
+  position: absolute;
+  bottom: 10px;
+  border-radius: 50% 0 50% 0;
+  width: 13px;
+  height: 8px;
+  z-index: 5;
+}
+
+.hs1 { left: 85px; transform: rotate(18deg); }
+.hs2 { left: 125px; transform: rotate(-12deg); }
+.hs3 { left: 175px; transform: rotate(40deg); }
+.hs4 { right: 90px; transform: rotate(-25deg); }
+.hs5 { right: 120px; transform: rotate(55deg); }
+.hs6 { left: 155px; transform: rotate(-40deg); }
 
 /* ==========================================================================
-   MANEJO DINÁMICO DE LAS 4 ESTACIONES
+   LAS 4 ESTACIONES — Estilo Steven Universe (colores voluminosos)
    ========================================================================== */
 
-/* --- VERANO: Hojas verdes muy frondosas --- */
+/* ─── VERANO ─── */
 .verano .copa-hojas { opacity: 1; transform: scale(1); }
-.verano .hojas-atras { background: #1e5616; }
-.verano .hojas-centro { background: #2e7d23; }
-.verano .hojas-frente { background: #4caf50; }
+.verano .hojas-capas {
+  background: radial-gradient(circle at 45% 40%, #2e9e28, #1a6b14);
+  box-shadow: 0 8px 30px rgba(30, 120, 20, 0.35);
+}
+.verano .hojas-capacentro {
+  background: radial-gradient(circle at 50% 45%, #43b840, #278522);
+  box-shadow: 0 10px 40px rgba(40, 140, 30, 0.4);
+}
+.verano .hojas-capafrente {
+  background: radial-gradient(circle at 55% 40%, #5ec95a, #36a032);
+  box-shadow: 0 6px 25px rgba(50, 150, 40, 0.3);
+}
+.verano .suelo {
+  background: linear-gradient(to top, #1c4a12, #2d6e1f);
+  box-shadow: 0 -4px 12px rgba(35, 100, 20, 0.25);
+}
 
-/* --- PRIMAVERA: Hojas verdes + Flores Rosadas distribuidas --- */
+/* ─── PRIMAVERA ─── */
 .primavera .copa-hojas { opacity: 1; transform: scale(1); }
-.primavera .hojas-atras { background: #1b4d14; }
-.primavera .hojas-centro { background: #276b1f; }
-.primavera .hojas-frente { background: #388e3c; }
-
-.primavera .flor {
-  position: absolute;
-  background: radial-gradient(circle, #ffb7d5 40%, #ff69b4 100%);
-  border-radius: 50%;
-  width: 13px;
-  height: 13px;
-  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+.primavera .hojas-capas {
+  background: radial-gradient(circle at 45% 40%, #2a8c24, #17610f);
+  box-shadow: 0 8px 28px rgba(25, 110, 18, 0.3);
 }
-.primavera .f1 { top: 40px; left: 110px; }
-.primavera .f2 { top: 15px; left: 170px; }
-.primavera .f3 { top: 60px; left: 220px; }
-.primavera .f4 { top: 90px; left: 140px; }
-.primavera .f5 { top: 50px; left: 180px; }
-
-/* --- OTOÑO: Copas se encogen un poco y cambian a tonos ocres + hojas tiradas --- */
-.otono .copa-hojas { transform: scale(0.85); }
-.otono .hojas-atras { background: #a04000; }
-.otono .hojas-centro { background: #d35400; }
-.otono .hojas-frente { background: #e67e22; }
-.otono .suelo { background: #5e4831; }
-
-.otono .hojas-suelo { display: block; }
-.otono .hs1, .otono .hs2, .otono .hs3, .otono .hs4 {
-  position: absolute;
-  background: #d35400;
-  border-radius: 50% 0 50% 0;
-  width: 12px;
-  height: 7px;
-  bottom: 12px;
+.primavera .hojas-capacentro {
+  background: radial-gradient(circle at 50% 45%, #3baa37, #1f7a1b);
+  box-shadow: 0 10px 36px rgba(35, 130, 25, 0.35);
 }
-.otono .hs1 { left: 90px; transform: rotate(15deg); }
-.otono .hs2 { left: 130px; background: #a04000; transform: rotate(-10deg); }
-.otono .hs3 { right: 100px; transform: rotate(45deg); }
-.otono .hs4 { right: 70px; background: #e67e22; transform: rotate(-20deg); }
+.primavera .hojas-capafrente {
+  background: radial-gradient(circle at 55% 40%, #4fc04b, #2d9428);
+  box-shadow: 0 6px 22px rgba(45, 140, 35, 0.28);
+}
+.primavera .suelo {
+  background: linear-gradient(to top, #1a3e10, #2a6018);
+  box-shadow: 0 -4px 10px rgba(30, 90, 18, 0.2);
+}
+.primavera .capa-flores { opacity: 1; }
 
-/* --- INVIERNO: Las copas desaparecen por completo (Árbol seco) --- */
+/* ─── OTOÑO ─── */
+.otono .copa-hojas { opacity: 1; transform: scale(0.82); }
+.otono .hojas-capas {
+  background: radial-gradient(circle at 45% 40%, #8b3a00, #6e2e00);
+  box-shadow: 0 6px 24px rgba(140, 50, 0, 0.3);
+}
+.otono .hojas-capacentro {
+  background: radial-gradient(circle at 50% 45%, #cc5500, #a84400);
+  box-shadow: 0 8px 32px rgba(200, 70, 0, 0.35);
+}
+.otono .hojas-capafrente {
+  background: radial-gradient(circle at 55% 40%, #e07818, #c46200);
+  box-shadow: 0 5px 20px rgba(220, 100, 20, 0.28);
+}
+.otono .suelo {
+  background: linear-gradient(to top, #3d2b14, #5a3f20);
+  box-shadow: 0 -4px 10px rgba(80, 50, 20, 0.2);
+}
+.otono .capa-hojas-suelo { opacity: 1; }
+.otono .hs1 { background: linear-gradient(135deg, #cc5500, #a84400); }
+.otono .hs2 { background: linear-gradient(135deg, #8b3a00, #6e2e00); }
+.otono .hs3 { background: linear-gradient(135deg, #e07818, #c46200); }
+.otono .hs4 { background: linear-gradient(135deg, #d94f00, #b84000); }
+.otono .hs5 { background: linear-gradient(135deg, #cc5500, #a84400); }
+.otono .hs6 { background: linear-gradient(135deg, #e07818, #8b3a00); }
+
+/* ─── INVIERNO ─── */
 .invierno .copa-hojas { opacity: 0; transform: scale(0); }
-.invierno .suelo { background: #434c5e; } /* Tono frío invernal */
+.invierno .suelo {
+  background: linear-gradient(to top, #2c3340, #3a4455);
+  box-shadow: 0 -6px 18px rgba(80, 100, 130, 0.15);
+}
+.invierno .gran-tronco { filter: brightness(0.7) saturate(0.5); }
+.invierno .rama { filter: brightness(0.65) saturate(0.45); }
 
 /* ==========================================================================
-   PANEL INFERIOR DE TIEMPO
+   PANEL INFERIOR — Layout flex de 3 columnas
    ========================================================================== */
 .panel-tiempo-arbol {
   width: 100%;
-  background: #111116;
-  border: 1px solid #1e1e2f;
-  border-radius: 8px;
-  padding: 12px 20px;
+  flex-shrink: 0;
+  background: #0c0c12;
+  border-top: 1px solid #1a1a2e;
+  padding: 14px 24px;
   display: flex;
+  align-items: flex-start;
   justify-content: space-between;
-  align-items: center;
+  gap: 20px;
   box-sizing: border-box;
 }
 
 .lbl-sub {
-  font-size: 10px;
+  font-size: 9px;
   color: #55556a;
   font-weight: bold;
-  letter-spacing: 1px;
+  letter-spacing: 1.2px;
   display: block;
-  margin-bottom: 2px;
+  margin-bottom: 4px;
+  font-family: 'Courier New', monospace;
+}
+
+/* ==========================================================================
+   SECCIÓN CALENDARIO (izquierda)
+   ========================================================================== */
+.seccion-calendario {
+  flex: 1;
+  min-width: 0;
 }
 
 .display-fecha {
   display: flex;
   align-items: baseline;
-  gap: 6px;
+  gap: 8px;
 }
 
-.num-dia { font-size: 24px; font-weight: bold; color: #ffffff; font-family: monospace; }
-.txt-mes { font-size: 16px; color: #b5b5c3; font-weight: 500; }
-.num-anio { font-size: 15px; color: #55556a; font-family: monospace; }
+.num-dia {
+  font-size: 24px;
+  font-weight: bold;
+  color: #ffffff;
+  font-family: 'Courier New', monospace;
+}
+.txt-mes {
+  font-size: 16px;
+  color: #b5b5c3;
+  font-weight: 500;
+}
+.num-anio {
+  font-size: 15px;
+  color: #55556a;
+  font-family: 'Courier New', monospace;
+}
 
 .badge-estacion {
   font-size: 11px;
   color: #a3a3c2;
   margin-top: 2px;
+  font-family: 'Courier New', monospace;
 }
 .txt-estacion {
   color: #ffb800;
   text-transform: capitalize;
 }
 
-.hora-real-digital {
-  font-family: monospace;
-  font-size: 24px;
+/* ==========================================================================
+   CONTROLES MANUALES DE FECHA — Cyberpunk / Neón
+   ========================================================================== */
+.fecha-controles {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  margin-top: 10px;
+  flex-wrap: wrap;
+}
+
+.ctrl-grupo {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+}
+
+.ctrl-label {
+  font-size: 8px;
+  color: #00e5cc;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  font-family: 'Courier New', monospace;
+  text-transform: uppercase;
+}
+
+.ctrl-botones {
+  display: flex;
+  gap: 4px;
+}
+
+/* Botón neón + / − */
+.btn-neon {
+  width: 30px;
+  height: 30px;
+  border: 1px solid #00e5cc;
+  border-radius: 4px;
+  background: rgba(0, 229, 204, 0.06);
+  color: #00e5cc;
+  font-size: 16px;
+  font-weight: bold;
+  font-family: 'Courier New', monospace;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition:
+    background 0.15s ease,
+    box-shadow 0.15s ease,
+    border-color 0.15s ease,
+    transform 0.1s ease;
+  line-height: 1;
+  padding: 0;
+  user-select: none;
+}
+.btn-neon:hover {
+  background: rgba(0, 229, 204, 0.18);
+  box-shadow: 0 0 10px rgba(0, 229, 204, 0.35), inset 0 0 6px rgba(0, 229, 204, 0.1);
+  border-color: #00ffdd;
+  color: #00ffdd;
+}
+.btn-neon:active {
+  transform: scale(0.9);
+  background: rgba(0, 229, 204, 0.3);
+  box-shadow: 0 0 16px rgba(0, 229, 204, 0.5);
+}
+
+/* Input fecha nativo estilizado */
+.ctrl-datepick {
+  margin-left: 4px;
+}
+
+.input-fecha-neon {
+  height: 30px;
+  border: 1px solid #00e5cc;
+  border-radius: 4px;
+  background: rgba(0, 229, 204, 0.06);
+  color: #00e5cc;
+  font-size: 11px;
+  font-family: 'Courier New', monospace;
+  padding: 0 8px;
+  cursor: pointer;
+  outline: none;
+  transition:
+    border-color 0.2s ease,
+    box-shadow 0.2s ease,
+    background 0.2s ease;
+}
+.input-fecha-neon:hover {
+  border-color: #00ffdd;
+  background: rgba(0, 229, 204, 0.12);
+}
+.input-fecha-neon:focus {
+  border-color: #00ffdd;
+  box-shadow: 0 0 12px rgba(0, 229, 204, 0.35), inset 0 0 6px rgba(0, 229, 204, 0.08);
+  background: rgba(0, 229, 204, 0.1);
+}
+.input-fecha-neon::-webkit-calendar-picker-indicator {
+  filter: invert(0.6) sepia(1) saturate(5) hue-rotate(130deg);
+  cursor: pointer;
+}
+
+/* ==========================================================================
+   TOGGLE SWITCH — Cyberpunk / Neón
+   ========================================================================== */
+.seccion-toggle {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  flex-shrink: 0;
+  padding-top: 4px;
+}
+
+.toggle-switch {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  padding: 4px 0;
+}
+
+.toggle-track {
+  position: relative;
+  width: 44px;
+  height: 22px;
+  background: #1a1a2e;
+  border: 1px solid #2a2a40;
+  border-radius: 11px;
+  transition: background 0.3s ease, border-color 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toggle-thumb {
+  position: absolute;
+  top: 2px;
+  left: 2px;
+  width: 16px;
+  height: 16px;
+  background: #444460;
+  border-radius: 50%;
+  transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1), background 0.3s ease, box-shadow 0.3s ease;
+}
+
+.toggle-switch.active .toggle-track {
+  background: rgba(0, 229, 204, 0.15);
+  border-color: #00e5cc;
+  box-shadow: 0 0 10px rgba(0, 229, 204, 0.2);
+}
+.toggle-switch.active .toggle-thumb {
+  transform: translateX(22px);
+  background: #00e5cc;
+  box-shadow: 0 0 8px rgba(0, 229, 204, 0.5);
+}
+
+.toggle-text {
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  font-weight: bold;
+  letter-spacing: 1.5px;
+  color: #55556a;
+  transition: color 0.3s ease;
+  min-width: 24px;
+}
+.toggle-switch.active .toggle-text {
+  color: #00e5cc;
+  text-shadow: 0 0 6px rgba(0, 229, 204, 0.3);
+}
+
+/* ==========================================================================
+   SECCIÓN RELOJ (derecha)
+   ========================================================================== */
+.seccion-hora-simulada {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.hora-digital {
+  font-family: 'Courier New', monospace;
+  font-size: 26px;
+  font-weight: bold;
   color: #00ffcc;
   margin: 0;
-  text-shadow: 0 0 8px rgba(0, 255, 204, 0.25);
+  text-shadow: 0 0 10px rgba(0, 255, 204, 0.3);
+  letter-spacing: 2px;
 }
