@@ -1,197 +1,323 @@
 @import url('https://fonts.googleapis.com/css2?family=Cinzel:wght@400;700&display=swap');
 
 :host {
-    display: block;
-    width: 100%;
-    height: 100%;
+  display: block;
+  width: 100%;
+  height: 100%;
 }
 
-/* 1. CONTENEDOR GENERAL Y FONDO SIMULADO */
+/* ==========================================================================
+   ESCENA PRINCIPAL
+   ========================================================================== */
 .mlp-scene {
-    position: relative;
-    width: 100%;
-    height: 100%;
-    min-height: 500px;
-    overflow: hidden;
-    border-radius: 12px;
-    background-size: cover;
-    background-position: center;
-    transition: background-image 2s ease-in-out;
+  position: relative;
+  width: 100%;
+  height: 100%;
+  min-height: 500px;
+  overflow: hidden;
+  border-radius: 12px;
+  background-size: cover;
+  background-position: center;
+  transition: background 2.5s ease-in-out;
 }
 
-/* 2. MECÁNICA DEL ASTRO DINÁMICO */
-.astro-container {
-    position: absolute;
-    top: 40px;
-    left: 40px;
-    width: 100px;
-    height: 100px;
-    z-index: 5;
-}
-
+/* ==========================================================================
+   ASTROS — Sol y Luna en arco orbital
+   ========================================================================== */
 .astro {
-    position: absolute;
-    top: 0;
-    left: 0;
-    font-size: 70px;
-    line-height: 1;
-    opacity: 0;
-    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out;
-    transform: scale(0.8) translateY(20px);
-    filter: drop-shadow(0 0 15px rgba(255, 255, 255, 0.4));
+  position: absolute;
+  transform: translate(-50%, -50%);
+  z-index: 5;
+  pointer-events: none;
+  transition: left 0.4s linear, top 0.4s linear, opacity 1.5s ease-in-out;
 }
 
-.astro.visible {
-    opacity: 1;
-    transform: scale(1) translateY(0);
+/* ─── SOL ─── */
+.sol {
+  opacity: 1;
 }
 
-.astro-sun {
-    filter: drop-shadow(0 0 30px rgba(255, 220, 80, 0.9));
+.sol-cuerpo {
+  width: 60px;
+  height: 60px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 40% 35%, #fff7b0, #ffd700, #ff9500);
+  box-shadow: 0 0 40px rgba(255, 200, 0, 0.8), 0 0 80px rgba(255, 150, 0, 0.4);
 }
 
-.astro-moon {
-    filter: drop-shadow(0 0 30px rgba(150, 180, 255, 0.9));
+.sol-brillo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 100px;
+  height: 100px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(255, 220, 80, 0.25) 0%, transparent 70%);
+  animation: pulsoSol 3s ease-in-out infinite alternate;
 }
 
-/* 3. POSICIONAMIENTO DEL CASTILLO */
+/* ─── LUNA ─── */
+.luna {
+  opacity: 0;
+  transition: left 0.4s linear, top 0.4s linear, opacity 2s ease-in-out;
+}
+
+.mlp-scene.noche .luna {
+  opacity: 1;
+}
+
+.luna-cuerpo {
+  width: 50px;
+  height: 50px;
+  border-radius: 50%;
+  background: radial-gradient(circle at 35% 30%, #e8eeff, #c0d0f0, #8090c0);
+  box-shadow: 0 0 30px rgba(150, 180, 255, 0.6), 0 0 60px rgba(100, 140, 255, 0.3);
+}
+
+.luna-brillo {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 90px;
+  height: 90px;
+  transform: translate(-50%, -50%);
+  border-radius: 50%;
+  background: radial-gradient(circle, rgba(150, 180, 255, 0.15) 0%, transparent 70%);
+  animation: pulsoLuna 4s ease-in-out infinite alternate;
+}
+
+/* ==========================================================================
+   ESTRELLAS
+   ========================================================================== */
+.stars-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.mlp-scene.noche .stars-layer {
+  opacity: 1;
+}
+
+.estrella {
+  animation: parpadeoEstrella 3s ease-in-out infinite alternate;
+}
+
+/* ─── Estrellas fugaces ─── */
+.shooting-stars-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 1;
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity 2s ease-in-out;
+}
+
+.mlp-scene.noche .shooting-stars-layer {
+  opacity: 1;
+}
+
+.estrella-fugaz {
+  opacity: 0;
+  animation: disparoEstrella 1.5s ease-in infinite;
+}
+
+/* ==========================================================================
+   NUBES
+   ========================================================================== */
+.clouds-layer {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  z-index: 4;
+  pointer-events: none;
+  transition: opacity 1.5s ease-in-out;
+}
+
+.nube-grupo {
+  animation: derivaNube 20s ease-in-out infinite alternate;
+}
+
+/* ==========================================================================
+   CASTILLO
+   ========================================================================== */
 .castle-layer {
-    position: absolute;
-    top: 0;
-    bottom: 0;
-    right: 0;
-    height: 100%;
-    display: flex;
-    justify-content: flex-end;
-    align-items: flex-end;
-    z-index: 2;
-    pointer-events: none;
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  right: 0;
+  height: 100%;
+  display: flex;
+  justify-content: flex-end;
+  align-items: flex-end;
+  z-index: 2;
+  pointer-events: none;
 }
 
 .castle-img {
-    height: 100%;
-    /* Abarca toda la altura, de abajo hacia arriba */
-    width: auto;
-    object-fit: cover;
-    object-position: right bottom;
-    /* Anclado a la derecha */
-    mix-blend-mode: multiply;
-    /* Fusión perfecta con el cielo */
-    transition: filter 2s ease-in-out;
+  height: 100%;
+  width: auto;
+  object-fit: cover;
+  object-position: right bottom;
+  mix-blend-mode: multiply;
+  transition: filter 2.5s ease-in-out;
 }
 
 .mlp-scene.dia .castle-img {
-    filter: brightness(0.95) saturate(1.1);
+  filter: brightness(0.95) saturate(1.1);
 }
-
 .mlp-scene.atardecer .castle-img {
-    filter: brightness(0.7) sepia(0.3) saturate(1.4) hue-rotate(-10deg);
+  filter: brightness(0.7) sepia(0.3) saturate(1.4) hue-rotate(-10deg);
 }
-
 .mlp-scene.noche .castle-img {
-    filter: brightness(0.35) saturate(0.6) hue-rotate(200deg);
+  filter: brightness(0.35) saturate(0.6) hue-rotate(200deg);
 }
 
-/* 4. PRINCESAS */
+/* ==========================================================================
+   PRINCESAS — Transición suave: opacity + scale + translateY
+   ========================================================================== */
 .princess-layer {
-    position: absolute;
-    bottom: -20px;
-    /* Más pegadas al borde inferior */
-    right: -20px;
-    /* Más pegadas al borde derecho */
-    width: 500px;
-    height: 500px;
-    z-index: 3;
-    pointer-events: none;
+  position: absolute;
+  bottom: -20px;
+  right: -20px;
+  width: 500px;
+  height: 500px;
+  z-index: 3;
+  pointer-events: none;
 }
 
 .princess-img {
-    position: absolute;
-    bottom: 0;
-    right: 20px;
-    /* Ligeramente separadas de la pared para mejor encuadre */
-    width: auto;
-    object-fit: contain;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 1.5s ease-in-out, transform 1.5s ease-in-out, filter 2s;
-    transform: translateX(30px);
+  position: absolute;
+  bottom: 0;
+  right: 20px;
+  width: auto;
+  object-fit: contain;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(30px) scale(0.92);
+  transition:
+    opacity 1.4s ease-in-out,
+    transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter 2s ease,
+    visibility 0s 1.4s;
 }
 
-/* Alturas diferentes (Celestia más alta que Luna) y tamaño mucho mayor */
 .princess-img.celestia {
-    height: 480px;
-    /* Celestia imponente */
-    filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 25px rgba(255, 230, 80, 0.6));
+  height: 480px;
+  filter: drop-shadow(0 10px 20px rgba(0, 0, 0, 0.4)) drop-shadow(0 0 25px rgba(255, 230, 80, 0.6));
 }
 
 .princess-img.luna {
-    height: 430px;
-    /* Luna un poco más baja pero igual muy grande */
-    right: 30px;
-    filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 35px rgba(90, 130, 255, 0.7));
+  height: 430px;
+  right: 30px;
+  filter: drop-shadow(0 12px 25px rgba(0, 0, 0, 0.6)) drop-shadow(0 0 35px rgba(90, 130, 255, 0.7));
 }
 
-/* Renderizado condicional con fade */
 .princess-img.visible {
-    opacity: 1;
-    visibility: visible;
-    transform: translateX(0);
+  opacity: 1;
+  visibility: visible;
+  transform: translateY(0) scale(1);
+  transition:
+    opacity 1.4s ease-in-out,
+    transform 1.4s cubic-bezier(0.25, 0.46, 0.45, 0.94),
+    filter 2s ease,
+    visibility 0s 0s;
 }
 
-/* HUD OVERLAY */
+/* ==========================================================================
+   HUD OVERLAY
+   ========================================================================== */
 .hud-overlay {
-    position: absolute;
-    bottom: 24px;
-    left: 40px;
-    z-index: 10;
-    display: flex;
-    align-items: center;
-    gap: 16px;
-    background: rgba(15, 15, 25, 0.6);
-    backdrop-filter: blur(12px);
-    -webkit-backdrop-filter: blur(12px);
-    border: 1px solid rgba(255, 255, 255, 0.15);
-    border-radius: 100px;
-    padding: 10px 24px;
+  position: absolute;
+  bottom: 24px;
+  left: 40px;
+  z-index: 10;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  background: rgba(15, 15, 25, 0.6);
+  backdrop-filter: blur(12px);
+  -webkit-backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: 100px;
+  padding: 10px 24px;
 }
 
 .hud-time {
-    font-family: 'Cinzel', serif;
-    font-size: 1.1rem;
-    font-weight: 700;
-    color: #ffffff;
+  font-family: 'Cinzel', serif;
+  font-size: 1.1rem;
+  font-weight: 700;
+  color: #ffffff;
 }
 
 .hud-badge {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    font-weight: 700;
-    text-transform: uppercase;
-    padding: 4px 12px;
-    border-radius: 100px;
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  padding: 4px 12px;
+  border-radius: 100px;
 }
 
 .badge-dia {
-    background: rgba(255, 220, 60, 0.25);
-    color: #ffe066;
-    border: 1px solid rgba(255, 220, 60, 0.4);
+  background: rgba(255, 220, 60, 0.25);
+  color: #ffe066;
+  border: 1px solid rgba(255, 220, 60, 0.4);
 }
-
 .badge-atardecer {
-    background: rgba(255, 110, 30, 0.25);
-    color: #ffb347;
-    border: 1px solid rgba(255, 110, 30, 0.4);
+  background: rgba(255, 110, 30, 0.25);
+  color: #ffb347;
+  border: 1px solid rgba(255, 110, 30, 0.4);
 }
-
 .badge-noche {
-    background: rgba(80, 110, 220, 0.25);
-    color: #aabfff;
-    border: 1px solid rgba(80, 110, 220, 0.4);
+  background: rgba(80, 110, 220, 0.25);
+  color: #aabfff;
+  border: 1px solid rgba(80, 110, 220, 0.4);
 }
 
 .hud-princess {
-    font-family: 'Cinzel', serif;
-    font-size: 0.65rem;
-    color: rgba(255, 255, 255, 0.6);
+  font-family: 'Cinzel', serif;
+  font-size: 0.65rem;
+  color: rgba(255, 255, 255, 0.6);
+}
+
+/* ==========================================================================
+   KEYFRAMES
+   ========================================================================== */
+@keyframes pulsoSol {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.8; }
+  100% { transform: translate(-50%, -50%) scale(1.15); opacity: 1; }
+}
+
+@keyframes pulsoLuna {
+  0% { transform: translate(-50%, -50%) scale(1); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(1.1); opacity: 1; }
+}
+
+@keyframes parpadeoEstrella {
+  0% { opacity: 0.3; }
+  50% { opacity: 1; }
+  100% { opacity: 0.5; }
+}
+
+@keyframes disparoEstrella {
+  0% { opacity: 0; stroke-dashoffset: 30; }
+  5% { opacity: 1; }
+  15% { opacity: 1; stroke-dashoffset: 0; }
+  20% { opacity: 0; }
+  100% { opacity: 0; }
+}
+
+@keyframes derivaNube {
+  0% { transform: translateX(0); }
+  100% { transform: translateX(4px); }
 }

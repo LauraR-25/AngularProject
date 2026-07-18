@@ -172,7 +172,7 @@ import { BarcodeComponent } from './components/visualizers/barcode/barcode.compo
                   <app-vela [currentTime]="(timeService.currentTime$ | async)"></app-vela>
                 }
                 @case ('mlp') {
-                  <app-mlp-visualizer></app-mlp-visualizer>
+                  <app-mlp-visualizer [currentTimeInput]="(timeService.currentTime$ | async)"></app-mlp-visualizer>
                 }
                 @case ('detroit') {
                   <app-detroit-visualizer></app-detroit-visualizer>
