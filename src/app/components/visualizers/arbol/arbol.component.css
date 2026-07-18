@@ -1,0 +1,197 @@
+.escenario-estaciones {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  width: 100%;
+  height: 100%;
+  padding: 20px;
+  box-sizing: border-box;
+}
+
+.contenedor-arbol {
+  position: relative;
+  width: 350px;
+  height: 320px;
+  margin-top: 20px;
+}
+
+/* ==========================================================================
+   ANATOMÍA FIJA DEL ÁRBOL
+   ========================================================================== */
+.gran-tronco {
+  position: absolute;
+  bottom: 20px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 44px;
+  height: 150px;
+  background: linear-gradient(to right, #422a1d, #5c3a26, #331f14);
+  border-radius: 6px 6px 4px 4px;
+  z-index: 3;
+}
+
+.rama {
+  position: absolute;
+  background: #422a1d;
+  border-radius: 4px;
+  z-index: 2;
+}
+.rama-izquierda {
+  width: 14px;
+  height: 60px;
+  bottom: 110px;
+  left: 120px;
+  transform: rotate(-35deg);
+}
+.rama-derecha {
+  width: 12px;
+  height: 55px;
+  bottom: 125px;
+  right: 120px;
+  transform: rotate(45deg);
+}
+
+.suelo {
+  position: absolute;
+  bottom: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 280px;
+  height: 20px;
+  background: #232d1a;
+  border-radius: 50% / 100% 100% 0 0;
+  z-index: 1;
+  transition: background 0.5s ease;
+}
+
+/* ==========================================================================
+   DISEÑO VOLUMINOSO DE LAS HOJAS (Efecto de capas circulares)
+   ========================================================================== */
+.copa-hojas {
+  position: absolute;
+  border-radius: 50%;
+  transition: all 0.6s cubic-bezier(0.4, 0, 0.2, 1);
+  z-index: 4;
+}
+.hojas-atras { width: 150px; height: 150px; top: 10px; left: 55px; }
+.hojas-centro { width: 170px; height: 170px; top: -15px; left: 85px; }
+.hojas-frente { width: 140px; height: 140px; top: 30px; right: 55px; }
+
+.capa-flores, .hojas-suelo {
+  position: absolute;
+  width: 100%;
+  height: 100%;
+  top: 0;
+  left: 0;
+  pointer-events: none;
+  z-index: 5;
+}
+.hojas-suelo { display: none; }
+
+/* ==========================================================================
+   MANEJO DINÁMICO DE LAS 4 ESTACIONES
+   ========================================================================== */
+
+/* --- VERANO: Hojas verdes muy frondosas --- */
+.verano .copa-hojas { opacity: 1; transform: scale(1); }
+.verano .hojas-atras { background: #1e5616; }
+.verano .hojas-centro { background: #2e7d23; }
+.verano .hojas-frente { background: #4caf50; }
+
+/* --- PRIMAVERA: Hojas verdes + Flores Rosadas distribuidas --- */
+.primavera .copa-hojas { opacity: 1; transform: scale(1); }
+.primavera .hojas-atras { background: #1b4d14; }
+.primavera .hojas-centro { background: #276b1f; }
+.primavera .hojas-frente { background: #388e3c; }
+
+.primavera .flor {
+  position: absolute;
+  background: radial-gradient(circle, #ffb7d5 40%, #ff69b4 100%);
+  border-radius: 50%;
+  width: 13px;
+  height: 13px;
+  box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+}
+.primavera .f1 { top: 40px; left: 110px; }
+.primavera .f2 { top: 15px; left: 170px; }
+.primavera .f3 { top: 60px; left: 220px; }
+.primavera .f4 { top: 90px; left: 140px; }
+.primavera .f5 { top: 50px; left: 180px; }
+
+/* --- OTOÑO: Copas se encogen un poco y cambian a tonos ocres + hojas tiradas --- */
+.otono .copa-hojas { transform: scale(0.85); }
+.otono .hojas-atras { background: #a04000; }
+.otono .hojas-centro { background: #d35400; }
+.otono .hojas-frente { background: #e67e22; }
+.otono .suelo { background: #5e4831; }
+
+.otono .hojas-suelo { display: block; }
+.otono .hs1, .otono .hs2, .otono .hs3, .otono .hs4 {
+  position: absolute;
+  background: #d35400;
+  border-radius: 50% 0 50% 0;
+  width: 12px;
+  height: 7px;
+  bottom: 12px;
+}
+.otono .hs1 { left: 90px; transform: rotate(15deg); }
+.otono .hs2 { left: 130px; background: #a04000; transform: rotate(-10deg); }
+.otono .hs3 { right: 100px; transform: rotate(45deg); }
+.otono .hs4 { right: 70px; background: #e67e22; transform: rotate(-20deg); }
+
+/* --- INVIERNO: Las copas desaparecen por completo (Árbol seco) --- */
+.invierno .copa-hojas { opacity: 0; transform: scale(0); }
+.invierno .suelo { background: #434c5e; } /* Tono frío invernal */
+
+/* ==========================================================================
+   PANEL INFERIOR DE TIEMPO
+   ========================================================================== */
+.panel-tiempo-arbol {
+  width: 100%;
+  background: #111116;
+  border: 1px solid #1e1e2f;
+  border-radius: 8px;
+  padding: 12px 20px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  box-sizing: border-box;
+}
+
+.lbl-sub {
+  font-size: 10px;
+  color: #55556a;
+  font-weight: bold;
+  letter-spacing: 1px;
+  display: block;
+  margin-bottom: 2px;
+}
+
+.display-fecha {
+  display: flex;
+  align-items: baseline;
+  gap: 6px;
+}
+
+.num-dia { font-size: 24px; font-weight: bold; color: #ffffff; font-family: monospace; }
+.txt-mes { font-size: 16px; color: #b5b5c3; font-weight: 500; }
+.num-anio { font-size: 15px; color: #55556a; font-family: monospace; }
+
+.badge-estacion {
+  font-size: 11px;
+  color: #a3a3c2;
+  margin-top: 2px;
+}
+.txt-estacion {
+  color: #ffb800;
+  text-transform: capitalize;
+}
+
+.hora-real-digital {
+  font-family: monospace;
+  font-size: 24px;
+  color: #00ffcc;
+  margin: 0;
+  text-shadow: 0 0 8px rgba(0, 255, 204, 0.25);
+}

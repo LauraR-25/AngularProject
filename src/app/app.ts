@@ -8,7 +8,7 @@ import { VisualizersComponent } from './components/visualizers/visualizers.compo
 import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visualizer.component';
 import { DetroitVisualizerComponent } from './components/visualizers/detroit/detroit-visualizer.component';
 import { VelaComponent } from './components/visualizers/vela/vela.component';
-import { SuVisualizerComponent } from './components/visualizers/su/su-visualizer.component';
+import { ArbolComponent } from './components/visualizers/arbol/arbol.component';
 import { HourglassVisualizerComponent } from './components/visualizers/hourglass/hourglass-visualizer.component';
 import { AppleWatchComponent } from './components/visualizers/watch/apple-watch.component';
 import { MechanicalClockComponent } from './components/visualizers/mechanical/mechanical-clock.component';
@@ -24,7 +24,7 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
     VelaComponent,
     MlpVisualizerComponent,
     DetroitVisualizerComponent,
-    SuVisualizerComponent,
+    ArbolComponent,
     HourglassVisualizerComponent,
     AppleWatchComponent,
     MechanicalClockComponent
@@ -103,6 +103,12 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                   [class.active]="currentMode === 'mechanical'"
                   (click)="changeMode('mechanical')"
                 >Reloj Mecánico</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'arbol'"
+                  (click)="changeMode('arbol')"
+                >Estaciones del Árbol</button>
               </nav>
 
               <button id="reset-time-btn" class="btn-reset" (click)="resetTime()">
@@ -153,9 +159,9 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                 @case ('detroit') {
                   <app-detroit-visualizer></app-detroit-visualizer>
                 }
-                @case ('su') {
-                  @if (timeService.currentTime$ | async; as suTime) {
-                    <app-su-visualizer [currentTime]="suTime"></app-su-visualizer>
+                @case ('arbol') {
+                  @if (timeService.currentTime$ | async; as arbolTime) {
+                    <app-arbol [currentTime]="arbolTime"></app-arbol>
                   }
                 }
                 @case ('hourglass') {
@@ -172,6 +178,9 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
                   @if (timeService.currentTime$ | async; as mechTime) {
                     <app-mechanical-clock [currentTime]="mechTime"></app-mechanical-clock>
                   }
+                }
+                @case ('arbol') {
+                  <app-arbol [currentTime]="(timeService.currentTime$ | async)"></app-arbol>
                 }
               }
             </section>
@@ -444,6 +453,7 @@ import { MechanicalClockComponent } from './components/visualizers/mechanical/me
     .visualizer-stage app-hourglass-visualizer,
     .visualizer-stage app-apple-watch,
     .visualizer-stage app-mechanical-clock,
+    .visualizer-stage app-arbol,
     .visualizer-stage app-visualizers {
       display: block;
       width: 100%;

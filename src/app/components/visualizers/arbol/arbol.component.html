@@ -1,0 +1,57 @@
+<div class="escenario-estaciones">
+  
+  <!-- CONTENEDOR DEL ÁRBOL DINÁMICO -->
+  <div class="contenedor-arbol" [ngClass]="infoSimulada?.estacion || 'verano'">
+    
+    <!-- Ramas principales (Fijas) -->
+    <div class="rama rama-izquierda"></div>
+    <div class="rama rama-derecha"></div>
+
+    <!-- Gran Tronco central -->
+    <div class="gran-tronco"></div>
+
+    <!-- Copas de hojas voluminosas (Cambian de color o desaparecen por CSS) -->
+    <div class="copa-hojas hojas-atras"></div>
+    <div class="copa-hojas hojas-centro"></div>
+    <div class="copa-hojas hojas-frente"></div>
+
+    <!-- Capa de flores (Solo se muestra en primavera) -->
+    <div class="capa-flores">
+      <div class="flor f1"></div>
+      <div class="flor f2"></div>
+      <div class="flor f3"></div>
+      <div class="flor f4"></div>
+      <div class="flor f5"></div>
+    </div>
+
+    <!-- Hojas caídas en el suelo (Solo se muestran en otoño) -->
+    <div class="suelo">
+      <div class="hojas-suelo hs1"></div>
+      <div class="hojas-suelo hs2"></div>
+      <div class="hojas-suelo hs3"></div>
+      <div class="hojas-suelo hs4"></div>
+    </div>
+
+  </div>
+
+  <!-- PANEL INFERIOR: CALENDARIO SIMULADO Y RELEOJ DIGITAL REAL -->
+  <footer class="panel-tiempo-arbol">
+    <div class="seccion-calendario">
+      <span class="lbl-sub">FECHA SIMULADA</span>
+      <div class="display-fecha">
+        <span class="num-dia">{{ infoSimulada?.dia }}</span>
+        <span class="txt-mes">{{ infoSimulada?.mes }}</span>
+        <span class="num-anio">{{ infoSimulada?.anio }}</span>
+      </div>
+      <div class="badge-estacion">
+        Estación: <strong class="txt-estacion">{{ infoSimulada?.estacion }}</strong>
+      </div>
+    </div>
+
+    <div class="seccion-hora-local">
+      <span class="lbl-sub">HORA LOCAL (SISTEMA)</span>
+      <h3 class="hora-real-digital">{{ fechaLocal | date:'HH:mm:ss' }}</h3>
+    </div>
+  </footer>
+
+</div>
