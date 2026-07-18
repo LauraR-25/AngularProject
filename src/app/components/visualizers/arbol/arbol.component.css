@@ -222,6 +222,7 @@
     transform 0.1s ease;
   line-height: 1;
   padding: 0;
+  -webkit-user-select: none;
   user-select: none;
 }
 .btn-neon:hover {

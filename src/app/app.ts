@@ -4,7 +4,6 @@ import { FormsModule } from '@angular/forms';
 import { TimeService } from './services/time.service';
 import { AuthService } from './services/auth.service';
 import { AuthComponent } from './components/auth/auth.component';
-import { VisualizersComponent } from './components/visualizers/visualizers.component';
 import { MlpVisualizerComponent } from './components/visualizers/mlp/mlp-visualizer.component';
 import { DetroitVisualizerComponent } from './components/visualizers/detroit/detroit-visualizer.component';
 import { VelaComponent } from './components/visualizers/vela/vela.component';
@@ -23,7 +22,6 @@ import { BarcodeComponent } from './components/visualizers/barcode/barcode.compo
     CommonModule,
     FormsModule,
     AuthComponent,
-    VisualizersComponent,
     VelaComponent,
     MlpVisualizerComponent,
     DetroitVisualizerComponent,
@@ -477,8 +475,7 @@ import { BarcodeComponent } from './components/visualizers/barcode/barcode.compo
     .visualizer-stage app-arbol,
     .visualizer-stage app-ecualizador,
     .visualizer-stage app-radar,
-    .visualizer-stage app-barcode,
-    .visualizer-stage app-visualizers {
+    .visualizer-stage app-barcode {
       display: block;
       width: 100%;
       height: 100%;
