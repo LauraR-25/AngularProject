@@ -1,0 +1,39 @@
+<div class="escenario-barcode">
+
+  <!-- CONTENEDOR PRINCIPAL DEL CÓDIGO DE BARRAS -->
+  <div class="scanner-frame">
+
+    <!-- Etiqueta superior -->
+    <div class="scanner-header">
+      <span class="scanner-tag">BARCODE TIME SCANNER</span>
+      <span class="scanner-id">ID: {{ codigoDigital }}</span>
+    </div>
+
+    <!-- Zona de barras -->
+    <div class="barcode-zone">
+      <div class="scanline"></div>
+      @for (barra of barras; track $index) {
+        <div
+          class="barra"
+          [style.width.px]="barra.ancho"
+          [style.height.%]="barra.altura"
+          [style.background]="barra.color"
+          [style.box-shadow]="'0 0 8px ' + barra.color + '66'"
+        ></div>
+      }
+    </div>
+
+    <!-- Display digital inferior -->
+    <div class="barcode-display">
+      <span class="display-label">TIMESTAMP</span>
+      <h2 class="display-hora">{{ codigoDigital }}</h2>
+    </div>
+
+    <!-- Líneas decorativas -->
+    <div class="barcode-footer-lines">
+      <span></span><span></span><span></span><span></span><span></span>
+    </div>
+
+  </div>
+
+</div>

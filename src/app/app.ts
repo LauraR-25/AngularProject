@@ -14,6 +14,7 @@ import { AppleWatchComponent } from './components/visualizers/watch/apple-watch.
 import { MechanicalClockComponent } from './components/visualizers/mechanical/mechanical-clock.component';
 import { EcualizadorComponent } from './components/visualizers/ecualizador/ecualizador.component';
 import { RadarComponent } from './components/visualizers/radar/radar.component';
+import { BarcodeComponent } from './components/visualizers/barcode/barcode.component';
 
 @Component({
   selector: 'app-root',
@@ -31,7 +32,8 @@ import { RadarComponent } from './components/visualizers/radar/radar.component';
     AppleWatchComponent,
     MechanicalClockComponent,
     EcualizadorComponent,
-    RadarComponent
+    RadarComponent,
+    BarcodeComponent
   ],
   template: `
     <div class="app-shell">
@@ -119,6 +121,12 @@ import { RadarComponent } from './components/visualizers/radar/radar.component';
                   [class.active]="currentMode === 'radar'"
                   (click)="changeMode('radar')"
                 >Radar Orbital</button>
+                <button
+                  type="button"
+                  class="mode-item"
+                  [class.active]="currentMode === 'barcode'"
+                  (click)="changeMode('barcode')"
+                >Código de Barras</button>
               </nav>
 
               <button id="reset-time-btn" class="btn-reset" (click)="resetTime()">
@@ -194,6 +202,9 @@ import { RadarComponent } from './components/visualizers/radar/radar.component';
                 }
                 @case ('radar') {
                   <app-radar [currentTime]="(timeService.currentTime$ | async)"></app-radar>
+                }
+                @case ('barcode') {
+                  <app-barcode [currentTime]="(timeService.currentTime$ | async)"></app-barcode>
                 }
               }
             </section>
@@ -468,6 +479,7 @@ import { RadarComponent } from './components/visualizers/radar/radar.component';
     .visualizer-stage app-arbol,
     .visualizer-stage app-ecualizador,
     .visualizer-stage app-radar,
+    .visualizer-stage app-barcode,
     .visualizer-stage app-visualizers {
       display: block;
       width: 100%;

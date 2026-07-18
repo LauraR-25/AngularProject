@@ -1,0 +1,168 @@
+/* ==========================================================================
+   ESCENARIO — Centrado absoluto
+   ========================================================================== */
+.escenario-barcode {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+  background: #08080c;
+  box-sizing: border-box;
+  padding: 24px;
+}
+
+/* ==========================================================================
+   FRAME DEL SCANNER
+   ========================================================================== */
+.scanner-frame {
+  width: 560px;
+  max-width: 100%;
+  background: #0a0a10;
+  border: 1px solid #1a1a2e;
+  border-radius: 8px;
+  padding: 20px 24px 16px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 16px;
+  position: relative;
+  box-shadow:
+    0 0 30px rgba(0, 229, 204, 0.04),
+    inset 0 0 40px rgba(0, 0, 0, 0.4);
+}
+
+/* ==========================================================================
+   HEADER DEL SCANNER
+   ========================================================================== */
+.scanner-header {
+  width: 100%;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #1a1a2e;
+}
+
+.scanner-tag {
+  font-family: 'Courier New', monospace;
+  font-size: 9px;
+  font-weight: bold;
+  letter-spacing: 2px;
+  color: #00e5cc;
+  text-shadow: 0 0 6px rgba(0, 229, 204, 0.3);
+}
+
+.scanner-id {
+  font-family: 'Courier New', monospace;
+  font-size: 10px;
+  color: #55556a;
+  letter-spacing: 1px;
+}
+
+/* ==========================================================================
+   ZONA DE BARRAS
+   ========================================================================== */
+.barcode-zone {
+  width: 100%;
+  height: 160px;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 3px;
+  padding: 0 8px;
+  position: relative;
+  overflow: hidden;
+  background: repeating-linear-gradient(
+    90deg,
+    transparent,
+    transparent 19px,
+    rgba(255, 255, 255, 0.012) 19px,
+    rgba(255, 255, 255, 0.012) 20px
+  );
+}
+
+/* Línea de escaneo animada */
+.scanline {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 2px;
+  background: linear-gradient(90deg, transparent 0%, #00e5cc 50%, transparent 100%);
+  box-shadow: 0 0 12px rgba(0, 229, 204, 0.5);
+  animation: scanMove 2.5s ease-in-out infinite;
+  z-index: 10;
+  pointer-events: none;
+}
+
+@keyframes scanMove {
+  0%   { top: 0; opacity: 0.6; }
+  50%  { top: 100%; opacity: 1; }
+  100% { top: 0; opacity: 0.6; }
+}
+
+/* ==========================================================================
+   BARRA INDIVIDUAL
+   ========================================================================== */
+.barra {
+  flex-shrink: 0;
+  border-radius: 2px 2px 0 0;
+  transition:
+    width 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    height 0.4s cubic-bezier(0.4, 0, 0.2, 1),
+    background 0.4s ease;
+  min-height: 4px;
+}
+
+/* ==========================================================================
+   DISPLAY DIGITAL
+   ========================================================================== */
+.barcode-display {
+  width: 100%;
+  text-align: center;
+  padding-top: 12px;
+  border-top: 1px solid #1a1a2e;
+}
+
+.display-label {
+  font-family: 'Courier New', monospace;
+  font-size: 8px;
+  letter-spacing: 3px;
+  color: #333348;
+  display: block;
+  margin-bottom: 4px;
+}
+
+.display-hora {
+  font-family: 'Courier New', monospace;
+  font-size: 32px;
+  font-weight: bold;
+  color: #00ffcc;
+  margin: 0;
+  letter-spacing: 6px;
+  text-shadow: 0 0 14px rgba(0, 255, 204, 0.35);
+}
+
+/* ==========================================================================
+   FOOTER DECORATIVO
+   ========================================================================== */
+.barcode-footer-lines {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+  gap: 6px;
+  padding-top: 8px;
+}
+
+.barcode-footer-lines span {
+  display: block;
+  height: 3px;
+  background: #1a1a2e;
+  border-radius: 1px;
+}
+.barcode-footer-lines span:nth-child(1) { width: 40px; }
+.barcode-footer-lines span:nth-child(2) { width: 20px; }
+.barcode-footer-lines span:nth-child(3) { width: 60px; background: #00e5cc33; }
+.barcode-footer-lines span:nth-child(4) { width: 15px; }
+.barcode-footer-lines span:nth-child(5) { width: 35px; }
