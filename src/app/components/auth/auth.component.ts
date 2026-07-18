@@ -10,27 +10,28 @@ import { AuthService } from '../../services/auth.service';
     <div class="auth-bg">
       <div class="scanline"></div>
 
-      <div class="auth-card" [class.register-mode]="!isLogin">
-        <!-- Logo / Título -->
+      <div class="auth-card">
+        <!-- Cabecera -->
         <div class="brand">
-          <div class="brand-icon">{{ isLogin ? '☀️' : '🌕' }}</div>
-          <h1 class="brand-title">CELESTIAL</h1>
-          <p class="brand-sub">{{ isLogin ? 'ACCESO AL SISTEMA' : 'CREAR CUENTA' }}</p>
+          <h1 class="brand-title">Visualizador de tiempo</h1>
+          <p class="brand-sub">{{ isLoginMode ? 'ACCESO AL SISTEMA' : 'REGISTRO DE USUARIO' }}</p>
         </div>
 
         <!-- Divisor -->
         <div class="divider">
           <span class="divider-line"></span>
-          <span class="divider-icon">◆</span>
+          <span class="divider-icon">&#9670;</span>
           <span class="divider-line"></span>
         </div>
 
         <!-- Formulario -->
         <form class="auth-form" (ngSubmit)="submit()">
+
+          <!-- Usuario: SIEMPRE visible -->
           <div class="field-group">
             <label class="field-label">USUARIO</label>
             <div class="input-wrapper">
-              <span class="input-icon">▶</span>
+              <span class="input-icon">&#9654;</span>
               <input
                 id="auth-username"
                 class="field-input"
@@ -43,10 +44,11 @@ import { AuthService } from '../../services/auth.service';
             </div>
           </div>
 
+          <!-- Contraseña: SIEMPRE visible -->
           <div class="field-group">
             <label class="field-label">CONTRASEÑA</label>
             <div class="input-wrapper">
-              <span class="input-icon">🔒</span>
+              <span class="input-icon">&#128274;</span>
               <input
                 id="auth-password"
                 class="field-input"
@@ -60,28 +62,53 @@ import { AuthService } from '../../services/auth.service';
             </div>
           </div>
 
+          <!-- Confirmar contraseña: SOLO en modo registro -->
+          @if (!isLoginMode) {
+            <div class="field-group confirm-field">
+              <label class="field-label">CONFIRMAR CONTRASEÑA</label>
+              <div class="input-wrapper">
+                <span class="input-icon">&#128274;</span>
+                <input
+                  id="auth-confirm-password"
+                  class="field-input"
+                  type="password"
+                  [(ngModel)]="confirmPassword"
+                  name="confirmPassword"
+                  placeholder="Repite tu contraseña"
+                  autocomplete="new-password"
+                  required
+                />
+              </div>
+            </div>
+          }
+
           <!-- Mensaje de error/éxito -->
-          @if (errorMsg) {
-            <div class="msg-box" [class.msg-success]="isSuccessMsg">
-              <span class="msg-icon">{{ isSuccessMsg ? '✔' : '✘' }}</span>
-              {{ errorMsg }}
+          @if (statusMessage) {
+            <div class="msg-box" [class.msg-success]="isSuccess">
+              <span class="msg-icon">{{ isSuccess ? '&#10004;' : '&#10008;' }}</span>
+              {{ statusMessage }}
             </div>
           }
 
           <!-- Botón principal -->
           <button id="auth-submit-btn" type="submit" class="btn-primary">
             <span class="btn-glow"></span>
-            {{ isLogin ? '[ INICIAR SESIÓN ]' : '[ REGISTRARSE ]' }}
+            {{ isLoginMode ? '[ INICIAR SESIÓN ]' : '[ REGISTRARSE ]' }}
           </button>
         </form>
 
         <!-- Toggle Login / Register -->
         <div class="toggle-section">
           <span class="toggle-text">
-            {{ isLogin ? '¿Sin cuenta aún?' : '¿Ya eres miembro?' }}
+            {{ isLoginMode ? '¿Sin cuenta aún?' : '¿Ya tienes cuenta?' }}
           </span>
-          <button id="auth-toggle-btn" class="btn-toggle" type="button" (click)="switchMode()">
-            {{ isLogin ? 'Crear cuenta →' : '← Iniciar sesión' }}
+          <button
+            id="auth-toggle-btn"
+            class="btn-toggle"
+            type="button"
+            (click)="toggleMode()"
+          >
+            {{ isLoginMode ? 'Crear cuenta' : 'Iniciar sesión' }}
           </button>
         </div>
 
@@ -184,33 +211,24 @@ import { AuthService } from '../../services/auth.service';
 
     /* ===== BRAND / LOGO ===== */
     .brand { text-align: center; margin-bottom: 28px; }
-    .brand-icon {
-      font-size: 2.8rem;
-      animation: pulse 3s ease-in-out infinite;
-      display: block;
-      margin-bottom: 12px;
-    }
-    @keyframes pulse {
-      0%, 100% { filter: drop-shadow(0 0 8px rgba(255, 214, 10, 0.6)); transform: scale(1); }
-      50% { filter: drop-shadow(0 0 20px rgba(255, 214, 10, 0.9)); transform: scale(1.05); }
-    }
     .brand-title {
       font-family: 'Orbitron', sans-serif;
-      font-size: 2rem;
-      font-weight: 900;
-      letter-spacing: 0.25em;
+      font-size: 1.45rem;
+      font-weight: 700;
+      letter-spacing: 0.12em;
       color: #ffffff;
-      margin: 0 0 6px 0;
-      text-shadow: 0 0 20px rgba(230, 57, 70, 0.5), 0 0 40px rgba(230, 57, 70, 0.2);
+      margin: 0 0 8px 0;
+      text-shadow: 0 0 20px rgba(230, 57, 70, 0.4), 0 0 40px rgba(230, 57, 70, 0.15);
     }
     .brand-sub {
       font-family: 'Orbitron', sans-serif;
-      font-size: 0.65rem;
+      font-size: 0.6rem;
       font-weight: 400;
       letter-spacing: 0.35em;
       color: #ffd60a;
       margin: 0;
       opacity: 0.9;
+      transition: opacity 0.3s ease;
     }
 
     /* ===== DIVISOR ===== */
@@ -232,8 +250,16 @@ import { AuthService } from '../../services/auth.service';
     }
 
     /* ===== FORMULARIO ===== */
-    .auth-form { display: flex; flex-direction: column; gap: 20px; }
-    .field-group { display: flex; flex-direction: column; gap: 7px; }
+    .auth-form {
+      display: flex;
+      flex-direction: column;
+      gap: 20px;
+    }
+    .field-group {
+      display: flex;
+      flex-direction: column;
+      gap: 7px;
+    }
     .field-label {
       font-family: 'Orbitron', sans-serif;
       font-size: 0.6rem;
@@ -274,6 +300,21 @@ import { AuthService } from '../../services/auth.service';
     }
     .field-input:focus + .input-icon,
     .input-wrapper:focus-within .input-icon { color: #e63946; }
+
+    /* Campo Confirmar Contraseña: animación de entrada */
+    .confirm-field {
+      animation: fieldSlideIn 0.35s ease forwards;
+    }
+    @keyframes fieldSlideIn {
+      from {
+        opacity: 0;
+        transform: translateY(-8px);
+      }
+      to {
+        opacity: 1;
+        transform: translateY(0);
+      }
+    }
 
     /* ===== MENSAJES ===== */
     .msg-box {
@@ -367,53 +408,72 @@ import { AuthService } from '../../services/auth.service';
   `]
 })
 export class AuthComponent {
-  authService = inject(AuthService);
-  isLogin = true;
+  private authService = inject(AuthService);
+
+  isLoginMode = true;
   username = '';
   password = '';
-  errorMsg = '';
-  isSuccessMsg = false;
+  confirmPassword = '';
+  statusMessage = '';
+  isSuccess = false;
 
-  // Partículas flotantes decorativas
-  particles = Array.from({ length: 18 }, (_, i) => {
+  particles = Array.from({ length: 18 }, () => {
     const size = Math.random() * 4 + 2;
     const colors = ['#e63946', '#ffd60a', '#ffffff'];
     const color = colors[Math.floor(Math.random() * colors.length)];
-    return `
-      left: ${Math.random() * 100}%;
-      width: ${size}px;
-      height: ${size}px;
-      background: ${color};
-      animation-duration: ${Math.random() * 15 + 10}s;
-      animation-delay: ${Math.random() * -20}s;
-    `;
+    return `left:${Math.random() * 100}%;width:${size}px;height:${size}px;background:${color};animation-duration:${Math.random() * 15 + 10}s;animation-delay:${Math.random() * -20}s;`;
   });
 
-  switchMode() {
-    this.isLogin = !this.isLogin;
-    this.errorMsg = '';
-    this.username = '';
-    this.password = '';
+  toggleMode(): void {
+    this.isLoginMode = !this.isLoginMode;
+    this.clearMessages();
+    this.confirmPassword = '';
   }
 
-  submit() {
-    this.errorMsg = '';
-    this.isSuccessMsg = false;
+  submit(): void {
+    this.clearMessages();
 
-    if (this.isLogin) {
-      if (!this.authService.login(this.username, this.password)) {
-        this.errorMsg = 'Credenciales incorrectas. Inténtalo de nuevo.';
-      }
+    if (this.isLoginMode) {
+      this.doLogin();
     } else {
-      if (this.authService.register(this.username, this.password)) {
-        this.isSuccessMsg = true;
-        this.errorMsg = 'Registro exitoso. Ahora inicia sesión.';
-        this.isLogin = true;
-        this.username = '';
-        this.password = '';
-      } else {
-        this.errorMsg = 'Ese nombre de usuario ya existe.';
-      }
+      this.doRegister();
     }
+  }
+
+  private doLogin(): void {
+    if (this.authService.login(this.username, this.password)) {
+      return;
+    }
+    this.statusMessage = 'Credenciales incorrectas. Inténtalo de nuevo.';
+    this.isSuccess = false;
+  }
+
+  private doRegister(): void {
+    if (this.password !== this.confirmPassword) {
+      this.statusMessage = 'Las contraseñas no coinciden.';
+      this.isSuccess = false;
+      return;
+    }
+
+    if (!this.authService.register(this.username, this.password)) {
+      this.statusMessage = 'Ese nombre de usuario ya existe.';
+      this.isSuccess = false;
+      return;
+    }
+
+    this.statusMessage = 'Registro exitoso. Redirigiendo al inicio de sesión...';
+    this.isSuccess = true;
+
+    setTimeout(() => {
+      this.isLoginMode = true;
+      this.clearMessages();
+      this.password = '';
+      this.confirmPassword = '';
+    }, 1800);
+  }
+
+  private clearMessages(): void {
+    this.statusMessage = '';
+    this.isSuccess = false;
   }
 }
